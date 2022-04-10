@@ -1,4 +1,6 @@
 // Создание Action Creators для состояния постов
+import axios from 'axios'
+import { API_TOKEN } from '../../constants'
 import {
   ADD_NEW_POST, DELETE_POST, GET_CURRENT_POST, GET_POSTS_FROM_SERVER, UPDATE_POST,
 } from '../actionTypes/postsTypes'
@@ -10,8 +12,8 @@ const getPostsFromServer = (postsFromServer) => ({
 
 // получение всех постов с сервера
 export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/?${filter}`)
-  const dataFromServer = await response.json()
+  const response = await axios.get(`https://api.react-learning.ru/posts/?${filter}`, { headers: { authorization: `Bearer ${API_TOKEN}` } })
+  const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
 }
 
@@ -45,9 +47,7 @@ const deletePost = (id) => ({
 
 // удаление поста по id
 export const deletePostQuery = (id) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-    method: 'DELETE',
-  })
+  const response = await axios.delete(`https://api.react-learning.ru/posts/${id}`, { headers: { authorization: `Bearer ${API_TOKEN}` } })
 
   if (response.status === 200) {
     dispatch(deletePost(id))

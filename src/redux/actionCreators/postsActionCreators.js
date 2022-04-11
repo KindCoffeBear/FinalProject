@@ -1,4 +1,6 @@
 // Создание Action Creators для состояния постов
+import axios from 'axios'
+import API_TOKEN from '../../constants'
 import {
   ADD_NEW_POST, DELETE_POST, GET_CURRENT_POST, GET_POSTS_FROM_SERVER, UPDATE_POST,
 } from '../actionTypes/postsTypes'
@@ -10,8 +12,13 @@ const getPostsFromServer = (postsFromServer) => ({
 
 // получение всех постов с сервера
 export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/?${filter}`)
-  const dataFromServer = await response.json()
+  const response = await axios.get(
+    `https://api.react-learning.ru/posts/?${filter}`,
+    {
+      headers: { authorization: `Bearer ${API_TOKEN}` },
+    },
+  )
+  const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
 }
 
@@ -22,20 +29,17 @@ const addNewPost = (newPost) => ({
 
 // добавление поста на сервере и получение данных с сервера
 export const addNewPostQuery = (newPost) => async (dispatch) => {
-  const response = await fetch('http://localhost:3000/api/v1/posts', {
+  const response = await fetch('https://api.react-learning.ru/posts', {
     method: 'POST',
     headers: {
+      authorization: `Bearer ${API_TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newPost),
+    body: newPost,
   })
 
-  if (response.status === 201) {
-    const newPostFromServer = await response.json()
-    dispatch(addNewPost(newPostFromServer))
-  } else {
-    alert('Введите все данные')
-  }
+  const postFromApi = await response.json()
+  dispatch(addNewPost(postFromApi))
 }
 
 const deletePost = (id) => ({

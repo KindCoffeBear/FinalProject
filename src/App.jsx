@@ -9,6 +9,7 @@ import Header from './components/Header/Header'
 import Main from './components/Main/Main'
 import PageNotFound from './components/404/404'
 import DetailedPost from './components/DetailedPost/DetailedPost'
+import CreateNewPostForm from './components/CreateNewPostForm/CreateNewPostForm'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/post/:idPost" element={<DetailedPost />} />
           <Route path="*" element={<PageNotFound />} />
+          <Route path="/createNewPostForm" element={<CreateNewPostForm />} />
         </Routes>
         <Footer />
       </BrowserRouter>

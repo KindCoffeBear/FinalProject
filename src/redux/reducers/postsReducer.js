@@ -17,7 +17,8 @@ const postsReducer = (store = [], action) => {
 
     // удаление постов
     case DELETE_POST:
-      return store.filter((post) => post.idPost !== action.payload)
+      // eslint-disable-next-line no-underscore-dangle
+      return store.filter((post) => post._id !== action.payload)
 
       // обновление поста (в модалке на детальной странице)
     case UPDATE_POST:

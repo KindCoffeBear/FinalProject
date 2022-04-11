@@ -49,9 +49,7 @@ const deletePost = (id) => ({
 
 // удаление поста по id
 export const deletePostQuery = (id) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-    method: 'DELETE',
-  })
+  const response = await axios.delete(`https://api.react-learning.ru/posts/${id}`, { headers: { authorization: `Bearer ${API_TOKEN}` } })
 
   if (response.status === 200) {
     dispatch(deletePost(id))

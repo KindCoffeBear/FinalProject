@@ -1,0 +1,3 @@
+/* eslint-disable import/prefer-default-export */
+const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjUyOWNkZjZlZjYzYzVlZjA3ZmM2NDQiLCJpYXQiOjE2NDk1ODEyOTMsImV4cCI6MTY4MTExNzI5M30.nVh4dT1rpfo8JDcsYLuO4tOA8CS6nzn_CIgCeaoLNQc'
+export default API_TOKEN

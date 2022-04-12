@@ -10,19 +10,30 @@ import Grid from '@mui/material/Grid'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { signInQuery } from '../../../redux/actionCreators/userActionCreators'
 
 const theme = createTheme()
 
 export default function SignInForm() {
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
+  const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const token = useSelector((store) => store.user.token)
+  const from = location.state?.from?.pathname || '/'
+  const signInHandler = (e) => {
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
+    dispatch(signInQuery({
       email: data.get('email'),
       password: data.get('password'),
-    })
+      cb: () => {
+        navigate(from, { replace: true })
+      },
+    }))
   }
-
+  console.log(token)
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -56,7 +67,7 @@ export default function SignInForm() {
             <Typography component="h1" variant="h5">
               Sign In
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={signInHandler} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required

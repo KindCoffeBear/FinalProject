@@ -22,7 +22,7 @@ function DetailedPost() {
 
   // Монтируем объект до рендера компонента
   useLayoutEffect(() => {
-    setLoading(true) // стаим флаг, что страница загружается, пока данные из сервера получаются
+    setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
 
     dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
 

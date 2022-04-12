@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -29,10 +29,11 @@ function Post({
   const avatar = author ? author.avatar : avatarDefault
 
   const dispatch = useDispatch() // достаем dispatch
+  const token = useSelector((store) => store.user.token)
 
   // функция удаления поста
   const deleteHandler = () => {
-    dispatch(deletePostQuery(_id))
+    dispatch(deletePostQuery(_id, token))
   }
 
   return (

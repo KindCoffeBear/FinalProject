@@ -13,7 +13,7 @@ const getPostsFromServer = (postsFromServer) => ({
 // получение всех постов с сервера
 export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
   const response = await axios.get(
-    `https://api.react-learning.ru/posts/?${filter}`,
+    `https://api.react-learning.ru/posts/search/?query=${filter}`,
     {
       headers: { authorization: `Bearer ${API_TOKEN}` },
     },

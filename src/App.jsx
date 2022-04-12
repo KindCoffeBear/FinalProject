@@ -10,6 +10,8 @@ import Main from './components/Main/Main'
 import PageNotFound from './components/404/404'
 import DetailedPost from './components/DetailedPost/DetailedPost'
 import CreateNewPostForm from './components/CreateNewPostForm/CreateNewPostForm'
+import SignUpForm from './components/Header/SignUpForm/SignUpForm'
+import SignInForm from './components/Header/SignInForm/SignInForm'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/post/:idPost" element={<DetailedPost />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/createNewPostForm" element={<CreateNewPostForm />} />
+          <Route path="/signUpForm" element={<SignUpForm />} />
+          <Route path="/signInForm" element={<SignInForm />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -1,6 +1,7 @@
+/* eslint-disable default-param-last */
 // Создание Action Creators для состояния постов
-import axios from 'axios'
-import API_TOKEN from '../../constants'
+import axiosInstance from '../../axiosConfig/axiosConfig'
+// не забыть вернуть GET_CURRENT_POST UPDATE_POST
 import {
   ADD_NEW_POST, DELETE_POST, GET_CURRENT_POST, GET_POSTS_FROM_SERVER, UPDATE_POST,
 } from '../actionTypes/postsTypes'
@@ -11,12 +12,10 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
-  const response = await axios.get(
-    `https://api.react-learning.ru/posts/search/?query=${filter}`,
-    {
-      headers: { authorization: `Bearer ${API_TOKEN}` },
-    },
+export const getPostsFromServerQuery = (filter = '', token) => async (dispatch) => {
+  const response = await axiosInstance.get(
+    `posts/search/?query=${filter}`,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
@@ -28,17 +27,16 @@ const addNewPost = (newPost) => ({
 })
 
 // добавление поста на сервере и получение данных с сервера
-export const addNewPostQuery = (newPost) => async (dispatch) => {
-  const response = await fetch('https://api.react-learning.ru/posts', {
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${API_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: newPost,
-  })
+export const addNewPostQuery = (newPost, token) => async (dispatch) => {
+  const bodyObject = JSON.parse(newPost)
 
-  const postFromApi = await response.json()
+  const response = await axiosInstance.post(
+    'posts',
+    bodyObject,
+    { headers: { authorization: `Bearer ${token}` } },
+  )
+
+  const postFromApi = response.data
   dispatch(addNewPost(postFromApi))
 }
 
@@ -48,8 +46,11 @@ const deletePost = (id) => ({
 })
 
 // удаление поста по id
-export const deletePostQuery = (id) => async (dispatch) => {
-  const response = await axios.delete(`https://api.react-learning.ru/posts/${id}`, { headers: { authorization: `Bearer ${API_TOKEN}` } })
+export const deletePostQuery = (id, token) => async (dispatch) => {
+  const response = await axiosInstance.delete(
+    `posts/${id}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  )
 
   if (response.status === 200) {
     dispatch(deletePost(id))

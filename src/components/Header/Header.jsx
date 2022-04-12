@@ -4,6 +4,8 @@ import Container from '@mui/material/Container'
 import AppTitle from './AppTitle/AppTitle'
 import HeaderInscriptions from './HeaderInscriptions/HeaderInscriptions'
 import SearchForm from './SearchForm/SearchForm'
+import SignUpLink from './SignUpLink/SignUpLink'
+import SignInLink from './SignInLink/SignInLink'
 
 function Header() {
   return (
@@ -13,6 +15,8 @@ function Header() {
           <AppTitle />
           <HeaderInscriptions />
           <SearchForm />
+          <SignUpLink />
+          <SignInLink />
         </Toolbar>
       </Container>
     </AppBar>

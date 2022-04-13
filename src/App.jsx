@@ -12,6 +12,8 @@ import DetailedPost from './components/DetailedPost/DetailedPost'
 import CreateNewPostForm from './components/CreateNewPostForm/CreateNewPostForm'
 import SignUpForm from './components/Header/SignUpForm/SignUpForm'
 import SignInForm from './components/Header/SignInForm/SignInForm'
+import ProtectedComponent from './components/Authentication/ProtectedComponent'
+import MainForNotAuth from './components/MainForNotAuth/MainForNotAuth'
 
 function App() {
   return (
@@ -19,10 +21,25 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<MainForNotAuth />} />
+          <Route
+            path="/content"
+            element={(
+              <ProtectedComponent>
+                <Main />
+              </ProtectedComponent>
+            )}
+          />
           <Route path="/post/:idPost" element={<DetailedPost />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route path="/createNewPostForm" element={<CreateNewPostForm />} />
+          <Route
+            path="/createNewPostForm"
+            element={(
+              <ProtectedComponent>
+                <CreateNewPostForm />
+              </ProtectedComponent>
+              )}
+          />
           <Route path="/signUpForm" element={<SignUpForm />} />
           <Route path="/signInForm" element={<SignInForm />} />
         </Routes>

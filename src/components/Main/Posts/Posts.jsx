@@ -13,14 +13,15 @@ function Posts() {
   const posts = useSelector((store) => store.posts)
   const filter = useSelector((store) => store.filter)
 
+  const token = useSelector((store) => store.user.token)
   // получаем дебаунсер
   const debouncedFilter = useDebounce(filter, 300)
   // достаем dispatch
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
-    dispatch(getPostsFromServerQuery(debouncedFilter))
     dispatch(getCommentsFromServerQuery())
+    dispatch(getPostsFromServerQuery(debouncedFilter, token))
   }, [debouncedFilter])
 
   return (

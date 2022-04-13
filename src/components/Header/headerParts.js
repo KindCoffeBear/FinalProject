@@ -50,6 +50,10 @@ const pages = [
     title: 'Add new post',
     path: '/createNewPostForm',
   },
+  {
+    title: 'Content',
+    path: '/content',
+  },
 ]
 
 export {

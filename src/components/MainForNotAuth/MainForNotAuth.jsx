@@ -1,5 +1,5 @@
 export default function MainForNotAuth() {
   return (
-    <h2>Please sign in to use content</h2>
+    <img src="https://www.meme-arsenal.com/memes/26efb6c54ccb4a564149027aeb61e233.jpg" alt="пингвин" />
   )
 }

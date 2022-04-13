@@ -9,7 +9,7 @@ import SignInLink from './SignInLink/SignInLink'
 
 function Header() {
   return (
-    <AppBar position="fixed">
+    <AppBar position="relative">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AppTitle />

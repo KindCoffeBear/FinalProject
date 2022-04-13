@@ -1,6 +1,7 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Card from '@mui/material/Card'
+import { styled } from '@mui/material/styles'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
@@ -14,7 +15,22 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import Box from '@mui/material/Box'
 import LinkMUI from '@mui/material/Link'
+import { Collapse, Divider, Grid } from '@mui/material'
+import { useState } from 'react'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
+import Comments from '../Comments/Comments'
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props
+  return <IconButton {...other} />
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}))
 
 function Post({
   // eslint-disable-next-line camelcase
@@ -30,70 +46,106 @@ function Post({
 
   const dispatch = useDispatch() // достаем dispatch
 
+  const comments = useSelector((store) => store.comments)
+
+  const [expanded, setExpanded] = useState(false)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+
   // функция удаления поста
   const deleteHandler = () => {
     dispatch(deletePostQuery(_id))
   }
 
   return (
-    <Card sx={{
-      maxWidth: 345,
-      display: 'flex',
-      flexDirection: 'column',
-    }}
+    <Grid
+      item
+      sx={{ maxWidth: 345 }}
     >
-      <CardHeader
-        avatar={(
-          <Avatar src={avatar} aria-label="post" />
-        )}
-        titleTypographyProps={{ variant: 'h6' }}
-        title={title}
-        subheader={updatedDate}
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image={image}
-        alt={title}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </CardContent>
-      <Box sx={{
-        mt: 'auto',
-        mb: 1,
+      <Card sx={{
+        height: 500,
+        display: 'flex',
+        flexDirection: 'column',
+
       }}
       >
-        <CardActions disableSpacing>
-          <Typography variant="caption" component="div" gutterBottom position="left">
-            {postTags}
-          </Typography>
-        </CardActions>
-        <Box
+        <CardHeader
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
+            mb: 'auto',
           }}
+          avatar={(
+            <Avatar src={avatar} aria-label="post" />
+        )}
+          titleTypographyProps={{ variant: 'h7' }}
+          title={title}
+          subheader={updatedDate}
+        />
+        <CardMedia
+          component="img"
+          height="194"
+          image={image}
+          alt={title}
+        />
+        <CardContent sx={{
+          mb: 'auto',
+        }}
         >
-          <Tooltip title="Лайк">
-            <IconButton aria-label="add like">
-              <FavoriteIcon />
-            </IconButton>
-          </Tooltip>
-          <LinkMUI component={Link} to={`/post/${_id}`}>
-            <Button variant="contained">Подробнее</Button>
-          </LinkMUI>
-          <Tooltip title="Удалить">
-            <IconButton aria-label="delete" onClick={deleteHandler}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+        <Box sx={{
+          mt: 'auto',
+        }}
+        >
+          <CardActions disableSpacing>
+            <Typography variant="caption" component="div" gutterBottom position="left">
+              {postTags}
+            </Typography>
+          </CardActions>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Tooltip title="Лайк">
+              <IconButton aria-label="add like">
+                <FavoriteIcon />
+              </IconButton>
+            </Tooltip>
+            <LinkMUI component={Link} to={`/post/${_id}`}>
+              <Button variant="contained">Подробнее</Button>
+            </LinkMUI>
+            <Tooltip title="Удалить">
+              <IconButton aria-label="delete" onClick={deleteHandler}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-    </Card>
-
+      </Card>
+      <Divider />
+      <Typography variant="body2" gutterBottom position="left">
+        Комментарии
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          sx
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </Typography>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        {comments.map((comment) => (_id === comment.post ? (
+        // eslint-disable-next-line no-underscore-dangle
+          <Comments key={comment._id} {...comment} />) : null))}
+      </Collapse>
+    </Grid>
   )
 }
 

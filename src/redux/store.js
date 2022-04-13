@@ -2,6 +2,7 @@
 const initState = {
   posts: [],
   filter: '',
+  comments: [],
 }
 
 export default initState

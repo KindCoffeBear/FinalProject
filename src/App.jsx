@@ -13,6 +13,7 @@ import CreateNewPostForm from './components/CreateNewPostForm/CreateNewPostForm'
 import SignUpForm from './components/Header/SignUpForm/SignUpForm'
 import SignInForm from './components/Header/SignInForm/SignInForm'
 import ProtectedComponent from './components/Authentication/ProtectedComponent'
+import MainForNotAuth from './components/MainForNotAuth/MainForNotAuth'
 
 function App() {
   return (
@@ -20,8 +21,9 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          <Route path="/" element={<MainForNotAuth />} />
           <Route
-            path="/"
+            path="/content"
             element={(
               <ProtectedComponent>
                 <Main />

@@ -129,7 +129,7 @@ function Post({
         </Box>
       </Card>
       <Divider />
-      <Typography variant="body2" gutterBottom position="left">
+      <Typography variant="body2" gutterBottom>
         Комментарии
         <ExpandMore
           expand={expanded}

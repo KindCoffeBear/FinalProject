@@ -20,7 +20,7 @@ function Posts() {
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
-    dispatch(getCommentsFromServerQuery())
+    dispatch(getCommentsFromServerQuery(token))
     dispatch(getPostsFromServerQuery(debouncedFilter, token))
   }, [debouncedFilter])
 

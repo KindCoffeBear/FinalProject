@@ -1,7 +1,9 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-unused-expressions */
 import axiosInstance from '../../axiosConfig/axiosConfig'
-import { GET_TOKEN, SIGN_IN, SIGN_UP } from '../actionTypes/userType'
+import {
+  GET_TOKEN, SIGN_IN, SIGN_OUT, SIGN_UP,
+} from '../actionTypes/userType'
 
 export const signIn = (user) => ({
   type: SIGN_IN,
@@ -59,4 +61,8 @@ export const getTokenFromLS = (user) => ({
     email: user.email,
     token: user.token,
   },
+})
+
+export const signOut = () => ({
+  type: SIGN_OUT,
 })

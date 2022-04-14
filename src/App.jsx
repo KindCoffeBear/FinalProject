@@ -21,8 +21,10 @@ import USER from './localStorageConsts'
 function App() {
   const dispatch = useDispatch()
   const userFromLS = localStorage.getItem(USER)
-  const parsedUserFromLS = JSON.parse(userFromLS)
-  dispatch(getTokenFromLS(parsedUserFromLS))
+  if (userFromLS) {
+    const parsedUserFromLS = JSON.parse(userFromLS)
+    dispatch(getTokenFromLS(parsedUserFromLS))
+  }
   return (
     <div className="App">
       <BrowserRouter>

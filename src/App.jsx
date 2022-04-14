@@ -4,6 +4,7 @@ import {
   Routes, // задает поле, где будут переходы без перезагрузки страницы
   Route, // указыет путь и какой компенент будет там рендериться
 } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Footer from './components/Footer/Footer'
 import Header from './components/Header/Header'
 import Main from './components/Main/Main'
@@ -14,8 +15,16 @@ import SignUpForm from './components/Header/SignUpForm/SignUpForm'
 import SignInForm from './components/Header/SignInForm/SignInForm'
 import ProtectedComponent from './components/Authentication/ProtectedComponent'
 import MainForNotAuth from './components/MainForNotAuth/MainForNotAuth'
+import { getTokenFromLS } from './redux/actionCreators/userActionCreators'
+import USER from './localStorageConsts'
 
 function App() {
+  const dispatch = useDispatch()
+  const userFromLS = localStorage.getItem(USER)
+  if (userFromLS) {
+    const parsedUserFromLS = JSON.parse(userFromLS)
+    dispatch(getTokenFromLS(parsedUserFromLS))
+  }
   return (
     <div className="App">
       <BrowserRouter>

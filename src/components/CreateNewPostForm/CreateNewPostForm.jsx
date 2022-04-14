@@ -22,7 +22,6 @@ function CreateNewPostForm() {
     }
 
     const body = JSON.stringify(preparedPostQuery)
-    console.log(token)
     dispatch(addNewPostQuery(body, token))
   }
 

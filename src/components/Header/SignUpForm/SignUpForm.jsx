@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 import Avatar from '@mui/material/Avatar'
+import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
@@ -79,6 +81,13 @@ export default function SignUpForm() {
             >
               Sign Up!
             </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/signInForm" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>

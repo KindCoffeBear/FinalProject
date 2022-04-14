@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-unused-expressions */
 import axiosInstance from '../../axiosConfig/axiosConfig'
-import { SIGN_IN, SIGN_UP } from '../actionTypes/userType'
+import { GET_TOKEN, SIGN_IN, SIGN_UP } from '../actionTypes/userType'
 
 export const signIn = (user) => ({
   type: SIGN_IN,
@@ -36,14 +36,13 @@ export const signUpQuery = ({ email, password, cb }) => async (dispatch) => {
     email,
     password,
   })
-  console.log(typeof response.status)
+  console.log(response.status)
   if (response.status === 400) {
     alert('Некорректно заполнены поля формы!')
   } else if (response.status === 409) {
     alert('Пользователь с таким адресом электронной почты уже зарегистрирован в системе!')
   } else {
     const user = response.data
-
     dispatch(
       signUp({
         ...user.data,
@@ -52,3 +51,12 @@ export const signUpQuery = ({ email, password, cb }) => async (dispatch) => {
   }
   typeof cb === 'function' && cb()
 }
+
+export const getTokenFromLS = (user) => ({
+  type: GET_TOKEN,
+  payload: {
+    name: user.name,
+    email: user.email,
+    token: user.token,
+  },
+})

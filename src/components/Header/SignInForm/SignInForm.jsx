@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signInQuery } from '../../../redux/actionCreators/userActionCreators'
+import USER from '../../../localStorageConsts'
 
 const theme = createTheme()
 
@@ -20,7 +21,6 @@ export default function SignInForm() {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
-  const token = useSelector((store) => store.user.token)
   const from = location.state?.from?.pathname || '/'
   const signInHandler = (e) => {
     e.preventDefault()
@@ -33,7 +33,13 @@ export default function SignInForm() {
       },
     }))
   }
-  console.log(token)
+  const user = useSelector((store) => store.user)
+  const dataFromLS = localStorage.getItem(USER)
+  if (!dataFromLS) {
+    if (user.token) {
+      localStorage.setItem(USER, JSON.stringify(user))
+    }
+  }
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>

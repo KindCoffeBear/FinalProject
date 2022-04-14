@@ -1,6 +1,6 @@
 /* eslint-disable default-param-last */
 
-import { SIGN_IN, SIGN_UP } from '../actionTypes/userType'
+import { GET_TOKEN, SIGN_IN, SIGN_UP } from '../actionTypes/userType'
 
 const userReducer = (state = {}, action) => {
   switch (action.type) {
@@ -10,6 +10,11 @@ const userReducer = (state = {}, action) => {
         ...action.payload,
       }
     case SIGN_UP:
+      return {
+        ...state,
+        ...action.payload,
+      }
+    case GET_TOKEN:
       return {
         ...state,
         ...action.payload,

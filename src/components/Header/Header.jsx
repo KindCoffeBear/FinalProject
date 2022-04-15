@@ -12,13 +12,11 @@ import { signOut } from '../../redux/actionCreators/userActionCreators'
 
 function Header() {
   const dispatch = useDispatch()
-  const user = useSelector((store) => store.user)
+  const userToken = useSelector((store) => store.user.token)
   const signOutHandler = () => {
-    dispatch(signOut)
+    dispatch(signOut(userToken))
     localStorage.clear()
-    window.location.reload()
   }
-  console.log(user)
   return (
     <AppBar position="relative">
       <Container maxWidth="xl">
@@ -26,15 +24,13 @@ function Header() {
           <AppTitle />
           <HeaderInscriptions />
           <SearchForm />
-          <SignUpLink />
-          <SignInLink />
-          <Button
-            type="button"
-            variant="contained"
-            onClick={signOutHandler}
-          >
-            Sign Out
-          </Button>
+          {!userToken ? <SignUpLink /> : null}
+          {!userToken ? <SignInLink /> : null}
+          {userToken ? (
+            <Button type="button" variant="contained" onClick={signOutHandler}>
+              Sign Out
+            </Button>
+          ) : null}
         </Toolbar>
       </Container>
     </AppBar>

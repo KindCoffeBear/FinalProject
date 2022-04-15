@@ -22,7 +22,10 @@ const userReducer = (state = {}, action) => {
         ...action.payload,
       }
     case SIGN_OUT:
-      return {}
+      return {
+        ...state,
+        ...action.payload,
+      }
     default:
       return state
   }

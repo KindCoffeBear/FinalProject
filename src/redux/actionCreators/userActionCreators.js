@@ -63,6 +63,10 @@ export const getTokenFromLS = (user) => ({
   },
 })
 
-export const signOut = () => ({
+export const signOut = (user) => ({
   type: SIGN_OUT,
+  payload: {
+    ...user,
+    token: '',
+  },
 })

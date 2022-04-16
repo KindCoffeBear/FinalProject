@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 import Avatar from '@mui/material/Avatar'
+import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
@@ -7,18 +9,26 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
+import { useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useDispatch } from 'react-redux'
+import { signUpQuery } from '../../../redux/actionCreators/userActionCreators'
 
 const theme = createTheme()
 
 export default function SignUpForm() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
+    dispatch(signUpQuery({
       email: data.get('email'),
       password: data.get('password'),
-    })
+      cb: () => {
+        navigate('/signInForm')
+      },
+    }))
   }
 
   return (
@@ -71,6 +81,13 @@ export default function SignUpForm() {
             >
               Sign Up!
             </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/signInForm" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>

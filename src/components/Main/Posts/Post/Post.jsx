@@ -37,7 +37,7 @@ function Post({
   _id, title, tags, text, image, updated_at, author,
 }) {
   const postTags = tags.length ? `#${tags.join('#')}` : null
-  const description = text.length > 100 ? `${text.slice(0, 100)}...` : text
+  const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
 
   const updatedDate = new Date(updated_at).toLocaleString()
 
@@ -91,6 +91,7 @@ function Post({
           alt={title}
           sx={{
             mt: 0,
+            height: 200,
           }}
         />
         <CardContent sx={{

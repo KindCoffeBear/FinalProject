@@ -57,23 +57,24 @@ export const deletePostQuery = (id, token) => async (dispatch) => {
   }
 }
 
-const updatePost = (newPhoneObject) => ({
+const updatePost = (editedPost) => ({
   type: UPDATE_POST,
-  payload: newPhoneObject,
+  payload: editedPost,
 })
 
 // обновление поста на сервере и получение данных с сервера
-export const updatePostQuery = (id, formData, closeModal) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
+export const updatePostQuery = (id, token, editedPost, closeModal) => async (dispatch) => {
+  const response = await axiosInstance.patch(
+    `posts/${id}`,
+    editedPost,
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     },
-    body: JSON.stringify(formData),
-  })
-
+  )
   if (response.status === 200) {
-    const updatedPostFromServer = await response.json()
+    const updatedPostFromServer = response.data
     dispatch(updatePost(updatedPostFromServer))
     closeModal()
   } else {
@@ -87,9 +88,9 @@ const getPost = (postFromServer) => ({
 })
 
 // получение конкретного поста по id и передача setLoading (изменение состояния загрузки страницы) и controller для отмены загрузки страницы
-export const getPostQuery = (id, token, setLoading, controller) => async (dispatch) => {
+export const getPostQuery = (idPost, token, setLoading, controller) => async (dispatch) => {
   const response = await axiosInstance.get(
-    `posts/${id}`,
+    `posts/${idPost}`,
     {
       headers: {
         authorization: `Bearer ${token}`,

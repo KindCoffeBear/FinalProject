@@ -10,7 +10,7 @@ function DetailedPost() {
   const { idPost } = useParams() // получение id поста
 
   const posts = useSelector((store) => store.posts) // получение состояния постов (массив) из редакса
-  const token = useSelector((store) => store.user.token)
+  const token = useSelector((store) => store.user.token) // получение токена из редакса
   // eslint-disable-next-line no-underscore-dangle
   const indexPost = posts.findIndex((item) => item._id === idPost) // поиск индекса текущего поста в массиве
   const post = posts[indexPost] // получение текущего поста
@@ -59,7 +59,7 @@ function DetailedPost() {
         {post.tags}
       </p>
       <button onClick={openModal} type="button" className="btn btn-primary my-2">Редактировать</button>
-      <Link to="/" className="btn btn-success my-2">Вернуться назад</Link>
+      <Link to="/content" className="btn btn-success my-2">Вернуться назад</Link>
     </div>
   ))
 

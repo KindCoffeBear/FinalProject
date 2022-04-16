@@ -87,9 +87,17 @@ const getPost = (postFromServer) => ({
 })
 
 // получение конкретного поста по id и передача setLoading (изменение состояния загрузки страницы) и controller для отмены загрузки страницы
-export const getPostQuery = (id, setLoading, controller) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, { signal: controller.current.signal }) // { signal: controller.current.signal } определяет идет запрос или он отменен
-  const postFromServer = await response.json()
+export const getPostQuery = (id, token, setLoading, controller) => async (dispatch) => {
+  const response = await axiosInstance.get(
+    `posts/${id}`,
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    },
+    { signal: controller.current.signal },
+  ) // { signal: controller.current.signal } определяет идет запрос или он отменен
+  const postFromServer = response.data
   dispatch(getPost(postFromServer))
   setLoading(false)
 }

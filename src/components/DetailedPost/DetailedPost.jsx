@@ -10,7 +10,9 @@ function DetailedPost() {
   const { idPost } = useParams() // получение id поста
 
   const posts = useSelector((store) => store.posts) // получение состояния постов (массив) из редакса
-  const indexPost = posts.findIndex((item) => item.idPost === +idPost) // поиск индекса текущего поста в массиве
+  const token = useSelector((store) => store.user.token)
+  // eslint-disable-next-line no-underscore-dangle
+  const indexPost = posts.findIndex((item) => item._id === idPost) // поиск индекса текущего поста в массиве
   const post = posts[indexPost] // получение текущего поста
 
   const [loading, setLoading] = useState(false) // состояние загрузки (реакт)
@@ -24,7 +26,7 @@ function DetailedPost() {
   useLayoutEffect(() => {
     setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
 
-    dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
+    dispatch(getPostQuery(idPost, token, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
 
     // при отмены загрузки данных с сервера выполняем обрыв соединения
     return () => {
@@ -46,15 +48,15 @@ function DetailedPost() {
   const DetailedPostwithLoader = withLoader(() => (
     <div className="container card my-2">
       <div className="card-body">
-        <h2 className="card-text">{post.head}</h2>
+        <h2 className="card-text">{post.title}</h2>
       </div>
-      <img src={post.link} className="card-img-top" alt="" />
+      <img src={post.image} className="card-img-top" alt="" />
       <div className="card-body">
-        <p className="card-text">{post.description}</p>
+        <p className="card-text">{post.text}</p>
       </div>
       <p>
         #
-        {post.tag}
+        {post.tags}
       </p>
       <button onClick={openModal} type="button" className="btn btn-primary my-2">Редактировать</button>
       <Link to="/" className="btn btn-success my-2">Вернуться назад</Link>

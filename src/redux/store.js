@@ -8,6 +8,7 @@ const initState = {
     email: '',
     token: '',
   },
+  commentsPost: [],
 }
 
 export default initState

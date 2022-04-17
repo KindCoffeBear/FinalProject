@@ -77,7 +77,7 @@ function Post({
           }}
           avatar={(
             <Avatar src={avatar} aria-label="post" />
-        )}
+          )}
           titleTypographyProps={{ variant: 'h7' }}
           title={title}
           subheader={updatedDate}
@@ -142,7 +142,7 @@ function Post({
       </Typography>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         {comments.map((comment) => (_id === comment.post ? (
-        // eslint-disable-next-line no-underscore-dangle
+          // eslint-disable-next-line no-underscore-dangle
           <Comments key={comment._id} {...comment} />) : null))}
       </Collapse>
     </Grid>

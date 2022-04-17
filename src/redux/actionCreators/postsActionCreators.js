@@ -47,13 +47,18 @@ const deletePost = (id) => ({
 
 // удаление поста по id
 export const deletePostQuery = (id, token) => async (dispatch) => {
-  const response = await axiosInstance.delete(
-    `posts/${id}`,
-    { headers: { Authorization: `Bearer ${token}` } },
-  )
+  try {
+    await axiosInstance.delete(
+      `posts/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    )
 
-  if (response.status === 200) {
     dispatch(deletePost(id))
+  } catch (e) {
+    const codeError = e.message.slice(-3)
+    if (codeError === '403') {
+      alert('Вы не можете удалить чужой пост')
+    }
   }
 }
 

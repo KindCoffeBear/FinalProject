@@ -6,14 +6,14 @@ import { useDispatch } from 'react-redux'
 import { deleteCommentQuery } from '../../../redux/actionCreators/commentsPostActionCreator'
 
 function CommentsPost({
-  updated_at, author, text, idPost, idComment, token,
+  updated_at, author, text, idPost, idComment,
 }) {
   const dispatch = useDispatch()
 
   const updatedDate = new Date(updated_at).toLocaleString()
 
   const deleteHandler = () => {
-    dispatch(deleteCommentQuery(idPost, idComment, token))
+    dispatch(deleteCommentQuery(idPost, idComment))
   }
   return (
     <Paper sx={{ padding: '10px 10px', display: 'flex' }}>

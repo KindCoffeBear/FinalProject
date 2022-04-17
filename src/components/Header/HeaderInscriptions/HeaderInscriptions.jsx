@@ -10,7 +10,6 @@ function HeaderInscriptions() {
       {pages.map((page) => (
         <LinkMUI key={page.title} component={Link} to={page.path}>
           <Button
-            key={page.title}
             sx={{ my: 2, color: 'white', display: 'block' }}
           >
             {page.title}

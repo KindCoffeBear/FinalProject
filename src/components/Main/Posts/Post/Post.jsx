@@ -45,7 +45,6 @@ function Post({
   const avatar = author ? author.avatar : avatarDefault
 
   const dispatch = useDispatch() // достаем dispatch
-  const token = useSelector((store) => store.user.token)
 
   const comments = useSelector((store) => store.comments)
 
@@ -57,7 +56,7 @@ function Post({
 
   // функция удаления поста
   const deleteHandler = () => {
-    dispatch(deletePostQuery(_id, token))
+    dispatch(deletePostQuery(_id))
   }
 
   return (
@@ -79,7 +78,7 @@ function Post({
           }}
           avatar={(
             <Avatar src={avatar} aria-label="post" />
-        )}
+          )}
           titleTypographyProps={{ variant: 'h7' }}
           title={title}
           subheader={updatedDate}
@@ -148,7 +147,7 @@ function Post({
       </Typography>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         {comments.map((comment) => (_id === comment.post ? (
-        // eslint-disable-next-line no-underscore-dangle
+          // eslint-disable-next-line no-underscore-dangle
           <Comments key={comment._id} {...comment} />) : null))}
       </Collapse>
     </Grid>

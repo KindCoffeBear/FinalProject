@@ -1,2 +1,2 @@
-const USER = 'user'
-export default USER
+const TOKEN = 'token'
+export default TOKEN

@@ -2,7 +2,8 @@ import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Paper, Stack } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { addNewPostQuery } from '../../redux/actionCreators/postsActionCreators'
 
 function CreateNewPostForm() {
@@ -10,9 +11,8 @@ function CreateNewPostForm() {
   const [text, setText] = useState('')
   const [image, setImage] = useState('')
   const [tags, setTags] = useState('')
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const token = useSelector((store) => store.user.token)
   const submitHandler = () => {
     const preparedPostQuery = {
       title,
@@ -22,7 +22,8 @@ function CreateNewPostForm() {
     }
 
     const body = JSON.stringify(preparedPostQuery)
-    dispatch(addNewPostQuery(body, token))
+    dispatch(addNewPostQuery(body))
+    navigate('/content')
   }
 
   const isTitleError = false

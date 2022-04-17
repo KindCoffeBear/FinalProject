@@ -25,6 +25,9 @@ export default function SignUpForm() {
     dispatch(signUpQuery({
       email: data.get('email'),
       password: data.get('password'),
+      name: data.get('name'),
+      about: data.get('profession'),
+      avatar: data.get('avatar'),
       cb: () => {
         navigate('/signInForm')
       },
@@ -70,6 +73,36 @@ export default function SignUpForm() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="Your name"
+                  name="name"
+                  autoComplete="name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="profession"
+                  label="Your profession"
+                  name="profession"
+                  autoComplete="profession"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="avatar"
+                  label="Your avatar"
+                  name="avatar"
+                  autoComplete="avatar"
                 />
               </Grid>
             </Grid>

@@ -1,10 +1,14 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-unused-expressions */
+// достаем axios
+import axios from 'axios'
+// достаем axios со своими настройками
 import axiosInstance from '../../axiosConfig/axiosConfig'
 import {
-  GET_TOKEN, SIGN_IN, SIGN_OUT, SIGN_UP,
+  EDIT_PROFILE, GET_USER_FROM_API,
+  SIGN_IN, SIGN_OUT, SIGN_UP,
 } from '../actionTypes/userType'
-
+// пишем AC для входа в систему
 export const signIn = (user) => ({
   type: SIGN_IN,
   payload: user,
@@ -27,16 +31,21 @@ export const signInQuery = ({ email, password, cb }) => async (dispatch) => {
 
   typeof cb === 'function' && cb()
 }
-
+// пишем AC для регистрации
 export const signUp = (user) => ({
   type: SIGN_UP,
   payload: user,
 })
 
-export const signUpQuery = ({ email, password, cb }) => async (dispatch) => {
+export const signUpQuery = ({
+  email, password, name, about, avatar, cb,
+}) => async (dispatch) => {
   const response = await axiosInstance.post('signup', {
     email,
     password,
+    name,
+    about,
+    avatar,
   })
   console.log(response.status)
   if (response.status === 400) {
@@ -53,16 +62,7 @@ export const signUpQuery = ({ email, password, cb }) => async (dispatch) => {
   }
   typeof cb === 'function' && cb()
 }
-
-export const getTokenFromLS = (user) => ({
-  type: GET_TOKEN,
-  payload: {
-    name: user.name,
-    email: user.email,
-    token: user.token,
-  },
-})
-
+// пишем AC для выхода из системы
 export const signOut = (user) => ({
   type: SIGN_OUT,
   payload: {
@@ -70,3 +70,53 @@ export const signOut = (user) => ({
     token: '',
   },
 })
+// пишем AC для редактирования профиля
+export const editProfile = (changedUserData) => ({
+  type: EDIT_PROFILE,
+  payload: changedUserData,
+})
+
+export const editProfileQuery = (newName, newAbout) => async (dispatch) => {
+  const response = await axiosInstance.patch(
+    'users/me',
+    {
+      name: newName,
+      about: newAbout,
+    },
+  )
+  const changedUser = await response.data
+  dispatch(editProfile(changedUser))
+}
+// пишем AC для редактирования аватра
+export const editAvatar = (changedUserData) => ({
+  type: EDIT_PROFILE,
+  payload: changedUserData,
+})
+
+export const editAvatarQuery = (newAvatar) => async (dispatch) => {
+  const response = await axiosInstance.patch(
+    'users/me/avatar',
+    {
+      avatar: newAvatar,
+    },
+  )
+  const changedAvatar = await response.data
+  dispatch(editAvatar(changedAvatar))
+}
+// пишем AC для получения пользователя с сервера
+export const getUserFromApi = (userDataFromApi, token) => ({
+  type: GET_USER_FROM_API,
+  payload: {
+    ...userDataFromApi,
+    token,
+  },
+})
+
+export const getUserFromApiQuery = (token) => async (dispatch) => {
+  const response = await axios.get(
+    'https://api.react-learning.ru/users/me',
+    { headers: { authorization: `Bearer ${token}` } },
+  )
+  const userFromApi = await response.data
+  dispatch(getUserFromApi(userFromApi, token))
+}

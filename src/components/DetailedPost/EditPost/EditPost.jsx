@@ -1,32 +1,34 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { updatePostQuery } from '../../../redux/actionCreators/postsActionCreators'
 
 function EditPost({
-  idPost, head, description, link, tag, closeModal,
+  title, text, image, tags, closeModal,
 }) {
+  const { idPost } = useParams() // получение id поста
   // делаем управляемое состояние формы
-  const [editHead, setEditHead] = useState(head)
-  const [editDescription, setEditDescription] = useState(description)
-  const [editLink, setEditLink] = useState(link)
-  const [editTag, setEditTag] = useState(tag)
+  const [editTitle, setEditTitle] = useState(title)
+  const [editText, setEditText] = useState(text)
+  const [editImage, setEditImage] = useState(image)
+  const [editTags, setEditTags] = useState(tags)
 
   const dispatch = useDispatch() // достаем dispatch
 
   // меняем состояние формы
   const changeHead = (e) => {
-    setEditHead(e.target.value)
+    setEditTitle(e.target.value)
   }
   const changeDescription = (e) => {
-    setEditDescription(e.target.value)
+    setEditText(e.target.value)
   }
 
   const changeLink = (e) => {
-    setEditLink(e.target.value)
+    setEditImage(e.target.value)
   }
 
   const changeTag = (e) => {
-    setEditTag(e.target.value)
+    setEditTags(e.target.value)
   }
 
   // отправляем форму для редактирования поста
@@ -34,10 +36,10 @@ function EditPost({
     e.preventDefault()
 
     const editedPost = {
-      head: editHead,
-      description: editDescription,
-      link: editLink,
-      tag: editTag,
+      title: editTitle,
+      text: editText,
+      image: editImage,
+      tags: editTags,
     }
 
     dispatch(updatePostQuery(idPost, editedPost, closeModal))
@@ -46,16 +48,16 @@ function EditPost({
   return (
     <form className="d-flex flex-column align-items-center" onSubmit={submitHandler}>
       <div className="mb-3">
-        <input onChange={changeHead} name="head" placeholder="Заголовок поста" type="text" className="form-control" value={editHead} />
+        <input onChange={changeHead} name="head" placeholder="Заголовок поста" type="text" className="form-control" value={editTitle} />
       </div>
       <div className="mb-3">
-        <input onChange={changeDescription} name="description" placeholder="Текст поста" type="text" className="form-control" value={editDescription} />
+        <input onChange={changeDescription} name="description" placeholder="Текст поста" type="text" className="form-control" value={editText} />
       </div>
       <div className="mb-3">
-        <input onChange={changeLink} name="link" placeholder="Ссылка на картинку" type="text" className="form-control" value={editLink} />
+        <input onChange={changeLink} name="link" placeholder="Ссылка на картинку" type="text" className="form-control" value={editImage} />
       </div>
       <div className="mb-3">
-        <input onChange={changeTag} name="tag" placeholder="Тег" type="text" className="form-control" value={editTag} />
+        <input onChange={changeTag} name="tag" placeholder="Тег" type="text" className="form-control" value={editTags} />
       </div>
       <button type="submit" className="btn btn-primary">Отправить</button>
     </form>

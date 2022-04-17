@@ -16,11 +16,10 @@ function DetailedPost() {
   const { idPost } = useParams() // получение id поста
 
   const posts = useSelector((store) => store.posts) // получение состояния постов (массив) из редакса
-  const token = useSelector((store) => store.user.token)
+  const token = useSelector((store) => store.user.token) // получение токена из редакса
   const commentsPost = useSelector((store) => store.commentsPost)
 
   const dispatch = useDispatch() // достаем dispatch
-
   // eslint-disable-next-line no-underscore-dangle
   const indexPost = posts.findIndex((item) => item._id === idPost) // поиск индекса текущего поста в массиве
   const post = posts[indexPost] // получение текущего поста
@@ -34,8 +33,8 @@ function DetailedPost() {
   useLayoutEffect(() => {
     setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
 
-    dispatch(getCommentsPostFromServerQuery(idPost, token))
-    dispatch(getPostQuery(idPost, token, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
+    dispatch(getCommentsPostFromServerQuery(idPost))
+    dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
 
     // при отмены загрузки данных с сервера выполняем обрыв соединения
     return () => {

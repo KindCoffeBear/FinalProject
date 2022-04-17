@@ -1,4 +1,3 @@
-import axios from 'axios'
 import axiosInstance from '../../axiosConfig/axiosConfig'
 import { ADD_NEW_COMMENT, DELETE_COMMENT, GET_COMMENTS_POST } from '../actionTypes/commentsPost'
 
@@ -9,12 +8,9 @@ const getCommentsPost = (commentsPostFromServer) => ({
 
 // получение комментов одного поста с сервера
 // eslint-disable-next-line import/prefer-default-export
-export const getCommentsPostFromServerQuery = (id, token) => async (dispatch) => {
-  const response = await axios.get(
-    `https://api.react-learning.ru/posts/comments/${id}`,
-    {
-      headers: { authorization: `Bearer ${token}` },
-    },
+export const getCommentsPostFromServerQuery = (id) => async (dispatch) => {
+  const response = await axiosInstance.get(
+    `posts/comments/${id}`,
   )
   const dataFromServer = response.data
   dispatch(getCommentsPost(dataFromServer))
@@ -25,11 +21,10 @@ const addNewComment = (commentsPostFromServer) => ({
   payload: commentsPostFromServer.comments,
 })
 
-export const addNewCommentQuery = (id, preparedComment, token) => async (dispatch) => {
-  const response = await axios.post(
-    `https://api.react-learning.ru/posts/comments/${id}`,
+export const addNewCommentQuery = (id, preparedComment) => async (dispatch) => {
+  const response = await axiosInstance.post(
+    `posts/comments/${id}`,
     preparedComment,
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   console.log(response.status)
@@ -42,10 +37,9 @@ const deleteComment = (id) => ({
 })
 
 // удаление поста по id
-export const deleteCommentQuery = (idPost, idComment, token) => async (dispatch) => {
+export const deleteCommentQuery = (idPost, idComment) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/comments/${idPost}/${idComment}`,
-    { headers: { Authorization: `Bearer ${token}` } },
   )
   console.log(response.status)
   if (response.status === 200) {

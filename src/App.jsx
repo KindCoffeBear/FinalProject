@@ -15,6 +15,7 @@ import SignInForm from './components/Header/SignInForm/SignInForm'
 import ProtectedComponent from './components/Authentication/ProtectedComponent'
 import MainForNotAuth from './components/MainForNotAuth/MainForNotAuth'
 import ProfilePage from './components/Header/ProfilePage/ProfilePage'
+import AvatarPAge from './components/Header/ProfilePage/AvatarPage'
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           />
           <Route path="/signUpForm" element={<SignUpForm />} />
           <Route path="/signInForm" element={<SignInForm />} />
+          <Route path="/avatarPage" element={<AvatarPAge />} />
         </Routes>
         <Footer />
       </BrowserRouter>

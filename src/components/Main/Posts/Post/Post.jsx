@@ -38,8 +38,8 @@ function Post({
   _id, title, tags, text, image, updated_at, author,
 }) {
   const likesFromRedux = useSelector((store) => store.likes)
-  const postTags = `#${tags.join('#')}`
-  const description = text.length > 200 ? `${text.slice(0, 200)}...` : text
+  const postTags = tags.length ? `#${tags.join('#')}` : null
+  const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
 
   const updatedDate = new Date(updated_at).toLocaleString()
 
@@ -76,10 +76,10 @@ function Post({
   return (
     <Grid
       item
-      sx={{ maxWidth: 345 }}
+      sx={{ width: 350 }}
     >
       <Card sx={{
-        height: 500,
+        height: 450,
         display: 'flex',
         flexDirection: 'column',
 
@@ -87,7 +87,8 @@ function Post({
       >
         <CardHeader
           sx={{
-            mb: 'auto',
+            mt: 0,
+            height: 100,
           }}
           avatar={(
             <Avatar src={avatar} aria-label="post" />
@@ -101,6 +102,10 @@ function Post({
           height="194"
           image={image}
           alt={title}
+          sx={{
+            mt: 0,
+            height: 200,
+          }}
         />
         <CardContent sx={{
           mb: 'auto',

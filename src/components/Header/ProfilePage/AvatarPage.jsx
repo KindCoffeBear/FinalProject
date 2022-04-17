@@ -1,30 +1,28 @@
 import Avatar from '@mui/material/Avatar'
 import LinkMUI from '@mui/material/Link'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { useSelector, useDispatch } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { editProfileQuery } from '../../../redux/actionCreators/userActionCreators'
+import { editAvatarQuery } from '../../../redux/actionCreators/userActionCreators'
 
 const theme = createTheme()
 
-export default function ProfilePAge() {
-  // const navigate = useNavigate()
+export default function AvatarPAge() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((store) => store.user)
-  const editProfileHandler = (event) => {
+  const editAvatarHandler = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const name = data.get('name')
-    const about = data.get('about')
-    dispatch(editProfileQuery(name, about))
+    const avatar = data.get('avatar')
+    dispatch(editAvatarQuery(avatar))
+    navigate('/profilePAge')
   }
 
   return (
@@ -47,31 +45,16 @@ export default function ProfilePAge() {
               src={`${user.avatar}`}
             />
           </LinkMUI>
-          <Typography component="h1" variant="h5">
-            {`Welcome, ${user.name}!`}
-          </Typography>
-          <Box component="form" noValidate onSubmit={editProfileHandler} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={editAvatarHandler} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="name"
-                  label="Enter new nickname"
-                  name="name"
-                  autoComplete="name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="about"
-                  label="Enter information about yourself"
-                  id="about"
-                  autoComplete="about"
-                />
-              </Grid>
+              <TextField
+                required
+                fullWidth
+                id="avatar"
+                label="Choose new avatar"
+                name="avatar"
+                autoComplete="avatar"
+              />
             </Grid>
             <Button
               type="submit"
@@ -79,7 +62,7 @@ export default function ProfilePAge() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Edit profile
+              Edit avatar
             </Button>
           </Box>
         </Box>

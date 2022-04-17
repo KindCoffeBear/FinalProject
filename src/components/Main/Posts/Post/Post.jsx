@@ -20,6 +20,7 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
 import Comments from '../Comments/Comments'
+import { addLikeQuery, deleteLikeQuery } from '../../../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -36,6 +37,7 @@ function Post({
   // eslint-disable-next-line camelcase
   _id, title, tags, text, image, updated_at, author,
 }) {
+  const likesFromRedux = useSelector((store) => store.likes)
   const postTags = tags.length ? `#${tags.join('#')}` : null
   const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
 
@@ -57,6 +59,18 @@ function Post({
   // функция удаления поста
   const deleteHandler = () => {
     dispatch(deletePostQuery(_id))
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  const isLike = likesFromRedux.includes(author._id)
+  console.log(isLike)
+  // поставить или удалить лайк по клику
+  const likeHandler = () => {
+    if (!isLike) {
+      dispatch(addLikeQuery(_id))
+    } else {
+      dispatch(deleteLikeQuery(_id))
+    }
   }
 
   return (
@@ -117,8 +131,9 @@ function Post({
             }}
           >
             <Tooltip title="Лайк">
-              <IconButton aria-label="add like">
+              <IconButton aria-label="like" onClick={likeHandler}>
                 <FavoriteIcon />
+                <p>{likesFromRedux.length}</p>
               </IconButton>
             </Tooltip>
             <LinkMUI component={Link} to={`/post/${_id}`}>

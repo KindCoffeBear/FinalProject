@@ -9,6 +9,7 @@ const initState = {
     token: '',
   },
   commentsPost: [],
+  likes: [],
 }
 
 export default initState

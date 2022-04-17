@@ -75,7 +75,7 @@ export const updatePostQuery = (id, editedPost, closeModal) => async (dispatch) 
     dispatch(updatePost(updatedPostFromServer))
     closeModal()
   } else {
-    alert('Введите все данные')
+    alert('Возможно, вы пытаетесь изменить пост, который делали не вы. Пожалуйста, выберите один из ваших')
   }
 }
 

@@ -1,10 +1,11 @@
+import { Container } from '@mui/material'
 import Posts from './Posts/Posts'
 
 function Main() {
   return (
-    <section className="container">
+    <Container>
       <Posts />
-    </section>
+    </Container>
   )
 }
 

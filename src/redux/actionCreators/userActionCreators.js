@@ -37,10 +37,15 @@ export const signUp = (user) => ({
   payload: user,
 })
 
-export const signUpQuery = ({ email, password, cb }) => async (dispatch) => {
+export const signUpQuery = ({
+  email, password, name, about, avatar, cb,
+}) => async (dispatch) => {
   const response = await axiosInstance.post('signup', {
     email,
     password,
+    name,
+    about,
+    avatar,
   })
   console.log(response.status)
   if (response.status === 400) {
@@ -81,6 +86,22 @@ export const editProfileQuery = (newName, newAbout) => async (dispatch) => {
   )
   const changedUser = await response.data
   dispatch(editProfile(changedUser))
+}
+// пишем AC для редактирования аватра
+export const editAvatar = (changedUserData) => ({
+  type: EDIT_PROFILE,
+  payload: changedUserData,
+})
+
+export const editAvatarQuery = (newAvatar) => async (dispatch) => {
+  const response = await axiosInstance.patch(
+    'users/me/avatar',
+    {
+      avatar: newAvatar,
+    },
+  )
+  const changedAvatar = await response.data
+  dispatch(editAvatar(changedAvatar))
 }
 // пишем AC для получения пользователя с сервера
 export const getUserFromApi = (userDataFromApi, token) => ({

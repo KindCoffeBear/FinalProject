@@ -60,15 +60,10 @@ const updatePost = (editedPost) => ({
 })
 
 // обновление поста на сервере и получение данных с сервера
-export const updatePostQuery = (id, token, editedPost, closeModal) => async (dispatch) => {
+export const updatePostQuery = (id, editedPost, closeModal) => async (dispatch) => {
   const response = await axiosInstance.patch(
     `posts/${id}`,
     editedPost,
-    {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    },
   )
   if (response.status === 200) {
     const updatedPostFromServer = response.data
@@ -85,14 +80,9 @@ const getPost = (postFromServer) => ({
 })
 
 // получение конкретного поста по id и передача setLoading (изменение состояния загрузки страницы) и controller для отмены загрузки страницы
-export const getPostQuery = (idPost, token, setLoading, controller) => async (dispatch) => {
+export const getPostQuery = (idPost, setLoading, controller) => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/${idPost}`,
-    {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    },
     { signal: controller.current.signal },
   ) // { signal: controller.current.signal } определяет идет запрос или он отменен
   const postFromServer = response.data

@@ -1,7 +1,8 @@
 /* eslint-disable default-param-last */
 
 import {
-  GET_TOKEN, SIGN_IN, SIGN_OUT, SIGN_UP,
+  EDIT_PROFILE,
+  GET_USER_FROM_API, SIGN_IN, SIGN_OUT, SIGN_UP,
 } from '../actionTypes/userType'
 
 const userReducer = (state = {}, action) => {
@@ -16,12 +17,17 @@ const userReducer = (state = {}, action) => {
         ...state,
         ...action.payload,
       }
-    case GET_TOKEN:
+    case SIGN_OUT:
       return {
         ...state,
         ...action.payload,
       }
-    case SIGN_OUT:
+    case EDIT_PROFILE:
+      return {
+        ...state,
+        ...action.payload,
+      }
+    case GET_USER_FROM_API:
       return {
         ...state,
         ...action.payload,

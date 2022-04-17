@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axiosInstance from '../../axiosConfig/axiosConfig'
 import { GET_ALL_COMMENTS } from '../actionTypes/commentsTypes'
 
 const getAllComments = (commentsFromServer) => ({
@@ -8,12 +8,9 @@ const getAllComments = (commentsFromServer) => ({
 
 // получение всех комментов с сервера
 // eslint-disable-next-line import/prefer-default-export
-export const getCommentsFromServerQuery = (token) => async (dispatch) => {
-  const response = await axios.get(
-    'https://api.react-learning.ru/posts/comments',
-    {
-      headers: { authorization: `Bearer ${token}` },
-    },
+export const getCommentsFromServerQuery = () => async (dispatch) => {
+  const response = await axiosInstance.get(
+    'posts/comments',
   )
   const dataFromServer = response.data
   dispatch(getAllComments(dataFromServer))

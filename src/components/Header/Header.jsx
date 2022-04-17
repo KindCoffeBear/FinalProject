@@ -9,12 +9,15 @@ import SearchForm from './SearchForm/SearchForm'
 import SignUpLink from './SignUpLink/SignUpLink'
 import SignInLink from './SignInLink/SignInLink'
 import { signOut } from '../../redux/actionCreators/userActionCreators'
+import ProfileLink from './ProfileLink/ProfileLink'
 
 function Header() {
   const dispatch = useDispatch()
-  const userToken = useSelector((store) => store.user.token)
+  const user = useSelector((store) => store.user)
+  const userToken = user.token
+  console.log(user, userToken)
   const signOutHandler = () => {
-    dispatch(signOut(userToken))
+    dispatch(signOut(user))
     localStorage.clear()
   }
   return (
@@ -24,6 +27,7 @@ function Header() {
           <AppTitle />
           <HeaderInscriptions />
           <SearchForm />
+          {userToken ? <ProfileLink /> : null}
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}
           {userToken ? (

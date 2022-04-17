@@ -12,10 +12,9 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (filter = '', token) => async (dispatch) => {
+export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/search/?query=${filter}`,
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
@@ -27,13 +26,12 @@ const addNewPost = (newPost) => ({
 })
 
 // добавление поста на сервере и получение данных с сервера
-export const addNewPostQuery = (newPost, token) => async (dispatch) => {
+export const addNewPostQuery = (newPost) => async (dispatch) => {
   const bodyObject = JSON.parse(newPost)
 
   const response = await axiosInstance.post(
     'posts',
     bodyObject,
-    { headers: { authorization: `Bearer ${token}` } },
   )
 
   const postFromApi = response.data
@@ -46,10 +44,9 @@ const deletePost = (id) => ({
 })
 
 // удаление поста по id
-export const deletePostQuery = (id, token) => async (dispatch) => {
+export const deletePostQuery = (id) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/${id}`,
-    { headers: { Authorization: `Bearer ${token}` } },
   )
 
   if (response.status === 200) {

@@ -12,16 +12,14 @@ function Posts() {
   // получение состояния постов и фильтра из Redux
   const posts = useSelector((store) => store.posts)
   const filter = useSelector((store) => store.filter)
-
-  const token = useSelector((store) => store.user.token)
   // получаем дебаунсер
   const debouncedFilter = useDebounce(filter, 300)
   // достаем dispatch
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
-    dispatch(getCommentsFromServerQuery(token))
-    dispatch(getPostsFromServerQuery(debouncedFilter, token))
+    dispatch(getCommentsFromServerQuery())
+    dispatch(getPostsFromServerQuery(debouncedFilter))
   }, [debouncedFilter])
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updatePostQuery } from '../../../redux/actionCreators/postsActionCreators'
 
@@ -31,7 +31,6 @@ function EditPost({
     setEditTags(e.target.value)
   }
 
-  const token = useSelector((store) => store.user.token) // получение токена из редакса
   // отправляем форму для редактирования поста
   const submitHandler = (e) => {
     e.preventDefault()
@@ -43,7 +42,7 @@ function EditPost({
       tags: editTags,
     }
 
-    dispatch(updatePostQuery(idPost, token, editedPost, closeModal))
+    dispatch(updatePostQuery(idPost, editedPost, closeModal))
   }
 
   return (

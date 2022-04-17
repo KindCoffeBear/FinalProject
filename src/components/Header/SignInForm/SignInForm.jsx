@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signInQuery } from '../../../redux/actionCreators/userActionCreators'
-import USER from '../../../localStorageConsts'
+import TOKEN from '../../../localStorageConsts'
 
 const theme = createTheme()
 
@@ -33,12 +33,10 @@ export default function SignInForm() {
       },
     }))
   }
-  const user = useSelector((store) => store.user)
-  const dataFromLS = localStorage.getItem(USER)
+  const token = useSelector((store) => store.user.token)
+  const dataFromLS = localStorage.getItem(TOKEN)
   if (!dataFromLS) {
-    if (user.token) {
-      localStorage.setItem(USER, JSON.stringify(user))
-    }
+    localStorage.setItem(TOKEN, token)
   }
   return (
     <ThemeProvider theme={theme}>

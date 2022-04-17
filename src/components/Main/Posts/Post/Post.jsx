@@ -45,7 +45,6 @@ function Post({
   const avatar = author ? author.avatar : avatarDefault
 
   const dispatch = useDispatch() // достаем dispatch
-  const token = useSelector((store) => store.user.token)
 
   const comments = useSelector((store) => store.comments)
 
@@ -57,7 +56,7 @@ function Post({
 
   // функция удаления поста
   const deleteHandler = () => {
-    dispatch(deletePostQuery(_id, token))
+    dispatch(deletePostQuery(_id))
   }
 
   return (

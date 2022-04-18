@@ -57,9 +57,9 @@ export default function ProfilePAge() {
                   required
                   fullWidth
                   id="name"
-                  label="Enter new nickname"
                   name="name"
                   autoComplete="name"
+                  value={user.name}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -67,9 +67,9 @@ export default function ProfilePAge() {
                   required
                   fullWidth
                   name="about"
-                  label="Enter information about yourself"
                   id="about"
                   autoComplete="about"
+                  value={user.about}
                 />
               </Grid>
             </Grid>

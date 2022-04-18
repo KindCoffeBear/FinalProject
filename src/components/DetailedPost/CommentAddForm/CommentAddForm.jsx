@@ -35,7 +35,7 @@ function CommentAddForm() {
         value={text}
         onChange={ChangeText}
       />
-      <Button onClick={submitHandler}>Добавить комментарий</Button>
+      <Button onClick={submitHandler}>Отправить</Button>
     </Paper>
 
   )

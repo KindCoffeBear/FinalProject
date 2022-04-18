@@ -80,7 +80,7 @@ export const updatePostQuery = (id, editedPost, closeModal, token) => async (dis
     dispatch(updatePost(updatedPostFromServer))
     closeModal()
   } else {
-    alert('Введите все данные')
+    alert('Возможно, вы пытаетесь изменить пост, который делали не вы. Пожалуйста, выберите один из ваших')
   }
 }
 

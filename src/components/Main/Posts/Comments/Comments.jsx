@@ -1,4 +1,6 @@
-import { Avatar, Grid, Paper } from '@mui/material'
+import {
+  Avatar, Grid, Paper, Typography,
+} from '@mui/material'
 
 // eslint-disable-next-line camelcase
 function Comments({ text, author, updated_at }) {
@@ -12,13 +14,25 @@ function Comments({ text, author, updated_at }) {
           <Avatar alt="Remy Sharp" src={author.avatar} />
         </Grid>
         <Grid justifyContent="left" item xs>
-          <h5 style={{ margin: 0, textAlign: 'left' }}>{author.name}</h5>
-          <p style={{ textAlign: 'left' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              m: 0, textAlign: 'left', fontSize: 16, fontWeight: 'bold',
+            }}
+          >
+            {author.name}
+          </Typography>
+          <Typography variant="body2" sx={{ textAlign: 'left', fontSize: 13, mt: 1 }}>
             {text}
-          </p>
-          <p style={{ textAlign: 'left', color: 'gray' }}>
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              textAlign: 'right', color: 'gray', mt: 0.5, fontSize: 10,
+            }}
+          >
             {updatedDate}
-          </p>
+          </Typography>
         </Grid>
       </Grid>
     </Paper>

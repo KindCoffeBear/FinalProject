@@ -18,14 +18,19 @@ export const getCommentsPostFromServerQuery = (id) => async (dispatch) => {
 
 const addNewComment = (commentsPostFromServer) => ({
   type: ADD_NEW_COMMENT,
-  payload: commentsPostFromServer.comments,
+  payload: commentsPostFromServer,
 })
 
 export const addNewCommentQuery = (id, preparedComment) => async (dispatch) => {
-  const response = await axiosInstance.post(
+  await axiosInstance.post(
     `posts/comments/${id}`,
     preparedComment,
   )
+
+  const response = await axiosInstance.get(
+    `posts/comments/${id}`,
+  )
+
   const dataFromServer = response.data
   console.log(response.status)
   dispatch(addNewComment(dataFromServer))

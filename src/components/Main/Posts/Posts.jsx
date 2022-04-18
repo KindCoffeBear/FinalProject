@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import TOKEN from '../../../localStorageConsts'
 import { getCommentsFromServerQuery } from '../../../redux/actionCreators/commentsActionCreator'
 
 import { getPostsFromServerQuery } from '../../../redux/actionCreators/postsActionCreators'
@@ -12,14 +13,18 @@ function Posts() {
   // получение состояния постов и фильтра из Redux
   const posts = useSelector((store) => store.posts)
   const filter = useSelector((store) => store.filter)
+  let token = useSelector((store) => store.user.token)
+  if (!token) {
+    token = localStorage.getItem(TOKEN)
+  }
   // получаем дебаунсер
   const debouncedFilter = useDebounce(filter, 300)
   // достаем dispatch
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
-    dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(debouncedFilter))
+    dispatch(getCommentsFromServerQuery(token))
+    dispatch(getPostsFromServerQuery(debouncedFilter, token))
   }, [debouncedFilter])
 
   return (

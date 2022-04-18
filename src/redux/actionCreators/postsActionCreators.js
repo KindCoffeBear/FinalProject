@@ -12,9 +12,11 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
+export const getPostsFromServerQuery = (filter = '', token) => async (dispatch) => {
+  console.log('token: ', token)
   const response = await axiosInstance.get(
     `posts/search/?query=${filter}`,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
@@ -26,12 +28,13 @@ const addNewPost = (newPost) => ({
 })
 
 // добавление поста на сервере и получение данных с сервера
-export const addNewPostQuery = (newPost) => async (dispatch) => {
+export const addNewPostQuery = (newPost, token) => async (dispatch) => {
   const bodyObject = JSON.parse(newPost)
 
   const response = await axiosInstance.post(
     'posts',
     bodyObject,
+    { headers: { authorization: `Bearer ${token}` } },
   )
 
   const postFromApi = response.data
@@ -44,10 +47,11 @@ const deletePost = (id) => ({
 })
 
 // удаление поста по id
-export const deletePostQuery = (id) => async (dispatch) => {
+export const deletePostQuery = (id, token) => async (dispatch) => {
   try {
     await axiosInstance.delete(
       `posts/${id}`,
+      { headers: { authorization: `Bearer ${token}` } },
     )
 
     dispatch(deletePost(id))
@@ -65,10 +69,11 @@ const updatePost = (editedPost) => ({
 })
 
 // обновление поста на сервере и получение данных с сервера
-export const updatePostQuery = (id, editedPost, closeModal) => async (dispatch) => {
+export const updatePostQuery = (id, editedPost, closeModal, token) => async (dispatch) => {
   const response = await axiosInstance.patch(
     `posts/${id}`,
     editedPost,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   if (response.status === 200) {
     const updatedPostFromServer = response.data
@@ -85,10 +90,11 @@ const getPost = (postFromServer) => ({
 })
 
 // получение конкретного поста по id и передача setLoading (изменение состояния загрузки страницы) и controller для отмены загрузки страницы
-export const getPostQuery = (idPost, setLoading, controller) => async (dispatch) => {
+export const getPostQuery = (idPost, setLoading, controller, token) => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/${idPost}`,
     { signal: controller.current.signal },
+    { headers: { authorization: `Bearer ${token}` } },
   ) // { signal: controller.current.signal } определяет идет запрос или он отменен
   const postFromServer = response.data
   dispatch(getPost(postFromServer))

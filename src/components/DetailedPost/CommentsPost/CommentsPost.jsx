@@ -2,18 +2,18 @@
 import {
   Avatar, Button, Grid, Paper,
 } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteCommentQuery } from '../../../redux/actionCreators/commentsPostActionCreator'
 
 function CommentsPost({
   updated_at, author, text, idPost, idComment,
 }) {
   const dispatch = useDispatch()
-
+  const token = useSelector((store) => store.user.token)
   const updatedDate = new Date(updated_at).toLocaleString()
 
   const deleteHandler = () => {
-    dispatch(deleteCommentQuery(idPost, idComment))
+    dispatch(deleteCommentQuery(idPost, idComment, token))
   }
   return (
     <Paper sx={{ padding: '10px 10px', display: 'flex' }}>

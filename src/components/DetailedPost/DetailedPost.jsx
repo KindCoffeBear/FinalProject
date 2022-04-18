@@ -77,8 +77,8 @@ function DetailedPost() {
   useLayoutEffect(() => {
     setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
 
-    dispatch(getCommentsPostFromServerQuery(idPost))
-    dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
+    dispatch(getCommentsPostFromServerQuery(idPost, token))
+    dispatch(getPostQuery(idPost, setLoading, controller, token)) // получаем конкретный пост и передаем часть параметров
 
     // при отмены загрузки данных с сервера выполняем обрыв соединения
     return () => {

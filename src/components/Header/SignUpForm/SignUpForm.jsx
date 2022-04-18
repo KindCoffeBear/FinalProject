@@ -29,7 +29,7 @@ export default function SignUpForm() {
       about: data.get('profession'),
       avatar: data.get('avatar'),
       cb: () => {
-        navigate('/signInForm')
+        navigate('/content')
       },
     }))
   }

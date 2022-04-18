@@ -17,11 +17,12 @@ export default function AvatarPAge() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((store) => store.user)
+  const token = useSelector((store) => store.user.token)
   const editAvatarHandler = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const avatar = data.get('avatar')
-    dispatch(editAvatarQuery(avatar))
+    dispatch(editAvatarQuery(avatar, token))
     navigate('/profilePAge')
   }
 

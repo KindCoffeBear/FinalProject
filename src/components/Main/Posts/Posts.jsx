@@ -4,7 +4,7 @@ import {
   FormControl, Grid, InputLabel, MenuItem, Select,
 } from '@mui/material'
 import Box from '@mui/material/Box'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCommentsFromServerQuery } from '../../../redux/actionCreators/commentsActionCreator'
 
@@ -78,12 +78,12 @@ function Posts() {
       >
 
         {numbersPage ? numbersPage.map((number) => (
-          <>
+          <React.Fragment key={number}>
             <Button onClick={changePageHandler} sx={{ width: 10 }}>
               {number}
             </Button>
             <Divider orientation="vertical" flexItem />
-          </>
+          </React.Fragment>
         )) : null}
 
       </Box>

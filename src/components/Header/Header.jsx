@@ -13,16 +13,16 @@ import SignInLink from './SignInLink/SignInLink'
 import { getUserFromApiQuery, signOut } from '../../redux/actionCreators/userActionCreators'
 import ProfileLink from './ProfileLink/ProfileLink'
 import TOKEN from '../../localStorageConsts'
+import HelloPageLink from './HelloPageLink/HelloPageLink'
 
 function Header() {
   const userFromLS = localStorage.getItem(TOKEN)
-  console.log(userFromLS)
   const dispatch = useDispatch()
   useEffect(() => {
     if (userFromLS) {
       dispatch(getUserFromApiQuery(userFromLS))
     }
-  }, [userFromLS])
+  }, [])
   const navigate = useNavigate()
   const user = useSelector((store) => store.user)
   const userToken = user.token
@@ -36,6 +36,7 @@ function Header() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AppTitle />
+          {!userToken ? <HelloPageLink /> : null}
           <HeaderInscriptions />
           <SearchForm />
           {userToken ? <ProfileLink /> : null}

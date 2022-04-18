@@ -2,14 +2,14 @@ import {
   Button, Paper, TextField,
 } from '@mui/material'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { addNewCommentQuery } from '../../../redux/actionCreators/commentsPostActionCreator'
 
 function CommentAddForm() {
   const { idPost } = useParams() // получение id поста
   const [text, setText] = useState('')
-
+  const token = useSelector((store) => store.user.token)
   const dispatch = useDispatch()
 
   const ChangeText = (e) => {
@@ -19,7 +19,7 @@ function CommentAddForm() {
   const submitHandler = () => {
     const preparedComment = { text }
 
-    dispatch(addNewCommentQuery(idPost, preparedComment))
+    dispatch(addNewCommentQuery(idPost, preparedComment, token))
 
     setText('')
   }
@@ -35,7 +35,7 @@ function CommentAddForm() {
         value={text}
         onChange={ChangeText}
       />
-      <Button onClick={submitHandler}>Добавить комментарий</Button>
+      <Button onClick={submitHandler}>Отправить</Button>
     </Paper>
 
   )

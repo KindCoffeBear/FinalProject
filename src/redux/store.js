@@ -5,7 +5,6 @@ const initState = {
     posts: [],
   },
   filter: '',
-  limit: '',
   comments: [],
   user: {
     name: '',
@@ -13,6 +12,7 @@ const initState = {
     token: '',
   },
   commentsPost: [],
+  likes: [],
 }
 
 export default initState

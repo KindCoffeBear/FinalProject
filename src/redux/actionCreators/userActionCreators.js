@@ -40,26 +40,33 @@ export const signUp = (user) => ({
 export const signUpQuery = ({
   email, password, name, about, avatar, cb,
 }) => async (dispatch) => {
-  const response = await axiosInstance.post('signup', {
+  const upResponse = await axiosInstance.post('signup', {
     email,
     password,
     name,
     about,
     avatar,
   })
-  console.log(response.status)
-  if (response.status === 400) {
-    alert('Некорректно заполнены поля формы!')
-  } else if (response.status === 409) {
-    alert('Пользователь с таким адресом электронной почты уже зарегистрирован в системе!')
-  } else {
-    const user = response.data
-    dispatch(
-      signUp({
-        ...user.data,
-      }),
-    )
-  }
+  const user = upResponse.data
+  console.log(user)
+  dispatch(
+    signUp({
+      ...user.data,
+    }),
+  )
+  const inResponse = await axiosInstance.post('signin', {
+    email: user.email,
+    password,
+  })
+
+  const userForIn = inResponse.data
+
+  dispatch(
+    signIn({
+      ...userForIn.data,
+      token: userForIn.token,
+    }),
+  )
   typeof cb === 'function' && cb()
 }
 // пишем AC для выхода из системы
@@ -76,13 +83,14 @@ export const editProfile = (changedUserData) => ({
   payload: changedUserData,
 })
 
-export const editProfileQuery = (newName, newAbout) => async (dispatch) => {
+export const editProfileQuery = (newName, newAbout, token) => async (dispatch) => {
   const response = await axiosInstance.patch(
     'users/me',
     {
       name: newName,
       about: newAbout,
     },
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const changedUser = await response.data
   dispatch(editProfile(changedUser))
@@ -93,12 +101,13 @@ export const editAvatar = (changedUserData) => ({
   payload: changedUserData,
 })
 
-export const editAvatarQuery = (newAvatar) => async (dispatch) => {
+export const editAvatarQuery = (newAvatar, token) => async (dispatch) => {
   const response = await axiosInstance.patch(
     'users/me/avatar',
     {
       avatar: newAvatar,
     },
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const changedAvatar = await response.data
   dispatch(editAvatar(changedAvatar))
@@ -113,10 +122,12 @@ export const getUserFromApi = (userDataFromApi, token) => ({
 })
 
 export const getUserFromApiQuery = (token) => async (dispatch) => {
+  console.log(token)
   const response = await axios.get(
     'https://api.react-learning.ru/users/me',
     { headers: { authorization: `Bearer ${token}` } },
   )
-  const userFromApi = await response.data
+  const userFromApi = response.data
+  console.log(userFromApi)
   dispatch(getUserFromApi(userFromApi, token))
 }

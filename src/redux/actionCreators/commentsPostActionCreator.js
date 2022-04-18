@@ -8,9 +8,10 @@ const getCommentsPost = (commentsPostFromServer) => ({
 
 // получение комментов одного поста с сервера
 // eslint-disable-next-line import/prefer-default-export
-export const getCommentsPostFromServerQuery = (id) => async (dispatch) => {
+export const getCommentsPostFromServerQuery = (id, token) => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/comments/${id}`,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getCommentsPost(dataFromServer))
@@ -21,10 +22,11 @@ const addNewComment = (commentsPostFromServer) => ({
   payload: commentsPostFromServer.comments,
 })
 
-export const addNewCommentQuery = (id, preparedComment) => async (dispatch) => {
+export const addNewCommentQuery = (id, preparedComment, token) => async (dispatch) => {
   const response = await axiosInstance.post(
     `posts/comments/${id}`,
     preparedComment,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   console.log(response.status)
@@ -36,10 +38,11 @@ const deleteComment = (id) => ({
   payload: id,
 })
 
-// удаление поста по id
-export const deleteCommentQuery = (idPost, idComment) => async (dispatch) => {
+// удаление комментария по id
+export const deleteCommentQuery = (idPost, idComment, token) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/comments/${idPost}/${idComment}`,
+    { headers: { authorization: `Bearer ${token}` } },
   )
   console.log(response.status)
   if (response.status === 200) {

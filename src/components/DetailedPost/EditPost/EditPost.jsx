@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updatePostQuery } from '../../../redux/actionCreators/postsActionCreators'
 
@@ -12,7 +12,7 @@ function EditPost({
   const [editText, setEditText] = useState(text)
   const [editImage, setEditImage] = useState(image)
   const [editTags, setEditTags] = useState(tags)
-
+  const token = useSelector((store) => store.user.token)
   const dispatch = useDispatch() // достаем dispatch
 
   // меняем состояние формы
@@ -42,7 +42,7 @@ function EditPost({
       tags: editTags,
     }
 
-    dispatch(updatePostQuery(idPost, editedPost, closeModal))
+    dispatch(updatePostQuery(idPost, editedPost, closeModal, token))
   }
 
   return (

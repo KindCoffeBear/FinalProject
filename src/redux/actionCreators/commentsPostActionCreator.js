@@ -19,15 +19,19 @@ export const getCommentsPostFromServerQuery = (id, token) => async (dispatch) =>
 
 const addNewComment = (commentsPostFromServer) => ({
   type: ADD_NEW_COMMENT,
-  payload: commentsPostFromServer.comments,
+  payload: commentsPostFromServer,
 })
 
-export const addNewCommentQuery = (id, preparedComment, token) => async (dispatch) => {
-  const response = await axiosInstance.post(
+export const addNewCommentQuery = (id, preparedComment) => async (dispatch) => {
+  await axiosInstance.post(
     `posts/comments/${id}`,
     preparedComment,
-    { headers: { authorization: `Bearer ${token}` } },
   )
+
+  const response = await axiosInstance.get(
+    `posts/comments/${id}`,
+  )
+
   const dataFromServer = response.data
   console.log(response.status)
   dispatch(addNewComment(dataFromServer))

@@ -20,6 +20,7 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
 import Comments from '../Comments/Comments'
+import { addLikeQuery, deleteLikeQuery } from '../../../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -36,8 +37,9 @@ function Post({
   // eslint-disable-next-line camelcase
   _id, title, tags, text, image, updated_at, author,
 }) {
-  const postTags = `#${tags.join('#')}`
-  const description = text.length > 200 ? `${text.slice(0, 200)}...` : text
+  const likesFromRedux = useSelector((store) => store.likes)
+  const postTags = tags.length ? `#${tags.join('#')}` : null
+  const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
 
   const updatedDate = new Date(updated_at).toLocaleString()
 
@@ -59,13 +61,25 @@ function Post({
     dispatch(deletePostQuery(_id))
   }
 
+  // eslint-disable-next-line no-underscore-dangle
+  const isLike = likesFromRedux.includes(author._id)
+  console.log(isLike)
+  // поставить или удалить лайк по клику
+  const likeHandler = () => {
+    if (!isLike) {
+      dispatch(addLikeQuery(_id))
+    } else {
+      dispatch(deleteLikeQuery(_id))
+    }
+  }
+
   return (
     <Grid
       item
-      sx={{ maxWidth: 345 }}
+      sx={{ width: 350 }}
     >
       <Card sx={{
-        height: 500,
+        height: 450,
         display: 'flex',
         flexDirection: 'column',
 
@@ -73,7 +87,8 @@ function Post({
       >
         <CardHeader
           sx={{
-            mb: 'auto',
+            mt: 0,
+            height: 100,
           }}
           avatar={(
             <Avatar src={avatar} aria-label="post" />
@@ -87,6 +102,10 @@ function Post({
           height="194"
           image={image}
           alt={title}
+          sx={{
+            mt: 0,
+            height: 200,
+          }}
         />
         <CardContent sx={{
           mb: 'auto',
@@ -112,8 +131,9 @@ function Post({
             }}
           >
             <Tooltip title="Лайк">
-              <IconButton aria-label="add like">
+              <IconButton aria-label="like" onClick={likeHandler}>
                 <FavoriteIcon />
+                <p>{likesFromRedux.length}</p>
               </IconButton>
             </Tooltip>
             <LinkMUI component={Link} to={`/post/${_id}`}>

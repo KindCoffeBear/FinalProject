@@ -72,7 +72,7 @@ function DetailedPost() {
         <button onClick={openModal} type="button" className="btn btn-primary my-2">Редактировать</button>
         <Link to="/content" className="btn btn-success my-2">Вернуться назад</Link>
       </div>
-      {commentsPost.map((comment) => (<CommentsPost {...comment} idPost={idPost} idComment={comment._id} token={token} />))}
+      {commentsPost.map((comment) => (<CommentsPost key={comment._id} {...comment} idPost={idPost} idComment={comment._id} token={token} />))}
       <CommentAddForm />
     </>
   ))

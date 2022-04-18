@@ -12,7 +12,7 @@ function Comments({ text, author, updated_at }) {
           <Avatar alt="Remy Sharp" src={author.avatar} />
         </Grid>
         <Grid justifyContent="left" item xs>
-          <h4 style={{ margin: 0, textAlign: 'left' }}>{author.name}</h4>
+          <h5 style={{ margin: 0, textAlign: 'left' }}>{author.name}</h5>
           <p style={{ textAlign: 'left' }}>
             {text}
           </p>

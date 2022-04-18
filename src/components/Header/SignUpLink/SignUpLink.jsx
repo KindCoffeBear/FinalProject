@@ -6,7 +6,7 @@ function SignUpLink() {
   return (
     <LinkMUI component={Link} to="/signUpForm">
       <Button key="Sign up" sx={{ my: 2, color: 'white', display: 'block' }}>
-        SignUp
+        Регистрация
       </Button>
     </LinkMUI>
   )

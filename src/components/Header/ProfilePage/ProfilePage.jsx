@@ -31,7 +31,7 @@ export default function ProfilePAge() {
   }
   const user = useSelector((store) => store.user)
   useEffect(() => {
-    dispatch(getPostsFromServerQuery(debouncedFilter, token))
+    dispatch(getPostsFromServerQuery(debouncedFilter))
   }, [debouncedFilter])
   const posts = useSelector((store) => store.posts)
   const newPosts = posts.filter((post) => post.author.email === user.email)
@@ -40,7 +40,7 @@ export default function ProfilePAge() {
     const data = new FormData(event.currentTarget)
     const name = data.get('name')
     const about = data.get('about')
-    dispatch(editProfileQuery(name, about, token))
+    dispatch(editProfileQuery(name, about))
   }
 
   return (
@@ -65,7 +65,7 @@ export default function ProfilePAge() {
               />
             </LinkMUI>
             <Typography component="h1" variant="h5">
-              {`Welcome, ${user.name}!`}
+              {`Привет, ${user.name}!`}
             </Typography>
             <Box component="form" noValidate onSubmit={editProfileHandler} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
@@ -92,7 +92,7 @@ export default function ProfilePAge() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Edit profile
+                Редактировать
               </Button>
             </Box>
           </Box>
@@ -100,7 +100,7 @@ export default function ProfilePAge() {
       </ThemeProvider>
       <hr />
       <h2>
-        Your posts
+        Ваши посты
       </h2>
       <Container>
         <Grid container spacing={2} sx={{ mt: 10 }}>

@@ -16,11 +16,11 @@ import TOKEN from '../../localStorageConsts'
 import HelloPageLink from './HelloPageLink/HelloPageLink'
 
 function Header() {
-  const userFromLS = localStorage.getItem(TOKEN)
+  const tokenFromLS = localStorage.getItem(TOKEN)
   const dispatch = useDispatch()
   useEffect(() => {
-    if (userFromLS) {
-      dispatch(getUserFromApiQuery(userFromLS))
+    if (tokenFromLS) {
+      dispatch(getUserFromApiQuery(tokenFromLS))
     }
   }, [])
   const navigate = useNavigate()
@@ -37,14 +37,14 @@ function Header() {
         <Toolbar disableGutters>
           <AppTitle />
           {!userToken ? <HelloPageLink /> : null}
-          <HeaderInscriptions />
+          {userToken ? <HeaderInscriptions /> : null}
           <SearchForm />
           {userToken ? <ProfileLink /> : null}
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}
           {userToken ? (
             <Button type="button" variant="contained" onClick={signOutHandler}>
-              Sign Out
+              Выйти
             </Button>
           ) : null}
         </Toolbar>

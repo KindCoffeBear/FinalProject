@@ -63,7 +63,7 @@ function Post({
 
   // eslint-disable-next-line no-underscore-dangle
   const isLike = likesFromRedux.includes(author._id)
-  console.log(isLike)
+
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {

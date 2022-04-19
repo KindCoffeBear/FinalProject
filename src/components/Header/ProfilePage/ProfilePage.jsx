@@ -34,7 +34,8 @@ export default function ProfilePAge() {
     dispatch(getPostsFromServerQuery(debouncedFilter))
   }, [debouncedFilter])
   const posts = useSelector((store) => store.paginatePost.posts)
-  const newPosts = posts.filter((post) => post.author.email === user.email)
+  console.log(user, posts)
+  const newPosts = posts.filter((post) => post?.author?.email === user.email)
   const editProfileHandler = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)

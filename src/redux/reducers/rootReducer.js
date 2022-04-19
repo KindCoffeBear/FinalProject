@@ -8,7 +8,7 @@ import likesReduser from './likesReducer'
 
 // создаем главный reducer, который объединяет в себя все отдельные reducers
 const rootReducer = combineReducers({
-  posts: postsReducer,
+  paginatePost: postsReducer,
   filter: filterReducer,
   comments: commentsReducer,
   user: userReducer,

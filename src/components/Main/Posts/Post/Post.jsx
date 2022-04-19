@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Card from '@mui/material/Card'
@@ -35,7 +36,7 @@ const ExpandMore = styled((props) => {
 
 function Post({
   // eslint-disable-next-line camelcase
-  _id, title, tags, text, image, updated_at, author,
+  _id, title, tags, text, image, updated_at, author, comments,
 }) {
   const likesFromRedux = useSelector((store) => store.likes)
   const postTags = tags.length ? `#${tags.join('#')}` : null
@@ -46,7 +47,9 @@ function Post({
 
   const dispatch = useDispatch() // достаем dispatch
 
-  const comments = useSelector((store) => store.comments)
+  const commentsFromServer = useSelector((store) => store.comments)
+
+  const commentsForPost = commentsFromServer.filter((comment) => comment.post === _id).slice(-2)
 
   const [expanded, setExpanded] = useState(false)
 
@@ -91,25 +94,23 @@ function Post({
           avatar={(
             <Avatar src={avatar} aria-label="post" />
           )}
-          titleTypographyProps={{ variant: 'h7' }}
+          titleTypographyProps={{ variant: 'h7', fontWeight: 'bold' }}
           title={title}
-          subheader={updatedDate}
         />
         <CardMedia
           component="img"
-          height="194"
+          height="200"
           image={image}
           alt={title}
           sx={{
             mt: 0,
-            height: 200,
           }}
         />
         <CardContent sx={{
           mb: 'auto',
         }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2">
             {description}
           </Typography>
         </CardContent>
@@ -117,9 +118,12 @@ function Post({
           mt: 'auto',
         }}
         >
-          <CardActions disableSpacing>
-            <Typography variant="caption" component="div" gutterBottom position="left">
+          <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="caption" component="div" gutterBottom>
               {postTags}
+            </Typography>
+            <Typography variant="caption" component="div" gutterBottom sx={{ color: 'gray' }}>
+              {updatedDate}
             </Typography>
           </CardActions>
           <Box
@@ -134,8 +138,8 @@ function Post({
                 <p>{likesFromRedux.length}</p>
               </IconButton>
             </Tooltip>
-            <LinkMUI component={Link} to={`/post/${_id}`}>
-              <Button variant="contained">Подробнее</Button>
+            <LinkMUI component={Link} to={`/post/${_id}`} sx={{ textDecoration: 'none' }}>
+              <Button>Подробнее</Button>
             </LinkMUI>
             <Tooltip title="Удалить">
               <IconButton aria-label="delete" onClick={deleteHandler}>
@@ -146,22 +150,22 @@ function Post({
         </Box>
       </Card>
       <Divider />
-      <Typography variant="body2" gutterBottom>
+      <Typography variant="body2" gutterBottom sx={{ fontWeight: 'bold' }}>
         Комментарии
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
-          sx
         >
           <ExpandMoreIcon />
         </ExpandMore>
       </Typography>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {comments.map((comment) => (_id === comment.post ? (
+        {commentsForPost.map((comment) => (
           // eslint-disable-next-line no-underscore-dangle
-          <Comments key={comment._id} {...comment} />) : null))}
+          <Comments key={comment._id} {...comment} />))}
+        {comments.length ? null : (<Typography variant="body2" sx={{ fontStyle: 'italic' }}>Будьте первыми! Оставьте здесь комментарий</Typography>)}
       </Collapse>
     </Grid>
   )

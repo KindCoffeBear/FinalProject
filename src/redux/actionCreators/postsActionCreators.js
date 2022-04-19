@@ -1,7 +1,8 @@
 /* eslint-disable default-param-last */
 // Создание Action Creators для состояния постов
-import axiosInstance from '../../axiosConfig/axiosConfig'
+
 // не забыть вернуть GET_CURRENT_POST UPDATE_POST
+import axiosInstance from '../../axiosConfig/axiosConfig'
 import {
   ADD_NEW_POST, DELETE_POST, GET_CURRENT_POST, GET_POSTS_FROM_SERVER, UPDATE_POST,
 } from '../actionTypes/postsTypes'
@@ -12,9 +13,9 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
+export const getPostsFromServerQuery = (page = '', limit = '', filter = '') => async (dispatch) => {
   const response = await axiosInstance.get(
-    `posts/search/?query=${filter}`,
+    `posts/paginate?page=${page}&limit=${limit}&query=${filter}`,
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))

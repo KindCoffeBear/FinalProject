@@ -16,6 +16,8 @@ import ProtectedComponent from './components/Authentication/ProtectedComponent'
 import MainForNotAuth from './components/MainForNotAuth/MainForNotAuth'
 import ProfilePage from './components/Header/ProfilePage/ProfilePage'
 import AvatarPAge from './components/Header/ProfilePage/AvatarPage'
+import RefreshPasswordForm from './components/Header/refreshPasswordForm/refreshPasswordForm'
+import ChangePasswordForm from './components/Header/refreshPasswordForm/ChangePasswordForm'
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
           <Route path="/signUpForm" element={<SignUpForm />} />
           <Route path="/signInForm" element={<SignInForm />} />
           <Route path="/avatarPage" element={<AvatarPAge />} />
+          <Route path="/refreshPasswordForm" element={<RefreshPasswordForm />} />
+          <Route path="/changePasswordForm" element={<ChangePasswordForm />} />
         </Routes>
         <Footer />
       </BrowserRouter>

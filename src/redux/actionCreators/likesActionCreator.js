@@ -1,3 +1,4 @@
+// import axiosInstance from '../../axiosConfig/axiosConfig'
 import axiosInstance from '../../axiosConfig/axiosConfig'
 import { ADD_LIKE, DELETE_LIKE } from '../actionTypes/likesTypes'
 
@@ -10,7 +11,7 @@ export const addLikeQuery = (idPost) => async (dispatch) => {
   const response = await axiosInstance.put(
     `posts/likes/${idPost}`,
   )
-  const likesFromServer = response.data.likes
+  const likesFromServer = await response.data.likes
   dispatch(addLike(likesFromServer))
 }
 
@@ -23,6 +24,6 @@ export const deleteLikeQuery = (idPost) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/likes/${idPost}`,
   )
-  const likesFromServer = response.data.likes
+  const likesFromServer = await response.data.likes
   dispatch(deleteLike(likesFromServer))
 }

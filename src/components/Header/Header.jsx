@@ -13,37 +13,38 @@ import SignInLink from './SignInLink/SignInLink'
 import { getUserFromApiQuery, signOut } from '../../redux/actionCreators/userActionCreators'
 import ProfileLink from './ProfileLink/ProfileLink'
 import TOKEN from '../../localStorageConsts'
+import HelloPageLink from './HelloPageLink/HelloPageLink'
 
 function Header() {
-  const userFromLS = localStorage.getItem(TOKEN)
-  console.log(userFromLS)
+  const tokenFromLS = localStorage.getItem(TOKEN)
   const dispatch = useDispatch()
   useEffect(() => {
-    if (userFromLS) {
-      dispatch(getUserFromApiQuery(userFromLS))
+    if (tokenFromLS) {
+      dispatch(getUserFromApiQuery(tokenFromLS))
     }
-  }, [userFromLS])
+  }, [])
   const navigate = useNavigate()
   const user = useSelector((store) => store.user)
   const userToken = user.token
   const signOutHandler = () => {
     dispatch(signOut(user))
     localStorage.clear()
-    navigate('/')
+    navigate('/signInForm')
   }
   return (
     <AppBar position="relative">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AppTitle />
-          <HeaderInscriptions />
+          {!userToken ? <HelloPageLink /> : null}
+          {userToken ? <HeaderInscriptions /> : null}
           <SearchForm />
           {userToken ? <ProfileLink /> : null}
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}
           {userToken ? (
             <Button type="button" variant="contained" onClick={signOutHandler}>
-              Sign Out
+              Выйти
             </Button>
           ) : null}
         </Toolbar>

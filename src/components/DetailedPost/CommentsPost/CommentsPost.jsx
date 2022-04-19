@@ -9,7 +9,6 @@ function CommentsPost({
   updated_at, author, text, idPost, idComment,
 }) {
   const dispatch = useDispatch()
-
   const updatedDate = new Date(updated_at).toLocaleString()
 
   const deleteHandler = () => {

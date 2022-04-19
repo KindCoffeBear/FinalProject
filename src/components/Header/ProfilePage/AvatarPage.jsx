@@ -51,7 +51,7 @@ export default function AvatarPAge() {
                 required
                 fullWidth
                 id="avatar"
-                label="Choose new avatar"
+                label="Выберите новый аватар"
                 name="avatar"
                 autoComplete="avatar"
               />
@@ -62,7 +62,7 @@ export default function AvatarPAge() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Edit avatar
+              Редактировать
             </Button>
           </Box>
         </Box>

@@ -9,7 +9,6 @@ import { addNewCommentQuery } from '../../../redux/actionCreators/commentsPostAc
 function CommentAddForm() {
   const { idPost } = useParams() // получение id поста
   const [text, setText] = useState('')
-
   const dispatch = useDispatch()
 
   const ChangeText = (e) => {

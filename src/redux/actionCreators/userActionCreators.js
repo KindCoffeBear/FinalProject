@@ -15,21 +15,30 @@ export const signIn = (user) => ({
 })
 
 export const signInQuery = ({ email, password, cb }) => async (dispatch) => {
-  const response = await axiosInstance.post('signin', {
-    email,
-    password,
-  })
+  try {
+    const response = await axiosInstance.post('signin', {
+      email,
+      password,
+    })
 
-  const user = response.data
+    const user = response.data
 
-  dispatch(
-    signIn({
-      ...user.data,
-      token: user.token,
-    }),
-  )
+    dispatch(
+      signIn({
+        ...user.data,
+        token: user.token,
+      }),
+    )
 
-  typeof cb === 'function' && cb()
+    typeof cb === 'function' && cb()
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '401') {
+      alert('Неверный логин и/или пароль')
+    } else if (codeError === '400') {
+      alert('Все поля входы должны быть заполнены')
+    }
+  }
 }
 // пишем AC для регистрации
 export const signUp = (user) => ({
@@ -40,26 +49,66 @@ export const signUp = (user) => ({
 export const signUpQuery = ({
   email, password, name, about, avatar, cb,
 }) => async (dispatch) => {
-  const response = await axiosInstance.post('signup', {
+  try {
+    const upResponse = await axiosInstance.post('signup', {
+      email,
+      password,
+      name,
+      about,
+      avatar,
+    })
+    const user = upResponse.data
+    dispatch(
+      signUp({
+        ...user.data,
+      }),
+    )
+    const inResponse = await axiosInstance.post('signin', {
+      email: user.email,
+      password,
+    })
+    const userForIn = inResponse.data
+    dispatch(
+      signIn({
+        ...userForIn.data,
+        token: userForIn.token,
+      }),
+    )
+    typeof cb === 'function' && cb()
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '400') {
+      alert('Неверно заполнено одно из полей')
+    } else if (codeError === '409') {
+      alert('Пользователь с таким e-mail уже зарегистрирован в системе')
+    }
+  }
+  const upResponse = await axiosInstance.post('signup', {
     email,
     password,
     name,
     about,
     avatar,
   })
-  console.log(response.status)
-  if (response.status === 400) {
-    alert('Некорректно заполнены поля формы!')
-  } else if (response.status === 409) {
-    alert('Пользователь с таким адресом электронной почты уже зарегистрирован в системе!')
-  } else {
-    const user = response.data
-    dispatch(
-      signUp({
-        ...user.data,
-      }),
-    )
-  }
+  const user = upResponse.data
+  dispatch(
+    signUp({
+      ...user.data,
+    }),
+  )
+  const inResponse = await axiosInstance.post('signin', {
+    email: user.email,
+    password,
+  })
+
+  const userForIn = inResponse.data
+
+  dispatch(
+    signIn({
+      ...userForIn.data,
+      token: userForIn.token,
+    }),
+  )
   typeof cb === 'function' && cb()
 }
 // пишем AC для выхода из системы
@@ -77,15 +126,22 @@ export const editProfile = (changedUserData) => ({
 })
 
 export const editProfileQuery = (newName, newAbout) => async (dispatch) => {
-  const response = await axiosInstance.patch(
-    'users/me',
-    {
-      name: newName,
-      about: newAbout,
-    },
-  )
-  const changedUser = await response.data
-  dispatch(editProfile(changedUser))
+  try {
+    const response = await axiosInstance.patch(
+      'users/me',
+      {
+        name: newName,
+        about: newAbout,
+      },
+    )
+    const changedUser = await response.data
+    dispatch(editProfile(changedUser))
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '400') {
+      alert('Поля формы не должны быть пустыми')
+    }
+  }
 }
 // пишем AC для редактирования аватра
 export const editAvatar = (changedUserData) => ({
@@ -94,14 +150,21 @@ export const editAvatar = (changedUserData) => ({
 })
 
 export const editAvatarQuery = (newAvatar) => async (dispatch) => {
-  const response = await axiosInstance.patch(
-    'users/me/avatar',
-    {
-      avatar: newAvatar,
-    },
-  )
-  const changedAvatar = await response.data
-  dispatch(editAvatar(changedAvatar))
+  try {
+    const response = await axiosInstance.patch(
+      'users/me/avatar',
+      {
+        avatar: newAvatar,
+      },
+    )
+    const changedAvatar = await response.data
+    dispatch(editAvatar(changedAvatar))
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '400') {
+      alert('Поля формы не должны быть пустыми')
+    }
+  }
 }
 // пишем AC для получения пользователя с сервера
 export const getUserFromApi = (userDataFromApi, token) => ({
@@ -117,6 +180,6 @@ export const getUserFromApiQuery = (token) => async (dispatch) => {
     'https://api.react-learning.ru/users/me',
     { headers: { authorization: `Bearer ${token}` } },
   )
-  const userFromApi = await response.data
+  const userFromApi = response.data
   dispatch(getUserFromApi(userFromApi, token))
 }

@@ -1,9 +1,12 @@
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Navigate, useLocation } from 'react-router-dom'
 import TOKEN from '../../localStorageConsts'
 
 export default function ProtectedComponent({ children }) {
-  const token = localStorage.getItem(TOKEN)
+  let token = useSelector((store) => store.user.token)
+  if (!token) {
+    token = localStorage.getItem(TOKEN)
+  }
   const location = useLocation()
 
   if (!token) {

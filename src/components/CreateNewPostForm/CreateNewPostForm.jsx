@@ -46,6 +46,7 @@ function CreateNewPostForm() {
           <div>
             <TextField
               error={isTitleError}
+              multiline
               id="outlined-basic"
               label="Title"
               variant="outlined"
@@ -56,6 +57,7 @@ function CreateNewPostForm() {
           </div>
           <div>
             <TextField
+              multiline
               id="filled-basic"
               label="Text"
               variant="outlined"
@@ -65,6 +67,7 @@ function CreateNewPostForm() {
           </div>
           <div>
             <TextField
+              multiline
               id="standard-basic"
               label="Image"
               variant="outlined"
@@ -74,6 +77,7 @@ function CreateNewPostForm() {
           </div>
           <div>
             <TextField
+              multiline
               id="standard-basic"
               label="Tags"
               variant="outlined"

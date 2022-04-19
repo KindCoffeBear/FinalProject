@@ -12,7 +12,6 @@ function EditPost({
   const [editText, setEditText] = useState(text)
   const [editImage, setEditImage] = useState(image)
   const [editTags, setEditTags] = useState(tags)
-
   const dispatch = useDispatch() // достаем dispatch
 
   // меняем состояние формы

@@ -43,15 +43,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const pages = [
   {
-    title: 'Main',
-    path: '/',
-  },
-  {
-    title: 'Add new post',
+    title: 'Добавить пост',
     path: '/createNewPostForm',
   },
   {
-    title: 'Content',
+    title: 'Посты',
     path: '/content',
   },
 ]

@@ -29,7 +29,7 @@ function Header() {
   const signOutHandler = () => {
     dispatch(signOut(user))
     localStorage.clear()
-    navigate('/')
+    navigate('/signInForm')
   }
   return (
     <AppBar position="relative">

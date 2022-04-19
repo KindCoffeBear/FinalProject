@@ -49,8 +49,8 @@ function Posts() {
   }
 
   const PostsWithLoader = withLoader(() => (
-    <>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
         <FormControl sx={{ m: 1, minWidth: 160 }} variant="standard">
           <InputLabel id="limit">Кол-во постов</InputLabel>
           <Select
@@ -61,14 +61,14 @@ function Posts() {
             onChange={changeHandler}
           >
             <MenuItem value="Все">Все</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={12}>12</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
             <MenuItem value={30}>30</MenuItem>
             <MenuItem value={60}>60</MenuItem>
           </Select>
         </FormControl>
       </Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {posts.map((post) => (
           // eslint-disable-next-line no-underscore-dangle
           <Post key={post._id} {...post} />
@@ -91,7 +91,7 @@ function Posts() {
         )) : null}
 
       </Box>
-    </>
+    </Box>
   ))
 
   return (

@@ -5,14 +5,17 @@ import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom'
 
 export default function ChangePasswordForm() {
+  const navigate = useNavigate()
   const refreshPasswordHandler = async (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     // eslint-disable-next-line no-unused-vars
     const newPassword = data.get('newPass')
     const token = data.get('token')
+    const email = data.get('email')
     const getID = await fetch(
       'https://api.react-learning.ru/users/me',
       {
@@ -32,18 +35,25 @@ export default function ChangePasswordForm() {
     const response = await fetch(
       `https://api.react-learning.ru/password-reset/${userId}/${token}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           password: newPassword,
+          email,
         }),
       },
     )
     const responseFromServer = await response.json()
-    console.log(responseFromServer)
+    console.log(response)
+    if (response.status === 200) {
+      alert('Пароль успешно изменен')
+    } else if (response.status === 401) {
+      alert('Время действия кода истекло, отправьте запрос на восстановления паролья повторно')
+      navigate('/refreshPasswordForm')
+    }
   }
   return (
     <Container maxWidth="sm" sx={{ mt: 20 }}>
@@ -51,6 +61,16 @@ export default function ChangePasswordForm() {
         Восстановление пароля
       </Typography>
       <Box component="form" noValidate onSubmit={refreshPasswordHandler} sx={{ mt: 1 }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Повторите адрес электронной почты"
+          name="email"
+          autoComplete="email"
+          autoFocus
+        />
         <TextField
           margin="normal"
           required

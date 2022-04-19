@@ -3,7 +3,12 @@ import Posts from './Posts/Posts'
 
 function Main() {
   return (
-    <Container sx={{ backgroundColor: 'rgba(0, 255, 127, 0.1)' }}>
+    <Container
+      maxWidth="false"
+      sx={{
+        backgroundColor: 'rgba(54, 217, 60, 0.5)', minWidth: '100vw', minHeight: '91vh', display: 'flex', justifyContent: 'center',
+      }}
+    >
       <Posts />
     </Container>
   )

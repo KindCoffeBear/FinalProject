@@ -27,12 +27,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
-import { deletePostQuery, getPostQuery } from '../../redux/actionCreators/postsActionCreators'
+import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
+import { getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
 // import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
@@ -52,19 +53,15 @@ theme = responsiveFontSizes(theme)
 function DetailedPost() {
   const { idPost } = useParams() // получение id поста
 
-  const posts = useSelector((store) => store.posts) // получение состояния постов (массив) из редакса
   const token = useSelector((store) => store.user.token) // получение токена из редакса
   const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
+  const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
 
   const dispatch = useDispatch() // достаем dispatch
-  // eslint-disable-next-line no-underscore-dangle
-  const indexPost = posts.findIndex((item) => item._id === idPost) // поиск индекса текущего поста в массиве
-  const post = posts[indexPost] // получение текущего поста
 
-  const postDate = post.updated_at // получение даты из текущего поста
-  const avatarPost = post.author.avatar // получение аватара из текущего поста
-  // const likesPost = post.likes
-  // const idLikes = post._id
+  const postDate = detailPost?.updated_at // получение даты из текущего поста
+  const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
+  const likesPost = detailPost.likes
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
@@ -130,27 +127,28 @@ function DetailedPost() {
             minWidth: 500,
             maxWidth: 500,
             minHeight: 500,
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-          alignItems="center"
-          justifyContent="center"
         >
           <CardHeader
             avatar={(
               <Avatar src={avatarPost} aria-label="post" />
             )}
-            titleTypographyProps={{ variant: 'h5' }}
-            title={post.title}
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            title={detailPost.title}
             subheader={updatedDate}
           />
+          {/* <Typography variant="overline">{detailPost.author}</Typography> */}
           <CardMedia
             component="img"
             height="500"
-            image={post.image}
-            alt={post.title}
+            image={detailPost.image}
+            alt={detailPost.title}
           />
           <CardContent>
             <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'left' }}>
-              {post.text}
+              {detailPost.text}
             </Typography>
           </CardContent>
           <Box sx={{
@@ -160,15 +158,15 @@ function DetailedPost() {
           >
             <CardActions disableSpacing>
               <Typography variant="overline" component="div" gutterBottom position="left">
-                {post.tags}
+                {detailPost.tags}
               </Typography>
             </CardActions>
             <Box
               sx={{
                 display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-around',
               }}
-              alignItems="center"
-              justifyContent="space-around"
             >
               <Tooltip title="Вернуться">
                 <LinkMUI component={Link} to="/content">
@@ -180,7 +178,11 @@ function DetailedPost() {
                   aria-label="like"
                 // onClick={likeHandler}
                 >
-                  <FavoriteBorderIcon />
+                  <FavoriteBorderIcon
+                    sx={{
+                      color: '#c62828',
+                    }}
+                  />
                   <Typography
                     variant="subtitle2"
                     color="text.secondary"
@@ -189,7 +191,7 @@ function DetailedPost() {
                       p: 0.5,
                     }}
                   >
-                    {/* {likesPost.length} */}
+                    {likesPost?.length}
                   </Typography>
                 </IconButton>
               </Tooltip>
@@ -238,7 +240,7 @@ function DetailedPost() {
     <>
       <DetailedPostwithLoader loading={loading} />
       <Modal state={viewModal} closeModal={closeModal}>
-        <EditPost closeModal={closeModal} {...post} />
+        <EditPost closeModal={closeModal} {...detailPost} />
       </Modal>
     </>
 

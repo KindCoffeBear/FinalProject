@@ -133,7 +133,11 @@ function Post({
           >
             <Tooltip title="Лайк">
               <IconButton aria-label="like" onClick={likeHandler}>
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon
+                  sx={{
+                    color: '#c62828',
+                  }}
+                />
                 <Typography
                   variant="subtitle2"
                   color="text.secondary"

@@ -48,7 +48,6 @@ export const signUpQuery = ({
     avatar,
   })
   const user = upResponse.data
-  console.log(user)
   dispatch(
     signUp({
       ...user.data,
@@ -83,14 +82,13 @@ export const editProfile = (changedUserData) => ({
   payload: changedUserData,
 })
 
-export const editProfileQuery = (newName, newAbout, token) => async (dispatch) => {
+export const editProfileQuery = (newName, newAbout) => async (dispatch) => {
   const response = await axiosInstance.patch(
     'users/me',
     {
       name: newName,
       about: newAbout,
     },
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const changedUser = await response.data
   dispatch(editProfile(changedUser))
@@ -101,13 +99,12 @@ export const editAvatar = (changedUserData) => ({
   payload: changedUserData,
 })
 
-export const editAvatarQuery = (newAvatar, token) => async (dispatch) => {
+export const editAvatarQuery = (newAvatar) => async (dispatch) => {
   const response = await axiosInstance.patch(
     'users/me/avatar',
     {
       avatar: newAvatar,
     },
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const changedAvatar = await response.data
   dispatch(editAvatar(changedAvatar))

@@ -20,7 +20,7 @@ function SearchForm() {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
-          placeholder="Search…"
+          placeholder="Поиск…"
           inputProps={{ 'aria-label': 'search' }}
           onChange={searchHandler}
         />

@@ -8,10 +8,9 @@ const getAllComments = (commentsFromServer) => ({
 
 // получение всех комментов с сервера
 // eslint-disable-next-line import/prefer-default-export
-export const getCommentsFromServerQuery = (token) => async (dispatch) => {
+export const getCommentsFromServerQuery = () => async (dispatch) => {
   const response = await axiosInstance.get(
     'posts/comments',
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getAllComments(dataFromServer))

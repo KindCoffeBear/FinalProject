@@ -50,7 +50,7 @@ export default function SignUpForm() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Заполните данные профиля
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -59,7 +59,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Адре электронной почты"
                   name="email"
                   autoComplete="email"
                 />
@@ -69,7 +69,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Пароль"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -80,7 +80,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   id="name"
-                  label="Your name"
+                  label="Ваше имя"
                   name="name"
                   autoComplete="name"
                 />
@@ -90,7 +90,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   id="profession"
-                  label="Your profession"
+                  label="Ваша профессия"
                   name="profession"
                   autoComplete="profession"
                 />
@@ -100,7 +100,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   id="avatar"
-                  label="Your avatar"
+                  label="Ваш аватар"
                   name="avatar"
                   autoComplete="avatar"
                 />
@@ -112,12 +112,12 @@ export default function SignUpForm() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up!
+              Создать аккаунт
             </Button>
             <Grid container>
               <Grid item>
                 <Link href="/signInForm" variant="body2">
-                  Already have an account? Sign in
+                  Уже есть аккаунт? Войдите в систему
                 </Link>
               </Grid>
             </Grid>

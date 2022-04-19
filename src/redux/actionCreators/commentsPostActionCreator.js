@@ -8,10 +8,9 @@ const getCommentsPost = (commentsPostFromServer) => ({
 
 // получение комментов одного поста с сервера
 // eslint-disable-next-line import/prefer-default-export
-export const getCommentsPostFromServerQuery = (id, token) => async (dispatch) => {
+export const getCommentsPostFromServerQuery = (id) => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/comments/${id}`,
-    { headers: { authorization: `Bearer ${token}` } },
   )
   const dataFromServer = response.data
   dispatch(getCommentsPost(dataFromServer))
@@ -43,10 +42,9 @@ const deleteComment = (id) => ({
 })
 
 // удаление комментария по id
-export const deleteCommentQuery = (idPost, idComment, token) => async (dispatch) => {
+export const deleteCommentQuery = (idPost, idComment) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/comments/${idPost}/${idComment}`,
-    { headers: { authorization: `Bearer ${token}` } },
   )
   console.log(response.status)
   if (response.status === 200) {

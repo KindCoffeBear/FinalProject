@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signInQuery } from '../../../redux/actionCreators/userActionCreators'
 import TOKEN from '../../../localStorageConsts'
@@ -19,9 +19,9 @@ const theme = createTheme()
 
 export default function SignInForm() {
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
   const dispatch = useDispatch()
-  const from = location.state?.from?.pathname || '/'
+  // const from = location.state?.from?.pathname || '/'
   const signInHandler = (e) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
@@ -29,7 +29,7 @@ export default function SignInForm() {
       email: data.get('email'),
       password: data.get('password'),
       cb: () => {
-        navigate(from, { replace: true })
+        navigate('/content')
       },
     }))
   }
@@ -69,7 +69,7 @@ export default function SignInForm() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign In
+              Вход
             </Typography>
             <Box component="form" noValidate onSubmit={signInHandler} sx={{ mt: 1 }}>
               <TextField
@@ -98,12 +98,17 @@ export default function SignInForm() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Войти
               </Button>
-              <Grid container>
-                <Grid item>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <Link href="/signUpForm" variant="body2">
-                    Don't have an account? Sign Up
+                    До сих пор нет аккаунта? Зарегистрируйтесь!
+                  </Link>
+                </Grid>
+                <Grid item xs={12}>
+                  <Link href="/refreshPasswordForm" variant="body2">
+                    Забыли пароль? Нажмите, чтобы восстановить
                   </Link>
                 </Grid>
               </Grid>

@@ -13,12 +13,13 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (page = '', limit = '', filter = '') => async (dispatch) => {
+export const getPostsFromServerQuery = (page = '', limit = '', filter = '', setLoading) => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/paginate?page=${page}&limit=${limit}&query=${filter}`,
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
+  setLoading(false)
 }
 
 const addNewPost = (newPost) => ({

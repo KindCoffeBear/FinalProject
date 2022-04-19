@@ -3,7 +3,7 @@ import Posts from './Posts/Posts'
 
 function Main() {
   return (
-    <Container>
+    <Container sx={{ backgroundColor: 'rgba(0, 255, 127, 0.1)' }}>
       <Posts />
     </Container>
   )

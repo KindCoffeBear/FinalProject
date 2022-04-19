@@ -10,6 +10,7 @@ import { getCommentsFromServerQuery } from '../../../redux/actionCreators/commen
 
 import { getPostsFromServerQuery } from '../../../redux/actionCreators/postsActionCreators'
 import useDebounce from '../../CustomHooks/useDebounce'
+import withLoader from '../../hocs/withLoader'
 
 import Post from './Post/Post'
 
@@ -21,6 +22,7 @@ function Posts() {
 
   const [limit, setLimit] = useState('')
   const [page, setPage] = useState('1')
+  const [loading, setLoading] = useState(false)
 
   const countPages = limit ? Math.ceil(total / limit) : null
   const numbersPage = countPages ? Array(countPages).fill().map((x, i) => i + 1) : null
@@ -31,8 +33,9 @@ function Posts() {
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
+    setLoading(true)
     dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(page, limit, debouncedFilter))
+    dispatch(getPostsFromServerQuery(page, limit, debouncedFilter, setLoading))
   }, [debouncedFilter, limit, page])
 
   const changeHandler = (e) => {
@@ -44,9 +47,10 @@ function Posts() {
   const changePageHandler = (e) => {
     setPage(e.target.outerText)
   }
-  return (
+
+  const PostsWithLoader = withLoader(() => (
     <>
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <FormControl sx={{ m: 1, minWidth: 160 }} variant="standard">
           <InputLabel id="limit">Кол-во постов</InputLabel>
           <Select
@@ -88,6 +92,10 @@ function Posts() {
 
       </Box>
     </>
+  ))
+
+  return (
+    <PostsWithLoader loading={loading} />
   )
 }
 

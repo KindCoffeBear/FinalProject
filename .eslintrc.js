@@ -28,6 +28,7 @@ module.exports = {
     semi: ['error', 'never'],
     'no-console': 0,
     'no-alert': 0,
+    'no-restricted-globals': ['error', 'never'],
     'func-names': ['error', 'never'],
   },
 }

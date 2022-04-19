@@ -4,9 +4,12 @@ import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom'
 
 export default function RefreshPasswordForm() {
+  const navigate = useNavigate()
   const refreshPasswordHandler = async (event) => {
+    event.preventDefault()
     const data = new FormData(event.currentTarget)
     const email = data.get('email')
     const response = await fetch(
@@ -22,7 +25,8 @@ export default function RefreshPasswordForm() {
       },
     )
     const responseFromServer = await response.json()
-    console.log(responseFromServer)
+    alert(responseFromServer.message)
+    navigate('/changePasswordForm')
   }
   return (
     <Container maxWidth="sm" sx={{ mt: 20 }}>

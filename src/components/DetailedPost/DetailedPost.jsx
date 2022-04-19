@@ -18,7 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
-  Stack, Box, Tooltip, Grid, Collapse,
+  Stack, Box, Tooltip, Grid, Collapse, Avatar,
 } from '@mui/material'
 import LinkMUI from '@mui/material/Link'
 import {
@@ -33,6 +33,7 @@ import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
+// import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -49,24 +50,23 @@ let theme = createTheme()
 theme = responsiveFontSizes(theme)
 
 function DetailedPost() {
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
   const { idPost } = useParams() // получение id поста
 
   const posts = useSelector((store) => store.posts) // получение состояния постов (массив) из редакса
   const token = useSelector((store) => store.user.token) // получение токена из редакса
-  const commentsPost = useSelector((store) => store.commentsPost)
-
-  // const updatedDate = new Date(postDate).toLocaleString()
+  const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
 
   const dispatch = useDispatch() // достаем dispatch
   // eslint-disable-next-line no-underscore-dangle
   const indexPost = posts.findIndex((item) => item._id === idPost) // поиск индекса текущего поста в массиве
   const post = posts[indexPost] // получение текущего поста
+
+  const postDate = post.updated_at // получение даты из текущего поста
+  const avatarPost = post.author.avatar // получение аватара из текущего поста
+  // const likesPost = post.likes
+  // const idLikes = post._id
+
+  const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
   const [loading, setLoading] = useState(false) // состояние загрузки (реакт)
 
@@ -100,6 +100,24 @@ function DetailedPost() {
     setViewModal(false)
   }
 
+  // // eslint-disable-next-line no-underscore-dangle
+  // const isLike = likesPost.includes(post.author._id)
+
+  // // поставить или удалить лайк по клику
+  // const likeHandler = () => {
+  //   if (!isLike) {
+  //     dispatch(addLikeQuery(idLikes))
+  //   } else {
+  //     dispatch(deleteLikeQuery(idLikes))
+  //   }
+  // }
+
+  const [expanded, setExpanded] = React.useState(false)
+
+  const handleExpandClick = () => { // скрытие/открытие списка комментариев
+    setExpanded(!expanded)
+  }
+
   const DetailedPostwithLoader = withLoader(() => (
     <Stack
       component="div"
@@ -117,11 +135,12 @@ function DetailedPost() {
           justifyContent="center"
         >
           <CardHeader
-            // avatar={(
-            //   <Avatar src={avatar} aria-label="post" />
-            // )}
+            avatar={(
+              <Avatar src={avatarPost} aria-label="post" />
+            )}
+            titleTypographyProps={{ variant: 'h5' }}
             title={post.title}
-          // subheader={updatedDate}
+            subheader={updatedDate}
           />
           <CardMedia
             component="img"
@@ -130,7 +149,7 @@ function DetailedPost() {
             alt={post.title}
           />
           <CardContent>
-            <Typography variant="h6" color="text.secondary" sx={{ textAlign: 'left' }}>
+            <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'left' }}>
               {post.text}
             </Typography>
           </CardContent>
@@ -147,9 +166,9 @@ function DetailedPost() {
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-around',
-                alignItems: 'center',
               }}
+              alignItems="center"
+              justifyContent="space-around"
             >
               <Tooltip title="Вернуться">
                 <LinkMUI component={Link} to="/content">
@@ -157,12 +176,22 @@ function DetailedPost() {
                 </LinkMUI>
               </Tooltip>
               <Tooltip title="Лайк">
-                {/* <IconButton aria-label="like"
-              // onClick={likeHandler}
-              > */}
-                <FavoriteBorderIcon />
-                {/* <p>{likesFromRedux.length}</p> */}
-                {/* </IconButton> */}
+                <IconButton
+                  aria-label="like"
+                // onClick={likeHandler}
+                >
+                  <FavoriteBorderIcon />
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    sx={{
+                      textAlign: 'left',
+                      p: 0.5,
+                    }}
+                  >
+                    {/* {likesPost.length} */}
+                  </Typography>
+                </IconButton>
               </Tooltip>
               <Tooltip title="Редактировать">
                 <IconButton aria-label="edit" onClick={openModal}>

@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
@@ -132,8 +132,17 @@ function Post({
           >
             <Tooltip title="Лайк">
               <IconButton aria-label="like" onClick={likeHandler}>
-                <FavoriteIcon />
-                <p>{likesFromRedux.length}</p>
+                <FavoriteBorderIcon />
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{
+                    textAlign: 'left',
+                    p: 0.5,
+                  }}
+                >
+                  {/* {likesEveryPost} */}
+                </Typography>
               </IconButton>
             </Tooltip>
             <LinkMUI component={Link} to={`/post/${_id}`}>

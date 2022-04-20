@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { updatePostQuery } from '../../../redux/actionCreators/postsActionCreators'
+import { updatePostQuery } from '../../../redux/actionCreators/detailPostActionCreator'
 
 function EditPost({
   title, text, image, tags, closeModal,

@@ -1,0 +1,2 @@
+export const UPDATE_POST = 'UPDATE_POST'
+export const GET_CURRENT_POST = 'GET_CURRENT_POST'

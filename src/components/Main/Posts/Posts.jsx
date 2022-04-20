@@ -10,6 +10,7 @@ import { getCommentsFromServerQuery } from '../../../redux/actionCreators/commen
 
 import { getPostsFromServerQuery } from '../../../redux/actionCreators/postsActionCreators'
 import useDebounce from '../../CustomHooks/useDebounce'
+import withLoader from '../../hocs/withLoader'
 
 import Post from './Post/Post'
 
@@ -21,6 +22,7 @@ function Posts() {
 
   const [limit, setLimit] = useState('')
   const [page, setPage] = useState('1')
+  const [loading, setLoading] = useState(false)
 
   const countPages = limit ? Math.ceil(total / limit) : null
   const numbersPage = countPages ? Array(countPages).fill().map((x, i) => i + 1) : null
@@ -31,8 +33,9 @@ function Posts() {
   const dispatch = useDispatch()
   // получаем данные из сервера при монтировании и при изменении значения debouncedFilter
   useEffect(() => {
+    setLoading(true)
     dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(page, limit, debouncedFilter))
+    dispatch(getPostsFromServerQuery(page, limit, debouncedFilter, setLoading))
   }, [debouncedFilter, limit, page])
 
   const changeHandler = (e) => {
@@ -44,9 +47,10 @@ function Posts() {
   const changePageHandler = (e) => {
     setPage(e.target.outerText)
   }
-  return (
-    <>
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+
+  const PostsWithLoader = withLoader(() => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
         <FormControl sx={{ m: 1, minWidth: 160 }} variant="standard">
           <InputLabel id="limit">Кол-во постов</InputLabel>
           <Select
@@ -57,14 +61,14 @@ function Posts() {
             onChange={changeHandler}
           >
             <MenuItem value="Все">Все</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={12}>12</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
             <MenuItem value={30}>30</MenuItem>
             <MenuItem value={60}>60</MenuItem>
           </Select>
         </FormControl>
       </Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {posts.map((post) => (
           // eslint-disable-next-line no-underscore-dangle
           <Post key={post._id} {...post} />
@@ -87,7 +91,11 @@ function Posts() {
         )) : null}
 
       </Box>
-    </>
+    </Box>
+  ))
+
+  return (
+    <PostsWithLoader loading={loading} />
   )
 }
 

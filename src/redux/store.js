@@ -12,7 +12,7 @@ const initState = {
     token: '',
   },
   commentsPost: [],
-  likes: [],
+  post: {},
 }
 
 export default initState

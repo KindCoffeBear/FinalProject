@@ -10,7 +10,6 @@ import CardActions from '@mui/material/CardActions'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
@@ -19,9 +18,10 @@ import LinkMUI from '@mui/material/Link'
 import { Collapse, Divider, Grid } from '@mui/material'
 import { useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
+import { addLikeQuery, deleteLikeQuery, deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
 import Comments from '../Comments/Comments'
-import { addLikeQuery, deleteLikeQuery } from '../../../../redux/actionCreators/likesActionCreator'
+// eslint-disable-next-line import/order
+import { FavoriteBorderRounded, FavoriteRounded } from '@mui/icons-material'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -36,14 +36,14 @@ const ExpandMore = styled((props) => {
 
 function Post({
   // eslint-disable-next-line camelcase
-  _id, title, tags, text, image, updated_at, author, comments,
+  _id, title, tags, text, image, updated_at, author, comments, likes,
 }) {
-  const likesFromRedux = useSelector((store) => store.likes)
   const postTags = tags.length ? `#${tags.join('#')}` : null
   const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
   const updatedDate = new Date(updated_at).toLocaleString()
   const avatarDefault = 'https://thumbs.dreamstime.com/b/%D0%B7%D0%BD%D0%B0%D1%87%D0%BE%D0%BA-%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E-%D0%BF%D0%BB%D0%BE%D1%81%D0%BA%D0%B8%D0%B9-%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-184330869.jpg'
   const imageDefault = 'https://cdn5.vectorstock.com/i/1000x1000/97/69/no-like-icon-sign-on-white-background-symbol-vector-26149769.jpg'
+  const idAuthor = useSelector((store) => store.user._id)
 
   const avatar = author ? author.avatar : avatarDefault
   let imagePost = image
@@ -70,8 +70,8 @@ function Post({
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const isLike = likesFromRedux.includes(author?._id)
-
+  const isLike = likes.includes(idAuthor) // проверка наличия id пользователя в массиве лайков
+  console.log({ likes })
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {
@@ -142,11 +142,15 @@ function Post({
           >
             <Tooltip title="Лайк">
               <IconButton aria-label="like" onClick={likeHandler}>
-                <FavoriteBorderIcon
-                  sx={{
-                    color: '#c62828',
-                  }}
-                />
+                {!isLike
+                  ? (<FavoriteBorderRounded sx={{ color: '#c62828' }} />
+                  ) : (
+                    <FavoriteRounded
+                      sx={{
+                        color: '#c62828',
+                      }}
+                    />
+                  )}
                 <Typography
                   variant="subtitle2"
                   color="text.secondary"
@@ -155,7 +159,7 @@ function Post({
                     p: 0.5,
                   }}
                 >
-                  {/* {likesEveryPost} */}
+                  {likes.length}
                 </Typography>
               </IconButton>
             </Tooltip>

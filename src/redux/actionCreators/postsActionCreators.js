@@ -4,7 +4,7 @@
 // не забыть вернуть GET_CURRENT_POST UPDATE_POST
 import axiosInstance from '../../axiosConfig/axiosConfig'
 import {
-  ADD_NEW_POST, DELETE_POST, GET_POSTS_FROM_SERVER,
+  ADD_NEW_POST, DELETE_POST, GET_POSTS_FROM_SERVER, LIKE_POST,
 } from '../actionTypes/postsTypes'
 
 const getPostsFromServer = (postsFromServer) => ({
@@ -58,4 +58,30 @@ export const deletePostQuery = (id) => async (dispatch) => {
       alert('Вы не можете удалить чужой пост')
     }
   }
+}
+
+const addLike = (data) => ({
+  type: LIKE_POST,
+  payload: data,
+})
+
+export const addLikeQuery = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.put(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(addLike(likesFromServer))
+}
+
+const deleteLike = (likesFromServer) => ({
+  type: LIKE_POST,
+  payload: likesFromServer,
+})
+
+export const deleteLikeQuery = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.delete(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(deleteLike(likesFromServer))
 }

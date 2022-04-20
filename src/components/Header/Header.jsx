@@ -32,8 +32,8 @@ function Header() {
     navigate('/signInForm')
   }
   return (
-    <AppBar position="relative">
-      <Container maxWidth="xl">
+    <AppBar position="relative" color="secondary">
+      <Container maxWidth="false">
         <Toolbar disableGutters>
           <AppTitle />
           {!userToken ? <HelloPageLink /> : null}
@@ -43,7 +43,7 @@ function Header() {
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}
           {userToken ? (
-            <Button type="button" variant="contained" onClick={signOutHandler}>
+            <Button type="button" variant="contained" color="secondary" onClick={signOutHandler}>
               Выйти
             </Button>
           ) : null}

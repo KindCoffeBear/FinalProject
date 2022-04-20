@@ -50,6 +50,7 @@ export default function ChangePasswordForm() {
     console.log(response)
     if (response.status === 200) {
       alert('Пароль успешно изменен')
+      navigate('/signInForm')
     } else if (response.status === 401) {
       alert('Время действия кода истекло, отправьте запрос на восстановления паролья повторно')
       navigate('/refreshPasswordForm')
@@ -86,7 +87,7 @@ export default function ChangePasswordForm() {
           required
           fullWidth
           id="token"
-          label="Укажите токен с электронной почты"
+          label="Укажите секретное слово с электронной почты"
           name="token"
           autoComplete="token"
           autoFocus

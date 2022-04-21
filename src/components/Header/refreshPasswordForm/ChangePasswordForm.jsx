@@ -28,7 +28,6 @@ export default function ChangePasswordForm() {
     // eslint-disable-next-line no-unused-vars
     // eslint-disable-next-line no-underscore-dangle
     const userId = IdFromServer._id
-    console.log(userId)
     const response = await fetch(
       `https://api.react-learning.ru/password-reset/${userId}/${token}`,
       {

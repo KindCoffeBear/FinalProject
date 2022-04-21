@@ -25,13 +25,15 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
-import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/postsActionCreators'
+// import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
-import { deleteCurrentPost, getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
+import {
+  addLikeOnDetailPost, deleteCurrentPost, deleteLikeOnDetailPost, getPostQuery,
+} from '../../redux/actionCreators/detailPostActionCreator'
 // eslint-disable-next-line import/order
 import { FavoriteBorderRounded, FavoriteRounded } from '@mui/icons-material'
 
@@ -57,13 +59,13 @@ function DetailedPost() {
   const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
   const user = useSelector((store) => store.user)
   const isAuthor = (user?._id === detailPost?.author?._id)
-  console.log(isAuthor)
   const dispatch = useDispatch() // достаем dispatch
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
   const likesPost = detailPost.likes // получение всех лайков поста
-  const authorId = detailPost?.author?._id
+  const authorId = detailPost?.author?._id // получение id автора
+  // const authorName = detailPost?.author?.name // получение имени автора
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
@@ -86,7 +88,7 @@ function DetailedPost() {
   }, [])
 
   const deleteHandler = () => {
-    dispatch(deletePostQuery(idPost))
+    dispatch(deleteCurrentPost(idPost))
     navigate('/content')
   }
 
@@ -106,9 +108,9 @@ function DetailedPost() {
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {
-      dispatch(addLikeQuery(detailPost._id))
+      dispatch(addLikeOnDetailPost(detailPost._id))
     } else {
-      dispatch(deleteLikeQuery(detailPost._id))
+      dispatch(deleteLikeOnDetailPost(detailPost._id))
     }
   }
 
@@ -142,7 +144,6 @@ function DetailedPost() {
             title={detailPost.title}
             subheader={updatedDate}
           />
-          {/* <Typography variant="overline">{detailPost.author}</Typography> */}
           <CardMedia
             component="img"
             height="500"
@@ -199,18 +200,18 @@ function DetailedPost() {
                 </IconButton>
               </Tooltip>
               {isAuthor ? (
-                <Tooltip title="Редактировать">
-                  <IconButton aria-label="edit" onClick={openModal}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : null}
-              {isAuthor ? (
-                <Tooltip title="Удалить">
-                  <IconButton aria-label="delete" onClick={deleteHandler}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
+                <>
+                  <Tooltip title="Редактировать">
+                    <IconButton aria-label="edit" onClick={openModal}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Удалить">
+                    <IconButton aria-label="delete" onClick={deleteHandler}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
               ) : null}
             </Box>
           </Box>
@@ -254,66 +255,3 @@ function DetailedPost() {
   )
 }
 export default DetailedPost
-
-// const { idPost } = useParams() // получение id поста
-
-// const token = useSelector((store) => store.user.token) // получение токена из редакса
-// const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
-// const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
-// console.log({ detailPost })
-
-// const dispatch = useDispatch() // достаем dispatch
-
-// const postDate = detailPost?.updated_at // получение даты из текущего поста
-// const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
-// const likesPost = detailPost.likes // получение всех лайков поста
-// console.log({ likesPost })
-// const authorId = detailPost.author
-// console.log({ authorId })
-
-// const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
-
-// const [loading, setLoading] = useState(false) // состояние загрузки (реакт)
-
-// const controller = useRef(new AbortController()) // состояние controller для обрыва соединения с сервером
-// const [viewModal, setViewModal] = useState(false) // состояние модалки (закрыта/открыта)
-
-// // Монтируем объект до рендера компонента
-// useLayoutEffect(() => {
-//   setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
-
-//   dispatch(getCommentsPostFromServerQuery(idPost))
-//   dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
-
-//   // при отмены загрузки данных с сервера выполняем обрыв соединения
-//   return () => {
-//     controller.current.abort()
-//   }
-// }, [])
-
-// const deleteHandler = () => {
-//   dispatch(deletePostQuery(idPost))
-// }
-
-// // задаем состояние открытой модалки
-// const openModal = () => {
-//   setViewModal(true)
-// }
-
-// // задаем состояние закрытой модалки
-// const closeModal = () => {
-//   setViewModal(false)
-// }
-
-// eslint-disable-next-line no-underscore-dangle
-// const isLike = likesPost.includes(authorId)
-// console.log({ isLike })
-
-// // поставить или удалить лайк по клику
-// const likeHandler = () => {
-//   if (!isLike) {
-//     dispatch(addLikeQuery(detailPost._id))
-//   } else {
-//     dispatch(deleteLikeQuery(detailPost._id))
-//   }
-// }

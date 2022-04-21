@@ -71,6 +71,7 @@ function Post({
 
   // eslint-disable-next-line no-underscore-dangle
   const isLike = likes.includes(idAuthor) // проверка наличия id пользователя в массиве лайков
+
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {

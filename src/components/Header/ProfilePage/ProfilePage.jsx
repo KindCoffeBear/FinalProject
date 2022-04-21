@@ -34,7 +34,6 @@ export default function ProfilePAge() {
     dispatch(getPostsFromServerQuery(debouncedFilter))
   }, [debouncedFilter])
   const posts = useSelector((store) => store.paginatePost.posts)
-  console.log(user, posts)
   const newPosts = posts.filter((post) => post?.author?.email === user.email)
   const editProfileHandler = (event) => {
     event.preventDefault()
@@ -106,7 +105,7 @@ export default function ProfilePAge() {
       <Container>
         <Grid container spacing={2} sx={{ mt: 10 }}>
           {newPosts.map((post) => (
-          // eslint-disable-next-line no-underscore-dangle
+            // eslint-disable-next-line no-underscore-dangle
             <Post key={post._id} {...post} />
           ))}
         </Grid>

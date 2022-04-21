@@ -1,5 +1,7 @@
 import axiosInstance from '../../axiosConfig/axiosConfig'
-import { GET_CURRENT_POST, UPDATE_POST } from '../actionTypes/detailPostTypes'
+import {
+  DELETE_DETAIL_POST, GET_CURRENT_POST, LIKE_DETAIL_POST, UPDATE_POST,
+} from '../actionTypes/detailPostTypes'
 
 const updatePost = (editedPost) => ({
   type: UPDATE_POST,
@@ -14,7 +16,6 @@ export const updatePostQuery = (id, editedPost, closeModal) => async (dispatch) 
   )
   if (response.status === 200) {
     const updatedPostFromServer = response.data
-    console.log({ updatedPostFromServer })
     dispatch(updatePost(updatedPostFromServer))
     closeModal()
   } else {
@@ -36,4 +37,52 @@ export const getPostQuery = (idPost, setLoading, controller) => async (dispatch)
   const postFromServer = response.data
   dispatch(getPost(postFromServer))
   setLoading(false)
+}
+
+const deleteDetailPost = (id) => ({
+  type: DELETE_DETAIL_POST,
+  payload: id,
+})
+
+// удаление поста по id при нахождении на детальной странице
+export const deleteCurrentPost = (id) => async (dispatch) => {
+  try {
+    await axiosInstance.delete(
+      `posts/${id}`,
+    )
+
+    dispatch(deleteDetailPost(id))
+  } catch (e) {
+    const codeError = e.message.slice(-3)
+    if (codeError === '403') {
+      alert('Вы не можете удалить чужой пост')
+    }
+  }
+}
+
+// добавление/удаление лайка на детальной странице
+const addLikeDetailPost = (data) => ({
+  type: LIKE_DETAIL_POST,
+  payload: data,
+})
+
+export const addLikeOnDetailPost = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.put(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(addLikeDetailPost(likesFromServer))
+}
+
+const deleteLikeDetailPost = (likesFromServer) => ({
+  type: LIKE_DETAIL_POST,
+  payload: likesFromServer,
+})
+
+export const deleteLikeOnDetailPost = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.delete(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(deleteLikeDetailPost(likesFromServer))
 }

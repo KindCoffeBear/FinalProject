@@ -4,7 +4,6 @@ import postsReducer from './postsReducer'
 import commentsReducer from './commentsReducer'
 import userReducer from './userReducers'
 import commentsPostReducer from './commentsPostReducer'
-import likesReduser from './likesReducer'
 import detailPostReducer from './detailPostReducer'
 
 // создаем главный reducer, который объединяет в себя все отдельные reducers
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
   comments: commentsReducer,
   user: userReducer,
   commentsPost: commentsPostReducer,
-  likes: likesReduser,
   post: detailPostReducer,
 })
 

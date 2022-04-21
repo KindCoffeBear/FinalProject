@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import EditIcon from '@mui/icons-material/Edit'
-// import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -27,7 +27,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
-import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
+import { addLikeQuery, deleteLikeQuery, deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
@@ -63,7 +63,8 @@ function DetailedPost() {
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
-  const likesPost = detailPost.likes
+  const likesPost = detailPost.likes // получение всех лайков поста
+  const authorId = detailPost?.author?._id
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
@@ -100,17 +101,17 @@ function DetailedPost() {
     setViewModal(false)
   }
 
-  // // eslint-disable-next-line no-underscore-dangle
-  // const isLike = likesPost.includes(post.author._id)
+  // eslint-disable-next-line no-underscore-dangle
+  // const isLike = likesPost.includes(authorId)
 
-  // // поставить или удалить лайк по клику
-  // const likeHandler = () => {
-  //   if (!isLike) {
-  //     dispatch(addLikeQuery(idLikes))
-  //   } else {
-  //     dispatch(deleteLikeQuery(idLikes))
-  //   }
-  // }
+  // поставить или удалить лайк по клику
+  const likeHandler = () => {
+    if (!likesPost.includes(authorId)) {
+      dispatch(addLikeQuery(detailPost?._id))
+    } else {
+      dispatch(deleteLikeQuery(detailPost?._id))
+    }
+  }
 
   const [expanded, setExpanded] = React.useState(false)
 
@@ -177,15 +178,23 @@ function DetailedPost() {
                 </LinkMUI>
               </Tooltip>
               <Tooltip title="Лайк">
+
                 <IconButton
                   aria-label="like"
-                // onClick={likeHandler}
+                  onClick={likeHandler}
                 >
                   <FavoriteBorderIcon
                     sx={{
                       color: '#c62828',
                     }}
                   />
+
+                  <FavoriteIcon
+                    sx={{
+                      color: '#c62828',
+                    }}
+                  />
+
                   <Typography
                     variant="subtitle2"
                     color="text.secondary"
@@ -254,3 +263,66 @@ function DetailedPost() {
   )
 }
 export default DetailedPost
+
+// const { idPost } = useParams() // получение id поста
+
+// const token = useSelector((store) => store.user.token) // получение токена из редакса
+// const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
+// const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
+// console.log({ detailPost })
+
+// const dispatch = useDispatch() // достаем dispatch
+
+// const postDate = detailPost?.updated_at // получение даты из текущего поста
+// const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
+// const likesPost = detailPost.likes // получение всех лайков поста
+// console.log({ likesPost })
+// const authorId = detailPost.author
+// console.log({ authorId })
+
+// const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
+
+// const [loading, setLoading] = useState(false) // состояние загрузки (реакт)
+
+// const controller = useRef(new AbortController()) // состояние controller для обрыва соединения с сервером
+// const [viewModal, setViewModal] = useState(false) // состояние модалки (закрыта/открыта)
+
+// // Монтируем объект до рендера компонента
+// useLayoutEffect(() => {
+//   setLoading(true) // ставим флаг, что страница загружается, пока данные из сервера получаются
+
+//   dispatch(getCommentsPostFromServerQuery(idPost))
+//   dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
+
+//   // при отмены загрузки данных с сервера выполняем обрыв соединения
+//   return () => {
+//     controller.current.abort()
+//   }
+// }, [])
+
+// const deleteHandler = () => {
+//   dispatch(deletePostQuery(idPost))
+// }
+
+// // задаем состояние открытой модалки
+// const openModal = () => {
+//   setViewModal(true)
+// }
+
+// // задаем состояние закрытой модалки
+// const closeModal = () => {
+//   setViewModal(false)
+// }
+
+// eslint-disable-next-line no-underscore-dangle
+// const isLike = likesPost.includes(authorId)
+// console.log({ isLike })
+
+// // поставить или удалить лайк по клику
+// const likeHandler = () => {
+//   if (!isLike) {
+//     dispatch(addLikeQuery(detailPost._id))
+//   } else {
+//     dispatch(deleteLikeQuery(detailPost._id))
+//   }
+// }

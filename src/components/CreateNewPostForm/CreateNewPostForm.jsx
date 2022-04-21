@@ -18,11 +18,9 @@ function CreateNewPostForm() {
       title,
       text,
       image,
-      // tags: tags.split(',').map((el) => el.trim()),
+      tags: tags.split(',').map((el) => el.trim()),
     }
-
-    const body = JSON.stringify(preparedPostQuery)
-    dispatch(addNewPostQuery(body))
+    dispatch(addNewPostQuery(preparedPostQuery))
     navigate('/content')
   }
 

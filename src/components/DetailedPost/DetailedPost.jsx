@@ -58,7 +58,7 @@ function DetailedPost() {
   const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
   const user = useSelector((store) => store.user)
   const isAuthor = (user?._id === detailPost?.author?._id)
-  console.log(isAuthor)
+  console.log(detailPost)
   const dispatch = useDispatch() // достаем dispatch
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста

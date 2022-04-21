@@ -29,10 +29,9 @@ const addNewPost = (newPost) => ({
 
 // добавление поста на сервере и получение данных с сервера
 export const addNewPostQuery = (newPost) => async (dispatch) => {
-  const bodyObject = JSON.parse(newPost)
   const response = await axiosInstance.post(
     'posts',
-    bodyObject,
+    newPost,
   )
 
   const postFromApi = response.data

@@ -77,6 +77,7 @@ export const signUpQuery = ({
       }),
     )
     typeof cb === 'function' && cb()
+    localStorage.setItem(TOKEN, userForIn.token)
   } catch (error) {
     const codeError = error.message.slice(-3)
     if (codeError === '400') {

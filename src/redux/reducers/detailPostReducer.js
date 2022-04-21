@@ -1,10 +1,7 @@
 /* eslint-disable default-param-last */
 
 // reducers для постf
-import { GET_CURRENT_POST, UPDATE_POST } from '../actionTypes/detailPostTypes'
-// import {
-//   DELETE_POST,
-// } from '../actionTypes/postsTypes'
+import { DELETE_DETAIL_POST, GET_CURRENT_POST, UPDATE_POST } from '../actionTypes/detailPostTypes'
 
 const detailPostReducer = (store = {}, action) => {
   switch (action.type) {
@@ -19,6 +16,10 @@ const detailPostReducer = (store = {}, action) => {
       // получение конкретного поста на детальной странице
     case GET_CURRENT_POST:
       return action.payload
+
+    // удаление конкретного поста при нахождении на детальной странице
+    case DELETE_DETAIL_POST:
+      return store
 
     default:
       return store

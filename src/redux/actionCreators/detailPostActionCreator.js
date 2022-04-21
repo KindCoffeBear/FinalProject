@@ -1,5 +1,5 @@
 import axiosInstance from '../../axiosConfig/axiosConfig'
-import { GET_CURRENT_POST, UPDATE_POST } from '../actionTypes/detailPostTypes'
+import { DELETE_DETAIL_POST, GET_CURRENT_POST, UPDATE_POST } from '../actionTypes/detailPostTypes'
 
 const updatePost = (editedPost) => ({
   type: UPDATE_POST,
@@ -36,4 +36,25 @@ export const getPostQuery = (idPost, setLoading, controller) => async (dispatch)
   const postFromServer = response.data
   dispatch(getPost(postFromServer))
   setLoading(false)
+}
+
+const deleteDetailPost = (id) => ({
+  type: DELETE_DETAIL_POST,
+  payload: id,
+})
+
+// удаление поста по id при нахождении на детальной странице
+export const deleteCurrentPost = (id) => async (dispatch) => {
+  try {
+    await axiosInstance.delete(
+      `posts/${id}`,
+    )
+
+    dispatch(deleteDetailPost(id))
+  } catch (e) {
+    const codeError = e.message.slice(-3)
+    if (codeError === '403') {
+      alert('Вы не можете удалить чужой пост')
+    }
+  }
 }

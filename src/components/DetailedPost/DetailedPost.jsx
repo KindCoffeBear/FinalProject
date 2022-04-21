@@ -11,9 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import EditIcon from '@mui/icons-material/Edit'
-import FavoriteIcon from '@mui/icons-material/Favorite'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -27,14 +25,15 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
-import { addLikeQuery, deleteLikeQuery, deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
+import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/postsActionCreators'
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
-import { getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
-// import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/likesActionCreator'
+import { deleteCurrentPost, getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
+// eslint-disable-next-line import/order
+import { FavoriteBorderRounded, FavoriteRounded } from '@mui/icons-material'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -85,7 +84,7 @@ function DetailedPost() {
   }, [])
 
   const deleteHandler = () => {
-    dispatch(deletePostQuery(idPost))
+    dispatch(deleteCurrentPost(idPost))
   }
 
   // задаем состояние открытой модалки
@@ -99,14 +98,14 @@ function DetailedPost() {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  // const isLike = likesPost.includes(authorId)
+  const isLike = likesPost ? likesPost.includes(authorId) : null
 
   // поставить или удалить лайк по клику
   const likeHandler = () => {
-    if (!likesPost.includes(authorId)) {
-      dispatch(addLikeQuery(detailPost?._id))
+    if (!isLike) {
+      dispatch(addLikeQuery(detailPost._id))
     } else {
-      dispatch(deleteLikeQuery(detailPost?._id))
+      dispatch(deleteLikeQuery(detailPost._id))
     }
   }
 
@@ -175,23 +174,15 @@ function DetailedPost() {
                 </LinkMUI>
               </Tooltip>
               <Tooltip title="Лайк">
-
                 <IconButton
                   aria-label="like"
                   onClick={likeHandler}
                 >
-                  <FavoriteBorderIcon
-                    sx={{
-                      color: '#c62828',
-                    }}
-                  />
-
-                  <FavoriteIcon
-                    sx={{
-                      color: '#c62828',
-                    }}
-                  />
-
+                  {!isLike
+                    ? (<FavoriteBorderRounded sx={{ color: '#c62828' }} />
+                    ) : (
+                      <FavoriteRounded sx={{ color: '#c62828' }} />
+                    )}
                   <Typography
                     variant="subtitle2"
                     color="text.secondary"

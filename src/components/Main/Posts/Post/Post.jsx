@@ -23,7 +23,6 @@ import Comments from '../Comments/Comments'
 // eslint-disable-next-line import/order
 import { FavoriteBorderRounded, FavoriteRounded } from '@mui/icons-material'
 
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
   return <IconButton {...other} />
@@ -171,9 +170,9 @@ function Post({
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
-          </Box >
-        </Box >
-      </Card >
+          </Box>
+        </Box>
+      </Card>
       <Divider />
       <Typography variant="body2" gutterBottom sx={{ fontWeight: 'bold' }}>
         Комментарии
@@ -192,7 +191,7 @@ function Post({
           <Comments key={comment._id} {...comment} />))}
         {comments.length ? null : (<Typography variant="body2" sx={{ fontStyle: 'italic' }}>Будьте первыми! Оставьте здесь комментарий</Typography>)}
       </Collapse>
-    </Grid >
+    </Grid>
   )
 }
 

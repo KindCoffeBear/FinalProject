@@ -62,9 +62,8 @@ function DetailedPost() {
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
-
   const likesPost = detailPost.likes // получение всех лайков поста
-  const authorId = detailPost?.author?._id // получение id автора
+  const userId = user?._id // получение id пользователя для проверки лайков
   const authorName = detailPost?.author?.name // получение имени автора
   const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null
 
@@ -104,11 +103,12 @@ function DetailedPost() {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const isLike = likesPost ? likesPost.includes(authorId) : null
+  const isLike = likesPost ? likesPost.includes(userId) : null
 
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {
+      console.log({ isLike })
       dispatch(addLikeOnDetailPost(detailPost._id))
     } else {
       dispatch(deleteLikeOnDetailPost(detailPost._id))

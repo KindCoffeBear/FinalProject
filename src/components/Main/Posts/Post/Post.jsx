@@ -21,7 +21,7 @@ import { useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { deletePostQuery } from '../../../../redux/actionCreators/postsActionCreators'
 import Comments from '../Comments/Comments'
-import { addLikeQuery, deleteLikeQuery } from '../../../../redux/actionCreators/likesActionCreator'
+// import { addLikeQuery, deleteLikeQuery } from '../../../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -38,7 +38,6 @@ function Post({
   // eslint-disable-next-line camelcase
   _id, title, tags, text, image, updated_at, author, comments,
 }) {
-
   const postTags = tags.length ? `#${tags.join(' #')}` : null
 
   const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
@@ -71,16 +70,16 @@ function Post({
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const isLike = likesFromRedux.includes(author?._id)
+  // const isLike = likesFromRedux.includes(author?._id)
 
-  // поставить или удалить лайк по клику
-  const likeHandler = () => {
-    if (!isLike) {
-      dispatch(addLikeQuery(_id))
-    } else {
-      dispatch(deleteLikeQuery(_id))
-    }
-  }
+  // // поставить или удалить лайк по клику
+  // const likeHandler = () => {
+  //   if (!isLike) {
+  //     dispatch(addLikeQuery(_id))
+  //   } else {
+  //     dispatch(deleteLikeQuery(_id))
+  //   }
+  // }
 
   return (
     <Grid
@@ -142,7 +141,8 @@ function Post({
             }}
           >
             <Tooltip title="Лайк">
-              <IconButton aria-label="like" onClick={likeHandler}>
+              <IconButton aria-label="like">
+
                 <FavoriteBorderIcon
                   sx={{
                     color: '#c62828',

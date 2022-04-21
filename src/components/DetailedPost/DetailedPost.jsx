@@ -27,16 +27,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
-<<<<<<< Updated upstream
-import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
-=======
->>>>>>> Stashed changes
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
 import { getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
+import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
 // import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/likesActionCreator'
 
 const ExpandMore = styled((props) => {
@@ -66,10 +63,9 @@ function DetailedPost() {
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
 
   const likesPost = detailPost.likes // получение всех лайков поста
-  const authorId = detailPost?.author?._id // получение id автора
+  // const authorId = detailPost?.author?._id // получение id автора
   const authorName = detailPost?.author?.name // получение имени автора
   const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null
-
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 

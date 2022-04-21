@@ -61,9 +61,10 @@ function Posts() {
         }
       }
     }
-    setLoading(true)
+
     dispatch(getCommentsFromServerQuery())
     dispatch(getPostsFromServerQuery(page, limit, debouncedFilter, setLoading))
+    setLoading(true)
   }, [debouncedFilter, limit, page])
 
   const changeHandler = (e) => {

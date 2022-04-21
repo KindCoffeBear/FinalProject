@@ -11,9 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import EditIcon from '@mui/icons-material/Edit'
-// import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -25,16 +23,18 @@ import {
   useLayoutEffect, useRef, useState,
 } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
 import CommentsPost from './CommentsPost/CommentsPost'
 import EditPost from './EditPost/EditPost'
-import { getPostQuery } from '../../redux/actionCreators/detailPostActionCreator'
-import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
-// import { addLikeQuery, deleteLikeQuery } from '../../redux/actionCreators/likesActionCreator'
+import {
+  addLikeOnDetailPost, deleteCurrentPost, deleteLikeOnDetailPost, getPostQuery,
+} from '../../redux/actionCreators/detailPostActionCreator'
+// eslint-disable-next-line import/order
+import { FavoriteBorderRounded, FavoriteRounded } from '@mui/icons-material'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -52,18 +52,19 @@ theme = responsiveFontSizes(theme)
 
 function DetailedPost() {
   const { idPost } = useParams() // получение id поста
-
+  const navigate = useNavigate()
   const token = useSelector((store) => store.user.token) // получение токена из редакса
   const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
   const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
-
+  const user = useSelector((store) => store.user)
+  const isAuthor = (user?._id === detailPost?.author?._id)
   const dispatch = useDispatch() // достаем dispatch
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
 
   const likesPost = detailPost.likes // получение всех лайков поста
-  // const authorId = detailPost?.author?._id // получение id автора
+  const authorId = detailPost?.author?._id // получение id автора
   const authorName = detailPost?.author?.name // получение имени автора
   const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null
 
@@ -88,7 +89,8 @@ function DetailedPost() {
   }, [])
 
   const deleteHandler = () => {
-    dispatch(deletePostQuery(idPost))
+    dispatch(deleteCurrentPost(idPost))
+    navigate('/content')
   }
 
   // задаем состояние открытой модалки
@@ -99,6 +101,18 @@ function DetailedPost() {
   // задаем состояние закрытой модалки
   const closeModal = () => {
     setViewModal(false)
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  const isLike = likesPost ? likesPost.includes(authorId) : null
+
+  // поставить или удалить лайк по клику
+  const likeHandler = () => {
+    if (!isLike) {
+      dispatch(addLikeOnDetailPost(detailPost._id))
+    } else {
+      dispatch(deleteLikeOnDetailPost(detailPost._id))
+    }
   }
 
   const [expanded, setExpanded] = React.useState(false)
@@ -132,7 +146,6 @@ function DetailedPost() {
             title={detailPost.title}
             subheader={updatedDate}
           />
-          {/* <Typography variant="overline">{detailPost.author}</Typography> */}
           <CardMedia
             component="img"
             height="500"
@@ -176,13 +189,13 @@ function DetailedPost() {
               <Tooltip title="Лайк">
                 <IconButton
                   aria-label="like"
-                // onClick={likeHandler}
+                  onClick={likeHandler}
                 >
-                  <FavoriteBorderIcon
-                    sx={{
-                      color: '#c62828',
-                    }}
-                  />
+                  {!isLike
+                    ? (<FavoriteBorderRounded sx={{ color: '#c62828' }} />
+                    ) : (
+                      <FavoriteRounded sx={{ color: '#c62828' }} />
+                    )}
                   <Typography
                     variant="subtitle2"
                     color="text.secondary"
@@ -195,16 +208,20 @@ function DetailedPost() {
                   </Typography>
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Редактировать">
-                <IconButton aria-label="edit" onClick={openModal}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Удалить">
-                <IconButton aria-label="delete" onClick={deleteHandler}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+              {isAuthor ? (
+                <>
+                  <Tooltip title="Редактировать">
+                    <IconButton aria-label="edit" onClick={openModal}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Удалить">
+                    <IconButton aria-label="delete" onClick={deleteHandler}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : null}
             </Box>
           </Box>
           <Typography sx={{ mt: 2 }} variant="body2" gutterBottom>

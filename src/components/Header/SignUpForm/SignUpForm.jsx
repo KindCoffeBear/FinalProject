@@ -59,7 +59,7 @@ export default function SignUpForm() {
                   required
                   fullWidth
                   id="email"
-                  label="Адре электронной почты"
+                  label="Адрес электронной почты"
                   name="email"
                   autoComplete="email"
                 />

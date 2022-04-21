@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AppTitle from './AppTitle/AppTitle'
 import HeaderInscriptions from './HeaderInscriptions/HeaderInscriptions'
 import SearchForm from './SearchForm/SearchForm'
@@ -13,7 +13,6 @@ import SignInLink from './SignInLink/SignInLink'
 import { getUserFromApiQuery, signOut } from '../../redux/actionCreators/userActionCreators'
 import ProfileLink from './ProfileLink/ProfileLink'
 import TOKEN from '../../localStorageConsts'
-import HelloPageLink from './HelloPageLink/HelloPageLink'
 
 function Header() {
   const tokenFromLS = localStorage.getItem(TOKEN)
@@ -24,6 +23,8 @@ function Header() {
     }
   }, [])
   const navigate = useNavigate()
+  const location = useLocation()
+  const currentLocation = location.pathname === '/content'
   const user = useSelector((store) => store.user)
   const userToken = user.token
   const signOutHandler = () => {
@@ -32,18 +33,17 @@ function Header() {
     navigate('/signInForm')
   }
   return (
-    <AppBar position="relative">
-      <Container maxWidth="xl">
+    <AppBar position="relative" color="secondary">
+      <Container maxWidth="false">
         <Toolbar disableGutters>
           <AppTitle />
-          {!userToken ? <HelloPageLink /> : null}
           {userToken ? <HeaderInscriptions /> : null}
-          <SearchForm />
+          {currentLocation ? <SearchForm /> : null}
           {userToken ? <ProfileLink /> : null}
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}
           {userToken ? (
-            <Button type="button" variant="contained" onClick={signOutHandler}>
+            <Button type="button" variant="contained" color="secondary" onClick={signOutHandler}>
               Выйти
             </Button>
           ) : null}

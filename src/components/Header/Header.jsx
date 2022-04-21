@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AppTitle from './AppTitle/AppTitle'
 import HeaderInscriptions from './HeaderInscriptions/HeaderInscriptions'
 import SearchForm from './SearchForm/SearchForm'
@@ -24,6 +24,8 @@ function Header() {
     }
   }, [])
   const navigate = useNavigate()
+  const location = useLocation()
+  const currentLocation = location.pathname === '/content'
   const user = useSelector((store) => store.user)
   const userToken = user.token
   const signOutHandler = () => {
@@ -38,7 +40,7 @@ function Header() {
           <AppTitle />
           {!userToken ? <HelloPageLink /> : null}
           {userToken ? <HeaderInscriptions /> : null}
-          <SearchForm />
+          {currentLocation ? <SearchForm /> : null}
           {userToken ? <ProfileLink /> : null}
           {!userToken ? <SignUpLink /> : null}
           {!userToken ? <SignInLink /> : null}

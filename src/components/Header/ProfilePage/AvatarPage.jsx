@@ -22,7 +22,7 @@ export default function AvatarPAge() {
     const data = new FormData(event.currentTarget)
     const avatar = data.get('avatar')
     dispatch(editAvatarQuery(avatar))
-    navigate('/profilePAge')
+    navigate('/profilePage')
   }
 
   return (

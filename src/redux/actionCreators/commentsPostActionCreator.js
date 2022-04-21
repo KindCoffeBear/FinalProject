@@ -32,7 +32,6 @@ export const addNewCommentQuery = (id, preparedComment) => async (dispatch) => {
   )
 
   const dataFromServer = response.data
-  console.log(response.status)
   dispatch(addNewComment(dataFromServer))
 }
 
@@ -46,7 +45,6 @@ export const deleteCommentQuery = (idPost, idComment) => async (dispatch) => {
   const response = await axiosInstance.delete(
     `posts/comments/${idPost}/${idComment}`,
   )
-  console.log(response.status)
   if (response.status === 200) {
     dispatch(deleteComment(idComment))
   }

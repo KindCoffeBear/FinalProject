@@ -18,6 +18,7 @@ import ProfilePage from './components/Header/ProfilePage/ProfilePage'
 import AvatarPAge from './components/Header/ProfilePage/AvatarPage'
 import RefreshPasswordForm from './components/Header/refreshPasswordForm/refreshPasswordForm'
 import ChangePasswordForm from './components/Header/refreshPasswordForm/ChangePasswordForm'
+import ComponentsForAuthUsers from './components/Authentication/ComponentsForAuthUsers'
 
 function App() {
   return (
@@ -25,7 +26,14 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<MainForNotAuth />} />
+          <Route
+            path="/"
+            element={(
+              <ComponentsForAuthUsers>
+                <MainForNotAuth />
+              </ComponentsForAuthUsers>
+            )}
+          />
           <Route
             path="/content"
             element={(
@@ -52,8 +60,22 @@ function App() {
               </ProtectedComponent>
               )}
           />
-          <Route path="/signUpForm" element={<SignUpForm />} />
-          <Route path="/signInForm" element={<SignInForm />} />
+          <Route
+            path="/signUpForm"
+            element={(
+              <ComponentsForAuthUsers>
+                <SignUpForm />
+              </ComponentsForAuthUsers>
+            )}
+          />
+          <Route
+            path="/signInForm"
+            element={(
+              <ComponentsForAuthUsers>
+                <SignInForm />
+              </ComponentsForAuthUsers>
+            )}
+          />
           <Route path="/avatarPage" element={<AvatarPAge />} />
           <Route path="/refreshPasswordForm" element={<RefreshPasswordForm />} />
           <Route path="/changePasswordForm" element={<ChangePasswordForm />} />

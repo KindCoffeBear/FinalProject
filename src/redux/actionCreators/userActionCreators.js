@@ -4,6 +4,7 @@
 import axios from 'axios'
 // достаем axios со своими настройками
 import axiosInstance from '../../axiosConfig/axiosConfig'
+import TOKEN from '../../localStorageConsts'
 import {
   EDIT_PROFILE, GET_USER_FROM_API,
   SIGN_IN, SIGN_OUT, SIGN_UP,
@@ -31,6 +32,7 @@ export const signInQuery = ({ email, password, cb }) => async (dispatch) => {
     )
 
     typeof cb === 'function' && cb()
+    localStorage.setItem(TOKEN, user.token)
   } catch (error) {
     const codeError = error.message.slice(-3)
     if (codeError === '401') {

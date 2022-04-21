@@ -25,7 +25,7 @@ import {
   useLayoutEffect, useRef, useState,
 } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
 import { addLikeQuery, deleteLikeQuery, deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
 import withLoader from '../hocs/withLoader'
@@ -52,11 +52,13 @@ theme = responsiveFontSizes(theme)
 
 function DetailedPost() {
   const { idPost } = useParams() // получение id поста
-
+  const navigate = useNavigate()
   const token = useSelector((store) => store.user.token) // получение токена из редакса
   const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
   const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
-
+  const user = useSelector((store) => store.user)
+  const isAuthor = (user?._id === detailPost?.author?._id)
+  console.log(isAuthor)
   const dispatch = useDispatch() // достаем dispatch
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
@@ -86,6 +88,7 @@ function DetailedPost() {
 
   const deleteHandler = () => {
     dispatch(deletePostQuery(idPost))
+    navigate('/content')
   }
 
   // задаем состояние открытой модалки
@@ -204,16 +207,20 @@ function DetailedPost() {
                   </Typography>
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Редактировать">
-                <IconButton aria-label="edit" onClick={openModal}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Удалить">
-                <IconButton aria-label="delete" onClick={deleteHandler}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+              {isAuthor ? (
+                <Tooltip title="Редактировать">
+                  <IconButton aria-label="edit" onClick={openModal}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
+              {isAuthor ? (
+                <Tooltip title="Удалить">
+                  <IconButton aria-label="delete" onClick={deleteHandler}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
             </Box>
           </Box>
           <Typography sx={{ mt: 2 }} variant="body2" gutterBottom>

@@ -11,17 +11,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { signInQuery } from '../../../redux/actionCreators/userActionCreators'
-import TOKEN from '../../../localStorageConsts'
+// import TOKEN from '../../../localStorageConsts'
 
 const theme = createTheme()
 
 export default function SignInForm() {
   const navigate = useNavigate()
-  // const location = useLocation()
   const dispatch = useDispatch()
-  // const from = location.state?.from?.pathname || '/'
   const signInHandler = (e) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
@@ -32,11 +30,6 @@ export default function SignInForm() {
         navigate('/content')
       },
     }))
-  }
-  const token = useSelector((store) => store.user.token)
-  const dataFromLS = localStorage.getItem(TOKEN)
-  if (!dataFromLS) {
-    localStorage.setItem(TOKEN, token)
   }
   return (
     <ThemeProvider theme={theme}>

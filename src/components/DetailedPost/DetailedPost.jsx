@@ -64,7 +64,7 @@ function DetailedPost() {
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
   const likesPost = detailPost.likes // получение всех лайков поста
-  const authorId = detailPost?.author?._id // получение id автора
+  const userId = user._id
   // const authorName = detailPost?.author?.name // получение имени автора
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
@@ -103,7 +103,7 @@ function DetailedPost() {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const isLike = likesPost ? likesPost.includes(authorId) : null
+  const isLike = likesPost ? likesPost.includes(userId) : null
 
   // поставить или удалить лайк по клику
   const likeHandler = () => {

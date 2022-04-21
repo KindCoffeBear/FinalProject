@@ -13,7 +13,6 @@ import SignInLink from './SignInLink/SignInLink'
 import { getUserFromApiQuery, signOut } from '../../redux/actionCreators/userActionCreators'
 import ProfileLink from './ProfileLink/ProfileLink'
 import TOKEN from '../../localStorageConsts'
-import HelloPageLink from './HelloPageLink/HelloPageLink'
 
 function Header() {
   const tokenFromLS = localStorage.getItem(TOKEN)
@@ -38,7 +37,6 @@ function Header() {
       <Container maxWidth="false">
         <Toolbar disableGutters>
           <AppTitle />
-          {!userToken ? <HelloPageLink /> : null}
           {userToken ? <HeaderInscriptions /> : null}
           {currentLocation ? <SearchForm /> : null}
           {userToken ? <ProfileLink /> : null}

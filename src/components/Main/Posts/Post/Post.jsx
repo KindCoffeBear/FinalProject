@@ -42,12 +42,9 @@ function Post({
   const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
   const updatedDate = new Date(updated_at).toLocaleString()
   const avatarDefault = 'https://thumbs.dreamstime.com/b/%D0%B7%D0%BD%D0%B0%D1%87%D0%BE%D0%BA-%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E-%D0%BF%D0%BB%D0%BE%D1%81%D0%BA%D0%B8%D0%B9-%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-184330869.jpg'
-  const imageDefault = 'https://cdn5.vectorstock.com/i/1000x1000/97/69/no-like-icon-sign-on-white-background-symbol-vector-26149769.jpg'
   const idAuthor = useSelector((store) => store.user._id)
 
   const avatar = author ? author.avatar : avatarDefault
-  let imagePost = image
-  if (image === 'https://react-learning.ru/posts') { imagePost = imageDefault }
 
   const dispatch = useDispatch() // достаем dispatch
 
@@ -87,7 +84,7 @@ function Post({
       sx={{ width: 350 }}
     >
       <Card sx={{
-        height: 450,
+        height: 460,
         display: 'flex',
         flexDirection: 'column',
 
@@ -104,15 +101,14 @@ function Post({
           titleTypographyProps={{ variant: 'h7', fontWeight: 'bold' }}
           title={title}
         />
-        <CardMedia
-          component="img"
-          height="200"
-          image={imagePost}
-          alt={title}
-          sx={{
-            mt: 0,
-          }}
-        />
+        <LinkMUI component={Link} to={`/post/${_id}`} sx={{ mt: 0 }}>
+          <CardMedia
+            component="img"
+            image={image}
+            height="200"
+            alt={title}
+          />
+        </LinkMUI>
         <CardContent sx={{
           mb: 'auto',
         }}
@@ -190,7 +186,7 @@ function Post({
         {commentsForPost.map((comment) => (
           // eslint-disable-next-line no-underscore-dangle
           <Comments key={comment._id} {...comment} />))}
-        {comments.length ? null : (<Typography variant="body2" sx={{ fontStyle: 'italic' }}>Будьте первыми! Оставьте здесь комментарий</Typography>)}
+        {comments.length ? null : (<Typography variant="body2" sx={{ fontStyle: 'italic' }}>Будьте первыми! Оставьте комментарий</Typography>)}
       </Collapse>
     </Grid>
   )

@@ -33,6 +33,7 @@ function CreateNewPostForm() {
       component="div"
       direction="column"
       alignItems="center"
+      sx={{ backgroundColor: '#ede7f6' }}
     >
       <Paper elevation={3} sx={{ width: 400 }}>
         <Stack

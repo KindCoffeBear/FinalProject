@@ -38,7 +38,7 @@ function EditPost({
       title: editTitle,
       text: editText,
       image: editImage,
-      tags: editTags,
+      tags: editTags.split(',').map((el) => el.trim()),
     }
 
     dispatch(updatePostQuery(idPost, editedPost, closeModal))

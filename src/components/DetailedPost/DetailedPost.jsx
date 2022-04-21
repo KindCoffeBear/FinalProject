@@ -27,7 +27,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { getCommentsPostFromServerQuery } from '../../redux/actionCreators/commentsPostActionCreator'
+<<<<<<< Updated upstream
 import { deletePostQuery } from '../../redux/actionCreators/postsActionCreators'
+=======
+>>>>>>> Stashed changes
 import withLoader from '../hocs/withLoader'
 import Modal from '../Modal/Modal'
 import CommentAddForm from './CommentAddForm/CommentAddForm'
@@ -61,7 +64,12 @@ function DetailedPost() {
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
   const avatarPost = detailPost?.author?.avatar // получение аватара из текущего поста
-  const likesPost = detailPost.likes
+
+  const likesPost = detailPost.likes // получение всех лайков поста
+  const authorId = detailPost?.author?._id // получение id автора
+  const authorName = detailPost?.author?.name // получение имени автора
+  const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null
+
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
@@ -97,18 +105,6 @@ function DetailedPost() {
     setViewModal(false)
   }
 
-  // // eslint-disable-next-line no-underscore-dangle
-  // const isLike = likesPost.includes(post.author._id)
-
-  // // поставить или удалить лайк по клику
-  // const likeHandler = () => {
-  //   if (!isLike) {
-  //     dispatch(addLikeQuery(idLikes))
-  //   } else {
-  //     dispatch(deleteLikeQuery(idLikes))
-  //   }
-  // }
-
   const [expanded, setExpanded] = React.useState(false)
 
   const handleExpandClick = () => { // скрытие/открытие списка комментариев
@@ -120,6 +116,7 @@ function DetailedPost() {
       component="div"
       direction="column"
       alignItems="center"
+      sx={{ backgroundColor: '#ede7f6' }}
     >
       <Grid>
         <Card
@@ -146,19 +143,26 @@ function DetailedPost() {
             image={detailPost.image}
             alt={detailPost.title}
           />
-          <CardContent>
-            <Typography variant="subtitle1" color="text.secondary" sx={{ textAlign: 'left' }}>
-              {detailPost.text}
-            </Typography>
-          </CardContent>
+          <Grid container>
+            <Grid item xs={12} mt={1.5} ml={1}>
+              <Typography variant="overline" color="text.secondary" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
+                {authorName}
+              </Typography>
+            </Grid>
+            <CardContent>
+              <Typography variant="body1" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
+                {detailPost.text}
+              </Typography>
+            </CardContent>
+          </Grid>
           <Box sx={{
             mt: 'auto',
             ml: 1,
           }}
           >
             <CardActions disableSpacing>
-              <Typography variant="overline" component="div" gutterBottom position="left">
-                {detailPost.tags}
+              <Typography variant="overline" color="text.secondary" component="div" gutterBottom position="left" mt={1}>
+                {tagsPost}
               </Typography>
             </CardActions>
             <Box

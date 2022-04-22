@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Avatar from '@mui/material/Avatar'
 import LinkMUI from '@mui/material/Link'
 import { Link } from 'react-router-dom'
@@ -19,9 +20,12 @@ const theme = createTheme()
 
 export default function ProfilePAge() {
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
-    dispatch(getPostsFromServerQuery()) // получаем посты с сервера
+    dispatch(getPostsFromServerQuery(setLoading)) // получаем посты с сервера
   }, [])
+
   const user = useSelector((store) => store.user) // получаем пользователя из Redux
   const [name, setName] = useState(user.name)
   const [about, setAbout] = useState(user.about)

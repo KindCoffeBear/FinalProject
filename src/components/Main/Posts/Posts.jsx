@@ -63,7 +63,7 @@ function Posts() {
     }
 
     dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(page, limit, debouncedFilter, setLoading))
+    dispatch(getPostsFromServerQuery(setLoading, page, limit, debouncedFilter))
     setLoading(true)
   }, [debouncedFilter, limit, page])
 

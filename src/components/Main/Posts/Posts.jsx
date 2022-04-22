@@ -1,10 +1,9 @@
 import {
   Button,
-  Divider,
   FormControl, Grid, InputLabel, MenuItem, Select,
 } from '@mui/material'
 import Box from '@mui/material/Box'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { setFilter } from '../../../redux/actionCreators/filterActionCreator'
@@ -24,13 +23,12 @@ function Posts() {
   const filter = useSelector((store) => store.filter)
 
   const [limit, setLimit] = useState('')
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState('1')
   const [loading, setLoading] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
 
   const countPages = limit ? Math.ceil(total / limit) : null
-  const numbersPage = countPages ? Array(countPages).fill().map((x, i) => i + 1) : null
-  const controller = useRef(new AbortController())
+  const numbersPage = countPages ? Array(countPages).fill().map((x, i) => `${i + 1}`) : null
 
   // получаем дебаунсер
   const debouncedFilter = useDebounce(filter, 300)
@@ -64,12 +62,8 @@ function Posts() {
     }
 
     dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(setLoading, controller, page, limit, debouncedFilter))
+    dispatch(getPostsFromServerQuery(setLoading, page, limit, debouncedFilter))
     setLoading(true)
-
-    return () => {
-      controller.current.abort()
-    }
   }, [debouncedFilter, limit, page])
 
   const changeHandler = (e) => {
@@ -117,10 +111,9 @@ function Posts() {
 
         {numbersPage ? numbersPage.map((number) => (
           <React.Fragment key={number}>
-            <Button onClick={changePageHandler} sx={{ width: 10 }}>
+            <Button onClick={changePageHandler} sx={{ width: 10 }} color={number === page ? 'secondary' : 'info'}>
               {number}
             </Button>
-            <Divider orientation="vertical" flexItem />
           </React.Fragment>
         )) : null}
 

@@ -13,9 +13,10 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (setLoading, page = '', limit = '', filter = '') => async (dispatch) => {
+export const getPostsFromServerQuery = (setLoading, controller, page = '', limit = '', filter = '') => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/paginate?page=${page}&limit=${limit}&query=${filter}`,
+    { signal: controller.current.signal },
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))

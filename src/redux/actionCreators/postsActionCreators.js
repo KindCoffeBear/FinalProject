@@ -13,9 +13,10 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (page = '', limit = '', filter = '', setLoading) => async (dispatch) => {
+export const getPostsFromServerQuery = (setLoading, controller, page = '', limit = '', filter = '') => async (dispatch) => {
   const response = await axiosInstance.get(
     `posts/paginate?page=${page}&limit=${limit}&query=${filter}`,
+    { signal: controller.current.signal },
   )
   const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
@@ -54,11 +55,13 @@ const deletePost = (id) => ({
 // удаление поста по id
 export const deletePostQuery = (id) => async (dispatch) => {
   try {
-    await axiosInstance.delete(
-      `posts/${id}`,
-    )
-
-    dispatch(deletePost(id))
+    const isDelete = confirm('Точно хотите удалить пост?')
+    if (isDelete) {
+      await axiosInstance.delete(
+        `posts/${id}`,
+      )
+      dispatch(deletePost(id))
+    }
   } catch (e) {
     const codeError = e.message.slice(-3)
     if (codeError === '403') {

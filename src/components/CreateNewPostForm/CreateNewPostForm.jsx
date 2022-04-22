@@ -33,7 +33,7 @@ function CreateNewPostForm() {
       alignItems="center"
       sx={{ backgroundColor: '#ede7f6' }}
     >
-      <Paper elevation={3} sx={{ width: 400 }}>
+      <Paper elevation={3} sx={{ width: 400, my: 15 }}>
         <Stack
           component="form"
           alignItems="center"

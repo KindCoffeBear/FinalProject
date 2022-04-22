@@ -56,7 +56,7 @@ export default function ChangePasswordForm() {
       <Typography component="h1" variant="h5">
         Восстановление пароля
       </Typography>
-      <Box component="form" noValidate onSubmit={refreshPasswordHandler} sx={{ mt: 1 }}>
+      <Box component="form" noValidate onSubmit={refreshPasswordHandler} sx={{ mt: 1 }} height="65.5vh">
         <TextField
           margin="normal"
           required

@@ -109,7 +109,6 @@ function DetailedPost() {
   // поставить или удалить лайк по клику
   const likeHandler = () => {
     if (!isLike) {
-      console.log({ isLike })
       dispatch(addLikeOnDetailPost(detailPost._id))
     } else {
       dispatch(deleteLikeOnDetailPost(detailPost._id))

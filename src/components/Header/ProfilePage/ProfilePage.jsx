@@ -21,14 +21,9 @@ const theme = createTheme()
 export default function ProfilePAge() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const controller = useRef(new AbortController())
 
   useEffect(() => {
-    dispatch(getPostsFromServerQuery(setLoading, controller)) // получаем посты с сервера
-
-    return () => {
-      controller.current.abort()
-    }
+    dispatch(getPostsFromServerQuery(setLoading)) // получаем посты с сервера
   }, [])
 
   const user = useSelector((store) => store.user) // получаем пользователя из Redux

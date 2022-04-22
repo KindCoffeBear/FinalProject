@@ -14,20 +14,20 @@ function CreateNewPostForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const submitHandler = () => {
-    const preparedPostQuery = {
-      title,
-      text,
-      image,
-      tags: tags.split(',').map((el) => el.trim()),
-    }
-    dispatch(addNewPostQuery(preparedPostQuery))
-    navigate('/content')
+    if (title.length > 2 && text.length > 2 && image && tags.length > 2) {
+      const preparedPostQuery = {
+        title,
+        text,
+        image,
+        tags: tags.split(',').map((el) => el.trim()),
+      }
+      dispatch(addNewPostQuery(preparedPostQuery))
+      navigate('/content')
+    } else alert('Все поля должны быть заполнены корректно')
   }
-
-  const isTitleError = false
-
   return (
     <Stack
+      height="87vh"
       component="div"
       direction="column"
       alignItems="center"
@@ -42,51 +42,48 @@ function CreateNewPostForm() {
           sx={{ py: 5, px: 2 }}
           autoComplete="off"
         >
-          <div>
-            <TextField
-              error={isTitleError}
-              multiline
-              id="outlined-basic"
-              label="Title"
-              variant="outlined"
-              value={title}
-              helperText={isTitleError && 'Title must have min 3 symbols'}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              multiline
-              id="filled-basic"
-              label="Text"
-              variant="outlined"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              multiline
-              id="standard-basic"
-              label="Image"
-              variant="outlined"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              multiline
-              id="standard-basic"
-              label="Tags"
-              variant="outlined"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-            />
-          </div>
-
+          <TextField
+            error={title.length < 3}
+            helperText={title.length < 3 && 'Минимум три символа'}
+            multiline
+            id="outlined-basic"
+            label="Title"
+            variant="outlined"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextField
+            error={text.length < 3}
+            helperText={text.length < 3 && 'Минимум три символа'}
+            multiline
+            id="filled-basic"
+            label="Text"
+            variant="outlined"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <TextField
+            error={!image}
+            helperText={!image && 'Укажите URL фотографии'}
+            multiline
+            id="standard-basic"
+            label="Image"
+            variant="outlined"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+          />
+          <TextField
+            error={tags.length < 3}
+            helperText={tags.length < 3 && 'Минимум три символа'}
+            multiline
+            id="standard-basic"
+            label="Tags"
+            variant="outlined"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
           <Button onClick={submitHandler} variant="outlined">
-            Create Post
+            Добавить пост
           </Button>
         </Stack>
       </Paper>

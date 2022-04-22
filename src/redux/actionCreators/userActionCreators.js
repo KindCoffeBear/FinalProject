@@ -86,33 +86,6 @@ export const signUpQuery = ({
       alert('Пользователь с таким e-mail уже зарегистрирован в системе')
     }
   }
-  const upResponse = await axiosInstance.post('signup', {
-    email,
-    password,
-    name,
-    about,
-    avatar,
-  })
-  const user = upResponse.data
-  dispatch(
-    signUp({
-      ...user.data,
-    }),
-  )
-  const inResponse = await axiosInstance.post('signin', {
-    email: user.email,
-    password,
-  })
-
-  const userForIn = inResponse.data
-
-  dispatch(
-    signIn({
-      ...userForIn.data,
-      token: userForIn.token,
-    }),
-  )
-  typeof cb === 'function' && cb()
 }
 // пишем AC для выхода из системы
 export const signOut = (user) => ({

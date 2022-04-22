@@ -8,47 +8,40 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { editProfileQuery } from '../../../redux/actionCreators/userActionCreators'
 import Post from '../../Main/Posts/Post/Post'
-import useDebounce from '../../CustomHooks/useDebounce'
-import TOKEN from '../../../localStorageConsts'
 import { getPostsFromServerQuery } from '../../../redux/actionCreators/postsActionCreators'
 
 const theme = createTheme()
 
 export default function ProfilePAge() {
-  // const navigate = useNavigate()
-  const filter = useSelector((store) => store.filter)
   const dispatch = useDispatch()
-  const debouncedFilter = useDebounce(filter, 300)
-  let token = useSelector((store) => store.user.token)
-  if (!token) {
-    token = localStorage.getItem(TOKEN)
-  }
-  const user = useSelector((store) => store.user)
   useEffect(() => {
-    dispatch(getPostsFromServerQuery(debouncedFilter))
-  }, [debouncedFilter])
+    dispatch(getPostsFromServerQuery()) // получаем посты с сервера
+  }, [])
+  const user = useSelector((store) => store.user) // получаем пользователя из Redux
+  const [name, setName] = useState(user.name)
+  const [about, setAbout] = useState(user.about)
   const posts = useSelector((store) => store.paginatePost.posts)
-  const newPosts = posts.filter((post) => post?.author?.email === user.email)
-  const editProfileHandler = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const name = data.get('name')
-    const about = data.get('about')
-    dispatch(editProfileQuery(name, about))
-  }
 
+  const userPosts = posts.filter((post) => post?.author?.email === user.email) // отсеиваем посты, опубликованные не пользователем
+
+  const editProfileHandler = (event) => { // пишем хэндлер для редактирования профиля
+    event.preventDefault()
+    if (name.length > 2 && about.length > 2) {
+      dispatch(editProfileQuery(name, about))
+    } else alert('Некорректно заполнены поля формы')
+  }
   return (
     <>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
+            height="65vh"
             sx={{
               marginTop: 8,
               display: 'flex',
@@ -71,18 +64,24 @@ export default function ProfilePAge() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    error={name?.length < 3}
+                    helperText={name?.length < 3 && 'Минимум 3 символа'}
                     id="name"
                     name="name"
                     autoComplete="name"
-                    defaultValue={user.name}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={about?.length < 3}
+                    helperText={about?.length < 3 && 'Минимум 3 символа'}
                     name="about"
                     id="about"
                     autoComplete="about"
-                    defaultValue={user.about}
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -104,7 +103,7 @@ export default function ProfilePAge() {
       </h2>
       <Container>
         <Grid container spacing={2} sx={{ mt: 10 }}>
-          {newPosts.map((post) => (
+          {userPosts.map((post) => (
             // eslint-disable-next-line no-underscore-dangle
             <Post key={post._id} {...post} />
           ))}

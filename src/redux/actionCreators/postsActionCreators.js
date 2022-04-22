@@ -29,13 +29,21 @@ const addNewPost = (newPost) => ({
 
 // добавление поста на сервере и получение данных с сервера
 export const addNewPostQuery = (newPost) => async (dispatch) => {
-  const response = await axiosInstance.post(
-    'posts',
-    newPost,
-  )
+  try {
+    const response = await axiosInstance.post(
+      'posts',
+      newPost,
+    )
+    const postFromApi = response.data
+    dispatch(addNewPost(postFromApi))
 
-  const postFromApi = response.data
-  dispatch(addNewPost(postFromApi))
+    alert('Пост успешно добавлен!')
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '400') {
+      alert('Как минимум одно поле не заполнено или заполнено не корректно')
+    }
+  }
 }
 
 const deletePost = (id) => ({

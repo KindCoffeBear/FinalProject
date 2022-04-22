@@ -30,6 +30,7 @@ export default function AvatarPAge() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
+          height="80vh"
           sx={{
             marginTop: 8,
             display: 'flex',

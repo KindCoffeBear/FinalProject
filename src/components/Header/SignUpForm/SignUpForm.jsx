@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
+import { useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
@@ -19,26 +20,32 @@ const theme = createTheme()
 export default function SignUpForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [about, setAbout] = useState('')
+  const [avatar, setAvatar] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    dispatch(signUpQuery({
-      email: data.get('email'),
-      password: data.get('password'),
-      name: data.get('name'),
-      about: data.get('profession'),
-      avatar: data.get('avatar'),
-      cb: () => {
-        navigate('/content')
-      },
-    }))
+    if (password.length > 4 && name.length > 2 && about.length > 2 && avatar) {
+      dispatch(signUpQuery({
+        email,
+        password,
+        name,
+        about,
+        avatar,
+        cb: () => {
+          navigate('/content')
+        },
+      }))
+    } else alert('Пожалуйста, корректно заполните все формы')
   }
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
+          height="80vh"
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -52,20 +59,24 @@ export default function SignUpForm() {
           <Typography component="h1" variant="h5">
             Заполните данные профиля
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
+                  value={email}
                   id="email"
                   label="Адрес электронной почты"
                   name="email"
                   autoComplete="email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={password}
+                  error={password.length < 5}
                   required
                   fullWidth
                   name="password"
@@ -73,36 +84,49 @@ export default function SignUpForm() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  helperText={password.length < 5 && 'Длина пароля должна быть не меньше 5 символов'}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={name}
+                  error={name.length < 3}
+                  helperText={name.length < 3 && 'Длина имени должна быть не меньше 3 символов'}
                   required
                   fullWidth
                   id="name"
                   label="Ваше имя"
                   name="name"
                   autoComplete="name"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={about}
+                  error={about.length < 3}
+                  helperText={about.length < 3 && 'Длина названия профессии должна быть не меньше 3 символов'}
                   required
                   fullWidth
                   id="profession"
                   label="Ваша профессия"
                   name="profession"
                   autoComplete="profession"
+                  onChange={(e) => setAbout(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!avatar}
+                  helperText={!avatar && 'Установите аватар'}
                   required
                   fullWidth
                   id="avatar"
                   label="Ваш аватар"
                   name="avatar"
                   autoComplete="avatar"
+                  onChange={(e) => setAvatar(e.target.value)}
                 />
               </Grid>
             </Grid>

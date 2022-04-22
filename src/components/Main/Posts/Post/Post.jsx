@@ -36,11 +36,11 @@ const ExpandMore = styled((props) => {
 
 function Post({
   // eslint-disable-next-line camelcase
-  _id, title, tags, text, image, updated_at, author, comments, likes,
+  _id, title, tags, text, image, created_at, author, comments, likes,
 }) {
   const postTags = tags.length ? `#${tags.join(' #')}` : null
   const description = text.length > 50 ? `${text.slice(0, 50)}...` : text
-  const updatedDate = new Date(updated_at).toLocaleString()
+  const updatedDate = new Date(created_at).toLocaleString()
   const avatarDefault = 'https://thumbs.dreamstime.com/b/%D0%B7%D0%BD%D0%B0%D1%87%D0%BE%D0%BA-%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E-%D0%BF%D0%BB%D0%BE%D1%81%D0%BA%D0%B8%D0%B9-%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80-184330869.jpg'
   const idAuthor = useSelector((store) => store.user._id)
 
@@ -60,10 +60,7 @@ function Post({
 
   // функция удаления поста
   const deleteHandler = () => {
-    const isDelete = confirm('Точно хотите удалить пост?')
-    if (isDelete) {
-      dispatch(deletePostQuery(_id))
-    }
+    dispatch(deletePostQuery(_id))
   }
 
   const isLike = likes.includes(idAuthor) // проверка наличия id пользователя в массиве лайков

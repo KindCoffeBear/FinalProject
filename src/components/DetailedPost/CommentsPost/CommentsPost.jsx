@@ -3,12 +3,13 @@
 import {
   Avatar, Button, Grid, Paper,
 } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteCommentQuery } from '../../../redux/actionCreators/commentsPostActionCreator'
 
 function CommentsPost({
   updated_at, author, text, idPost, idComment,
 }) {
+  const user = useSelector((store) => store.user)
   const dispatch = useDispatch()
   const updatedDate = new Date(updated_at).toLocaleString()
 
@@ -31,20 +32,22 @@ function CommentsPost({
           </p>
         </Grid>
       </Grid>
-      <Button
-        variant="outlined"
-        color="error"
-        onClick={deleteHandler}
-        sx={{
-          width: 50,
-          height: 30,
-          fontSize: 10,
-          padding: '10px 10px',
-          alignSelf: 'flex-end',
-        }}
-      >
-        Удалить
-      </Button>
+      {user._id === author._id ? (
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={deleteHandler}
+          sx={{
+            width: 50,
+            height: 30,
+            fontSize: 10,
+            padding: '10px 10px',
+            alignSelf: 'flex-end',
+          }}
+        >
+          Удалить
+        </Button>
+      ) : null}
     </Paper>
 
   )

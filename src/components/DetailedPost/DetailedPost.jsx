@@ -144,7 +144,7 @@ function DetailedPost() {
           <CardHeader
             avatar={(
               <Tooltip
-                title={authorName}
+                title={authorName || ''}
                 arrow
                 placement="left"
                 TransitionComponent={Fade}

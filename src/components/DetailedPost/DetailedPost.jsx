@@ -16,7 +16,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
-  Stack, Box, Tooltip, Grid, Collapse, Avatar,
+  Stack, Box, Tooltip, Grid, Collapse, Avatar, Fade,
 } from '@mui/material'
 import LinkMUI from '@mui/material/Link'
 import {
@@ -40,7 +40,7 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props
   return <IconButton {...other} />
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  transform: expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
@@ -126,21 +126,32 @@ function DetailedPost() {
       component="div"
       direction="column"
       alignItems="center"
-      sx={{ backgroundColor: '#ede7f6' }}
+      sx={{
+        backgroundColor: '#ede7f6',
+        minHeight: '90vh',
+      }}
     >
       <Grid>
         <Card
           sx={{
-            minWidth: 500,
-            maxWidth: 500,
-            minHeight: 500,
+            minWidth: 600,
+            maxWidth: 600,
+            minHeight: 600,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
           <CardHeader
             avatar={(
-              <Avatar src={avatarPost} aria-label="post" />
+              <Tooltip
+                title={authorName}
+                arrow
+                placement="left"
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+              >
+                <Avatar src={avatarPost} aria-label="post" />
+              </Tooltip>
             )}
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
             title={detailPost.title}
@@ -149,6 +160,11 @@ function DetailedPost() {
           <CardMedia
             component="img"
             height="500"
+            sx={{
+              height: 'auto',
+              width: '100%',
+              objectFit: 'cover',
+            }}
             image={detailPost.image}
             alt={detailPost.title}
           />
@@ -239,11 +255,11 @@ function DetailedPost() {
           </Typography>
 
         </Card>
-        <Collapse in={!expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <Card
             sx={{
               minWidth: 500,
-              maxWidth: 500,
+              maxWidth: 600,
             }}
           >
             <CommentAddForm />

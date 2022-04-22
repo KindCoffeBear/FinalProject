@@ -1,37 +1,36 @@
-// Анимация всей модалки
-export const modalWrapperVariants = {
+export const wrModalAnimate = {
   start: {
     opacity: 0,
   },
-  view: {
+  end: {
     opacity: 1,
     transition: {
+      duration: 0.5,
       when: 'beforeChildren',
     },
   },
-  end: {
+  final: {
     opacity: 0,
-    transition: {
-      when: 'afterChildren',
-    },
+    duration: 1,
+    when: 'afterChildren',
   },
 }
 
-// анимация формы в модалке
-export const modalInnerVariants = {
+export const innerModalVariants = {
   start: {
-    scale: 0,
     opacity: 0,
-    rotate: 360,
-  },
-  view: {
-    scale: 1,
-    opacity: 1,
-    rotate: 0,
+    y: -300,
   },
   end: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+    },
+  },
+  final: {
     scale: 0,
     opacity: 0,
-    rotate: 360,
+    duration: 0.5,
   },
 }

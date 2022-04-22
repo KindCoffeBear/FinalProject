@@ -161,15 +161,15 @@ function DetailedPost() {
             component="img"
             height="500"
             sx={{
-              height: 'auto',
-              width: '100%',
-              objectFit: 'cover',
+              height: 400,
+              width: 600,
+              objectFit: 'contain',
             }}
             image={detailPost.image}
             alt={detailPost.title}
           />
           <Grid container>
-            <Grid item xs={12} mt={1.5} ml={1}>
+            <Grid item xs={12} mt={1} ml={1}>
               <Typography variant="overline" color="text.secondary" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
                 {authorName}
               </Typography>

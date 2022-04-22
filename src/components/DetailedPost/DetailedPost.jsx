@@ -56,8 +56,8 @@ function DetailedPost() {
   const token = useSelector((store) => store.user.token) // получение токена из редакса
   const commentsPost = useSelector((store) => store.commentsPost) // получение комментариев к посту
   const detailPost = useSelector((store) => store.post) // получение дательного поста из редакса
-  const user = useSelector((store) => store.user)
-  const isAuthor = (user?._id === detailPost?.author?._id)
+  const user = useSelector((store) => store.user) // получение юзера из редакса
+  const isAuthor = (user?._id === detailPost?.author?._id) // получение id автора поста
   const dispatch = useDispatch() // достаем dispatch
 
   const postDate = detailPost?.updated_at // получение даты из текущего поста
@@ -65,7 +65,7 @@ function DetailedPost() {
   const likesPost = detailPost.likes // получение всех лайков поста
   const userId = user?._id // получение id пользователя для проверки лайков
   const authorName = detailPost?.author?.name // получение имени автора
-  const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null
+  const tagsPost = detailPost.tags?.length ? `#${detailPost.tags.join(' #')}` : null // разлеяем теги и добавляем каждому #
 
   const updatedDate = new Date(postDate).toLocaleString() // приводим дату в привычный вид
 
@@ -81,12 +81,13 @@ function DetailedPost() {
     dispatch(getCommentsPostFromServerQuery(idPost))
     dispatch(getPostQuery(idPost, setLoading, controller)) // получаем конкретный пост и передаем часть параметров
 
-    // при отмены загрузки данных с сервера выполняем обрыв соединения
+    // при отмене загрузки данных с сервера выполняем обрыв соединения
     return () => {
       controller.current.abort()
     }
   }, [])
 
+  // хендлер для удаления
   const deleteHandler = () => {
     dispatch(deleteCurrentPost(idPost))
     navigate('/content')
@@ -103,7 +104,7 @@ function DetailedPost() {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const isLike = likesPost ? likesPost.includes(userId) : null
+  const isLike = likesPost ? likesPost.includes(userId) : null // проверка, есть ли id пользователя среди лайкнувших пост
 
   // поставить или удалить лайк по клику
   const likeHandler = () => {
@@ -276,7 +277,6 @@ function DetailedPost() {
         <EditPost closeModal={closeModal} {...detailPost} />
       </Modal>
     </>
-
   )
 }
 export default DetailedPost

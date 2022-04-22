@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
 import styles from './Modal.module.css'
-import { modalInnerVariants, modalWrapperVariants } from './modalAnimation'
+import { innerModalVariants, wrModalAnimate } from './modalAnimation'
 
 // создаем модалку используя порталы
 function Modal({
@@ -46,8 +46,8 @@ function ModalInner({ children, closeModal }) {
   }
 
   return (
-    <motion.div variants={modalWrapperVariants} initial="start" animate="view" exit="end" onClick={closeClickHandler} className={styles.wrapper}>
-      <motion.div variants={modalInnerVariants} onClick={innerClickHandler} className={styles.inner}>
+    <motion.div variants={wrModalAnimate} initial="start" animate="end" exit="final" onClick={closeClickHandler} className={styles.wrapper}>
+      <motion.div variants={innerModalVariants} onClick={innerClickHandler} className={styles.inner}>
         <svg
           onClick={closeClickHandler}
           role="button"

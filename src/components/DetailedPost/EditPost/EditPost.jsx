@@ -1,3 +1,4 @@
+import { Button, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -48,21 +49,68 @@ function EditPost({
   }
 
   return (
-    <form className="d-flex flex-column align-items-center" onSubmit={submitHandler}>
-      <div className="mb-3">
-        <input onChange={changeHead} name="head" placeholder="Заголовок поста" type="text" className="form-control" value={editTitle} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeDescription} name="description" placeholder="Текст поста" type="text" className="form-control" value={editText} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeLink} name="link" placeholder="Ссылка на картинку" type="text" className="form-control" value={editImage} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeTag} name="tag" placeholder="Тег" type="text" className="form-control" value={editTags} />
-      </div>
-      <button type="submit" className="btn btn-primary">Отправить</button>
-    </form>
+    <Stack
+      component="form"
+      alignItems="center"
+      spacing={2}
+      noValidate
+      sx={{
+        m: 1,
+        width: 350,
+      }}
+      autoComplete="off"
+    >
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Заголовок"
+        placeholder="Заголовок поста"
+        multiline
+        onChange={changeHead}
+        value={editTitle}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Текст"
+        placeholder="Текст поста"
+        multiline
+        onChange={changeDescription}
+        value={editText}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Ссылка на картинку"
+        placeholder="Ссылка на картинку"
+        multiline
+        onChange={changeLink}
+        value={editImage}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Теги"
+        placeholder="Введите теги через запятую"
+        multiline
+        onChange={changeTag}
+        value={editTags}
+      />
+      <Button
+        onClick={submitHandler}
+        variant="text"
+      >
+        Отправить
+      </Button>
+    </Stack>
   )
 }
 

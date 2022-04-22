@@ -7,11 +7,14 @@ function EditPost({
   title, text, image, tags, closeModal,
 }) {
   const { idPost } = useParams() // получение id поста
+
+  const preparedTags = tags.join(',').trim() // получаем из массива строку
+
   // делаем управляемое состояние формы
   const [editTitle, setEditTitle] = useState(title)
   const [editText, setEditText] = useState(text)
   const [editImage, setEditImage] = useState(image)
-  const [editTags, setEditTags] = useState(tags)
+  const [editTags, setEditTags] = useState(preparedTags)
   const dispatch = useDispatch() // достаем dispatch
 
   // меняем состояние формы

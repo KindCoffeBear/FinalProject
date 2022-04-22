@@ -14,7 +14,7 @@ function AppTitle() {
   return (
     <LinkMUI component={Link} to="/" variant="body1" underline="none">
       <Typography
-        variant="h4"
+        variant="h5"
         color="white"
         noWrap
         component="div"

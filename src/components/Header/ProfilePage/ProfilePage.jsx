@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { editProfileQuery } from '../../../redux/actionCreators/userActionCreators'
@@ -21,9 +21,14 @@ const theme = createTheme()
 export default function ProfilePAge() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
+  const controller = useRef(new AbortController())
 
   useEffect(() => {
-    dispatch(getPostsFromServerQuery(setLoading)) // получаем посты с сервера
+    dispatch(getPostsFromServerQuery(setLoading, controller)) // получаем посты с сервера
+
+    return () => {
+      controller.current.abort()
+    }
   }, [])
 
   const user = useSelector((store) => store.user) // получаем пользователя из Redux

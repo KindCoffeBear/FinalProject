@@ -4,7 +4,7 @@ import {
   FormControl, Grid, InputLabel, MenuItem, Select,
 } from '@mui/material'
 import Box from '@mui/material/Box'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { setFilter } from '../../../redux/actionCreators/filterActionCreator'
@@ -30,6 +30,7 @@ function Posts() {
 
   const countPages = limit ? Math.ceil(total / limit) : null
   const numbersPage = countPages ? Array(countPages).fill().map((x, i) => i + 1) : null
+  const controller = useRef(new AbortController())
 
   // получаем дебаунсер
   const debouncedFilter = useDebounce(filter, 300)
@@ -63,8 +64,12 @@ function Posts() {
     }
 
     dispatch(getCommentsFromServerQuery())
-    dispatch(getPostsFromServerQuery(setLoading, page, limit, debouncedFilter))
+    dispatch(getPostsFromServerQuery(setLoading, controller, page, limit, debouncedFilter))
     setLoading(true)
+
+    return () => {
+      controller.current.abort()
+    }
   }, [debouncedFilter, limit, page])
 
   const changeHandler = (e) => {

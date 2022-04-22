@@ -6,7 +6,7 @@ function Main() {
     <Container
       maxWidth="false"
       sx={{
-        backgroundColor: '#ede7f6', minWidth: '100vw', minHeight: '91vh', display: 'flex', justifyContent: 'center',
+        backgroundColor: '#ede7f6', maxWidth: '100vw', minHeight: '91vh', display: 'flex', justifyContent: 'center',
       }}
     >
       <Posts />

@@ -8,14 +8,17 @@
   align-items: center;
   top: 0;
   left: 0;
+  background-size: 110% 110%;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .inner {
   position: relative;
-  background-color: white;
-  padding: 50px 20px 40px;
-  border: 1px solid grey;
-  border-radius: 16px;
+  background: white;
+  border: 1px solid #777;
+  border-radius: 15px;
+  padding: 50px 40px 40px;
 }
 
 .icon {

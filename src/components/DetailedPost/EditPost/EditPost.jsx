@@ -1,32 +1,37 @@
+import { Button, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updatePostQuery } from '../../../redux/actionCreators/postsActionCreators'
+import { useParams } from 'react-router-dom'
+import { updatePostQuery } from '../../../redux/actionCreators/detailPostActionCreator'
 
 function EditPost({
-  idPost, head, description, link, tag, closeModal,
+  title, text, image, tags, closeModal,
 }) {
-  // делаем управляемое состояние формы
-  const [editHead, setEditHead] = useState(head)
-  const [editDescription, setEditDescription] = useState(description)
-  const [editLink, setEditLink] = useState(link)
-  const [editTag, setEditTag] = useState(tag)
+  const { idPost } = useParams() // получение id поста
 
+  const preparedTags = tags.join(',').trim() // получаем из массива строку
+
+  // делаем управляемое состояние формы
+  const [editTitle, setEditTitle] = useState(title)
+  const [editText, setEditText] = useState(text)
+  const [editImage, setEditImage] = useState(image)
+  const [editTags, setEditTags] = useState(preparedTags)
   const dispatch = useDispatch() // достаем dispatch
 
   // меняем состояние формы
   const changeHead = (e) => {
-    setEditHead(e.target.value)
+    setEditTitle(e.target.value)
   }
   const changeDescription = (e) => {
-    setEditDescription(e.target.value)
+    setEditText(e.target.value)
   }
 
   const changeLink = (e) => {
-    setEditLink(e.target.value)
+    setEditImage(e.target.value)
   }
 
   const changeTag = (e) => {
-    setEditTag(e.target.value)
+    setEditTags(e.target.value)
   }
 
   // отправляем форму для редактирования поста
@@ -34,31 +39,78 @@ function EditPost({
     e.preventDefault()
 
     const editedPost = {
-      head: editHead,
-      description: editDescription,
-      link: editLink,
-      tag: editTag,
+      title: editTitle,
+      text: editText,
+      image: editImage,
+      tags: editTags.split(',').map((el) => el.trim()),
     }
 
     dispatch(updatePostQuery(idPost, editedPost, closeModal))
   }
 
   return (
-    <form className="d-flex flex-column align-items-center" onSubmit={submitHandler}>
-      <div className="mb-3">
-        <input onChange={changeHead} name="head" placeholder="Заголовок поста" type="text" className="form-control" value={editHead} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeDescription} name="description" placeholder="Текст поста" type="text" className="form-control" value={editDescription} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeLink} name="link" placeholder="Ссылка на картинку" type="text" className="form-control" value={editLink} />
-      </div>
-      <div className="mb-3">
-        <input onChange={changeTag} name="tag" placeholder="Тег" type="text" className="form-control" value={editTag} />
-      </div>
-      <button type="submit" className="btn btn-primary">Отправить</button>
-    </form>
+    <Stack
+      component="form"
+      alignItems="center"
+      spacing={2}
+      noValidate
+      sx={{
+        m: 1,
+        width: 350,
+      }}
+      autoComplete="off"
+    >
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Заголовок"
+        placeholder="Заголовок поста"
+        multiline
+        onChange={changeHead}
+        value={editTitle}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Текст"
+        placeholder="Текст поста"
+        multiline
+        onChange={changeDescription}
+        value={editText}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Ссылка на картинку"
+        placeholder="Ссылка на картинку"
+        multiline
+        onChange={changeLink}
+        value={editImage}
+      />
+      <TextField
+        id="outlined-textarea"
+        sx={{
+          width: 300,
+        }}
+        label="Теги"
+        placeholder="Введите теги через запятую"
+        multiline
+        onChange={changeTag}
+        value={editTags}
+      />
+      <Button
+        onClick={submitHandler}
+        variant="text"
+      >
+        Отправить
+      </Button>
+    </Stack>
   )
 }
 

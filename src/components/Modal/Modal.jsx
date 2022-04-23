@@ -2,44 +2,7 @@ import ReactDOM from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
 import styles from './Modal.module.css'
-
-// Анимация всей модалки
-const modalWrapperVariants = {
-  start: {
-    opacity: 0,
-  },
-  view: {
-    opacity: 1,
-    transition: {
-      when: 'beforeChildren',
-    },
-  },
-  end: {
-    opacity: 0,
-    transition: {
-      when: 'afterChildren',
-    },
-  },
-}
-
-// анимация формы в модалке
-const modalInnerVariants = {
-  start: {
-    scale: 0,
-    opacity: 0,
-    rotate: 360,
-  },
-  view: {
-    scale: 1,
-    opacity: 1,
-    rotate: 0,
-  },
-  end: {
-    scale: 0,
-    opacity: 0,
-    rotate: 360,
-  },
-}
+import { innerModalVariants, wrModalAnimate } from './modalAnimation'
 
 // создаем модалку используя порталы
 function Modal({
@@ -83,8 +46,8 @@ function ModalInner({ children, closeModal }) {
   }
 
   return (
-    <motion.div variants={modalWrapperVariants} initial="start" animate="view" exit="end" onClick={closeClickHandler} className={styles.wrapper}>
-      <motion.div variants={modalInnerVariants} onClick={innerClickHandler} className={styles.inner}>
+    <motion.div variants={wrModalAnimate} initial="start" animate="end" exit="final" onClick={closeClickHandler} className={styles.wrapper}>
+      <motion.div variants={innerModalVariants} onClick={innerClickHandler} className={styles.inner}>
         <svg
           onClick={closeClickHandler}
           role="button"

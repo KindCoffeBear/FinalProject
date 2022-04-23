@@ -1,24 +1,55 @@
-import { Link } from 'react-router-dom'
+import AppBar from '@mui/material/AppBar'
+import Button from '@mui/material/Button'
+import Toolbar from '@mui/material/Toolbar'
+import Container from '@mui/material/Container'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AppTitle from './AppTitle/AppTitle'
+import HeaderInscriptions from './HeaderInscriptions/HeaderInscriptions'
+import SearchForm from './SearchForm/SearchForm'
+import SignUpLink from './SignUpLink/SignUpLink'
+import SignInLink from './SignInLink/SignInLink'
+import { getUserFromApiQuery, signOut } from '../../redux/actionCreators/userActionCreators'
+import ProfileLink from './ProfileLink/ProfileLink'
+import TOKEN from '../../localStorageConsts'
 
 function Header() {
+  const tokenFromLS = localStorage.getItem(TOKEN)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (tokenFromLS) {
+      dispatch(getUserFromApiQuery(tokenFromLS))
+    }
+  }, [])
+  const navigate = useNavigate()
+  const location = useLocation()
+  const currentLocation = location.pathname === '/content'
+  const user = useSelector((store) => store.user)
+  const userToken = user.token
+  const signOutHandler = () => {
+    dispatch(signOut(user))
+    localStorage.clear()
+    navigate('/signInForm')
+  }
   return (
-    <header className="p-3 bg-dark text-white">
-      <div className="container">
-        <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-          <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><Link to="/" className="nav-link px-2 text-white">Главная</Link></li>
-          </ul>
-
-          <div className="text-end">
-            <Link to="/" className="btn btn-info me-2">Выйти</Link>
-            <Link to="/" className="btn btn-outline-light me-2">Войти</Link>
-            <Link to="/" className="btn btn-warning">Регистарция</Link>
-          </div>
-        </div>
-      </div>
-    </header>
+    <AppBar position="relative" color="secondary">
+      <Container maxWidth="false">
+        <Toolbar disableGutters>
+          <AppTitle />
+          {userToken ? <HeaderInscriptions /> : null}
+          {currentLocation ? <SearchForm /> : null}
+          {userToken ? <ProfileLink /> : null}
+          {!userToken ? <SignUpLink /> : null}
+          {!userToken ? <SignInLink /> : null}
+          {userToken ? (
+            <Button type="button" variant="contained" color="secondary" onClick={signOutHandler}>
+              Выйти
+            </Button>
+          ) : null}
+        </Toolbar>
+      </Container>
+    </AppBar>
   )
 }
-
 export default Header

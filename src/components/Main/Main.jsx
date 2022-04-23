@@ -1,15 +1,16 @@
-import CreateForm from './CreateForm/CreateForm'
+import { Container } from '@mui/material'
 import Posts from './Posts/Posts'
-import SearchPost from './SearchPost/SearchPost'
 
 function Main() {
   return (
-    <section className="container">
-      <CreateForm />
-      <hr />
-      <SearchPost />
+    <Container
+      maxWidth="false"
+      sx={{
+        backgroundColor: '#ede7f6', maxWidth: '100vw', minHeight: '91vh', display: 'flex', justifyContent: 'center',
+      }}
+    >
       <Posts />
-    </section>
+    </Container>
   )
 }
 

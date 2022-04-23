@@ -1,6 +1,10 @@
+/* eslint-disable default-param-last */
 // Создание Action Creators для состояния постов
+
+// не забыть вернуть GET_CURRENT_POST UPDATE_POST
+import axiosInstance from '../../axiosConfig/axiosConfig'
 import {
-  ADD_NEW_POST, DELETE_POST, GET_CURRENT_POST, GET_POSTS_FROM_SERVER, UPDATE_POST,
+  ADD_NEW_POST, DELETE_POST, GET_POSTS_FROM_SERVER, LIKE_POST,
 } from '../actionTypes/postsTypes'
 
 const getPostsFromServer = (postsFromServer) => ({
@@ -9,10 +13,13 @@ const getPostsFromServer = (postsFromServer) => ({
 })
 
 // получение всех постов с сервера
-export const getPostsFromServerQuery = (filter = '') => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/?${filter}`)
-  const dataFromServer = await response.json()
+export const getPostsFromServerQuery = (setLoading, page = '', limit = '', filter = '') => async (dispatch) => {
+  const response = await axiosInstance.get(
+    `posts/paginate?page=${page}&limit=${limit}&query=${filter}`,
+  )
+  const dataFromServer = response.data
   dispatch(getPostsFromServer(dataFromServer))
+  setLoading(false)
 }
 
 const addNewPost = (newPost) => ({
@@ -22,19 +29,20 @@ const addNewPost = (newPost) => ({
 
 // добавление поста на сервере и получение данных с сервера
 export const addNewPostQuery = (newPost) => async (dispatch) => {
-  const response = await fetch('http://localhost:3000/api/v1/posts', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newPost),
-  })
+  try {
+    const response = await axiosInstance.post(
+      'posts',
+      newPost,
+    )
+    const postFromApi = response.data
+    dispatch(addNewPost(postFromApi))
 
-  if (response.status === 201) {
-    const newPostFromServer = await response.json()
-    dispatch(addNewPost(newPostFromServer))
-  } else {
-    alert('Введите все данные')
+    alert('Пост успешно добавлен!')
+  } catch (error) {
+    const codeError = error.message.slice(-3)
+    if (codeError === '400') {
+      alert('Как минимум одно поле не заполнено или заполнено не корректно')
+    }
   }
 }
 
@@ -45,48 +53,44 @@ const deletePost = (id) => ({
 
 // удаление поста по id
 export const deletePostQuery = (id) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-    method: 'DELETE',
-  })
-
-  if (response.status === 200) {
-    dispatch(deletePost(id))
+  try {
+    const isDelete = confirm('Точно хотите удалить пост?')
+    if (isDelete) {
+      await axiosInstance.delete(
+        `posts/${id}`,
+      )
+      dispatch(deletePost(id))
+    }
+  } catch (e) {
+    const codeError = e.message.slice(-3)
+    if (codeError === '403') {
+      alert('Вы не можете удалить чужой пост')
+    }
   }
 }
 
-const updatePost = (newPhoneObject) => ({
-  type: UPDATE_POST,
-  payload: newPhoneObject,
+const addLike = (data) => ({
+  type: LIKE_POST,
+  payload: data,
 })
 
-// обновление поста на сервере и получение данных с сервера
-export const updatePostQuery = (id, formData, closeModal) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-  })
-
-  if (response.status === 200) {
-    const updatedPostFromServer = await response.json()
-    dispatch(updatePost(updatedPostFromServer))
-    closeModal()
-  } else {
-    alert('Введите все данные')
-  }
+export const addLikeQuery = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.put(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(addLike(likesFromServer))
 }
 
-const getPost = (postFromServer) => ({
-  type: GET_CURRENT_POST,
-  payload: postFromServer,
+const deleteLike = (likesFromServer) => ({
+  type: LIKE_POST,
+  payload: likesFromServer,
 })
 
-// получение конкретного поста по id и передача setLoading (изменение состояния загрузки страницы) и controller для отмены загрузки страницы
-export const getPostQuery = (id, setLoading, controller) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${id}`, { signal: controller.current.signal }) // { signal: controller.current.signal } определяет идет запрос или он отменен
-  const postFromServer = await response.json()
-  dispatch(getPost(postFromServer))
-  setLoading(false)
+export const deleteLikeQuery = (idPost) => async (dispatch) => {
+  const response = await axiosInstance.delete(
+    `posts/likes/${idPost}`,
+  )
+  const likesFromServer = await response.data
+  dispatch(deleteLike(likesFromServer))
 }

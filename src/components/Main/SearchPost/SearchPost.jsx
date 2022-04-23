@@ -1,4 +1,4 @@
-import {
+/* import {
   useEffect, useState,
 } from 'react'
 import { useDispatch } from 'react-redux'
@@ -53,4 +53,4 @@ function SearchPost() {
   )
 }
 
-export default SearchPost
+export default SearchPost */

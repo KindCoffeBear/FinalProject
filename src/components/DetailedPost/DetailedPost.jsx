@@ -122,156 +122,157 @@ function DetailedPost() {
   }
 
   const DetailedPostwithLoader = withLoader(() => (
-    <Stack
-      component="div"
-      direction="column"
-      alignItems="center"
-      sx={{
-        backgroundColor: '#ede7f6',
-        minHeight: '90vh',
-      }}
-    >
-      <Grid>
+
+    <Grid>
+      <Card
+        sx={{
+          minWidth: 600,
+          maxWidth: 600,
+          minHeight: 600,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CardHeader
+          avatar={(
+            <Tooltip
+              title={authorName || ''}
+              arrow
+              placement="left"
+              TransitionComponent={Fade}
+              TransitionProps={{ timeout: 600 }}
+            >
+              <Avatar src={avatarPost} aria-label="post" />
+            </Tooltip>
+            )}
+          titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+          title={detailPost.title}
+          subheader={updatedDate}
+        />
+        <CardMedia
+          component="img"
+          height="500"
+          sx={{
+            height: 400,
+            width: 600,
+            objectFit: 'contain',
+          }}
+          image={detailPost.image}
+          alt={detailPost.title}
+        />
+        <Grid container>
+          <Grid item xs={12} mt={1} ml={1}>
+            <Typography variant="overline" color="text.secondary" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
+              {authorName}
+            </Typography>
+          </Grid>
+          <CardContent>
+            <Typography variant="body1" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
+              {detailPost.text}
+            </Typography>
+          </CardContent>
+        </Grid>
+        <Box sx={{
+          mt: 'auto',
+          ml: 1,
+        }}
+        >
+          <CardActions disableSpacing>
+            <Typography variant="overline" color="text.secondary" component="div" gutterBottom position="left" mt={1}>
+              {tagsPost}
+            </Typography>
+          </CardActions>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+          >
+            <Tooltip title="Вернуться">
+              <LinkMUI component={Link} to="/content">
+                <ArrowBackIcon />
+              </LinkMUI>
+            </Tooltip>
+            <Tooltip title="Лайк">
+              <IconButton
+                aria-label="like"
+                onClick={likeHandler}
+              >
+                {!isLike
+                  ? (<FavoriteBorderRounded sx={{ color: '#c62828' }} />
+                  ) : (
+                    <FavoriteRounded sx={{ color: '#c62828' }} />
+                  )}
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{
+                    textAlign: 'left',
+                    p: 0.5,
+                  }}
+                >
+                  {likesPost?.length}
+                </Typography>
+              </IconButton>
+            </Tooltip>
+            {isAuthor ? (
+              <>
+                <Tooltip title="Редактировать">
+                  <IconButton aria-label="edit" onClick={openModal}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Удалить">
+                  <IconButton aria-label="delete" onClick={deleteHandler}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            ) : null}
+          </Box>
+        </Box>
+        <Typography sx={{ mt: 2 }} variant="body2" gutterBottom>
+          <ThemeProvider theme={theme}>
+            <Typography variant="overline">Комментарии</Typography>
+          </ThemeProvider>
+          <ExpandMore
+            expand={!expanded}
+            onClick={handleExpandClick}
+            aria-expanded={!expanded}
+            aria-label="Комментарии"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </Typography>
+
+      </Card>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Card
           sx={{
-            minWidth: 600,
+            minWidth: 500,
             maxWidth: 600,
-            minHeight: 600,
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
         >
-          <CardHeader
-            avatar={(
-              <Tooltip
-                title={authorName || ''}
-                arrow
-                placement="left"
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}
-              >
-                <Avatar src={avatarPost} aria-label="post" />
-              </Tooltip>
-            )}
-            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            title={detailPost.title}
-            subheader={updatedDate}
-          />
-          <CardMedia
-            component="img"
-            height="500"
-            sx={{
-              height: 400,
-              width: 600,
-              objectFit: 'contain',
-            }}
-            image={detailPost.image}
-            alt={detailPost.title}
-          />
-          <Grid container>
-            <Grid item xs={12} mt={1} ml={1}>
-              <Typography variant="overline" color="text.secondary" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
-                {authorName}
-              </Typography>
-            </Grid>
-            <CardContent>
-              <Typography variant="body1" sx={{ textAlign: 'left', fontFamily: '"Segoe UI"' }}>
-                {detailPost.text}
-              </Typography>
-            </CardContent>
-          </Grid>
-          <Box sx={{
-            mt: 'auto',
-            ml: 1,
-          }}
-          >
-            <CardActions disableSpacing>
-              <Typography variant="overline" color="text.secondary" component="div" gutterBottom position="left" mt={1}>
-                {tagsPost}
-              </Typography>
-            </CardActions>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-              }}
-            >
-              <Tooltip title="Вернуться">
-                <LinkMUI component={Link} to="/content">
-                  <ArrowBackIcon />
-                </LinkMUI>
-              </Tooltip>
-              <Tooltip title="Лайк">
-                <IconButton
-                  aria-label="like"
-                  onClick={likeHandler}
-                >
-                  {!isLike
-                    ? (<FavoriteBorderRounded sx={{ color: '#c62828' }} />
-                    ) : (
-                      <FavoriteRounded sx={{ color: '#c62828' }} />
-                    )}
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    sx={{
-                      textAlign: 'left',
-                      p: 0.5,
-                    }}
-                  >
-                    {likesPost?.length}
-                  </Typography>
-                </IconButton>
-              </Tooltip>
-              {isAuthor ? (
-                <>
-                  <Tooltip title="Редактировать">
-                    <IconButton aria-label="edit" onClick={openModal}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Удалить">
-                    <IconButton aria-label="delete" onClick={deleteHandler}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              ) : null}
-            </Box>
-          </Box>
-          <Typography sx={{ mt: 2 }} variant="body2" gutterBottom>
-            <ThemeProvider theme={theme}>
-              <Typography variant="overline">Комментарии</Typography>
-            </ThemeProvider>
-            <ExpandMore
-              expand={!expanded}
-              onClick={handleExpandClick}
-              aria-expanded={!expanded}
-              aria-label="Комментарии"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </Typography>
-
+          <CommentAddForm />
+          {commentsPost.map((comment) => (<CommentsPost key={comment._id} {...comment} idPost={idPost} idComment={comment._id} token={token} />))}
         </Card>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Card
-            sx={{
-              minWidth: 500,
-              maxWidth: 600,
-            }}
-          >
-            <CommentAddForm />
-            {commentsPost.map((comment) => (<CommentsPost key={comment._id} {...comment} idPost={idPost} idComment={comment._id} token={token} />))}
-          </Card>
-        </Collapse>
-      </Grid>
-    </Stack>
+      </Collapse>
+    </Grid>
   ))
   return (
     <>
-      <DetailedPostwithLoader loading={loading} />
+      <Stack
+        component="div"
+        direction="column"
+        alignItems="center"
+        sx={{
+          backgroundColor: '#ede7f6',
+          minHeight: '90vh',
+        }}
+      >
+        <DetailedPostwithLoader loading={loading} />
+      </Stack>
       <Modal state={viewModal} closeModal={closeModal}>
         <EditPost closeModal={closeModal} {...detailPost} />
       </Modal>

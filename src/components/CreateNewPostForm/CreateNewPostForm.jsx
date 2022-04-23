@@ -47,7 +47,7 @@ function CreateNewPostForm() {
             helperText={title.length < 3 && 'Минимум три символа'}
             multiline
             id="outlined-basic"
-            label="Title"
+            label="Заголовок"
             variant="outlined"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -57,7 +57,7 @@ function CreateNewPostForm() {
             helperText={text.length < 3 && 'Минимум три символа'}
             multiline
             id="filled-basic"
-            label="Text"
+            label="Описание"
             variant="outlined"
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -67,7 +67,7 @@ function CreateNewPostForm() {
             helperText={!image && 'Укажите URL фотографии'}
             multiline
             id="standard-basic"
-            label="Image"
+            label="Изображение"
             variant="outlined"
             value={image}
             onChange={(e) => setImage(e.target.value)}
@@ -77,7 +77,7 @@ function CreateNewPostForm() {
             helperText={tags.length < 3 && 'Минимум три символа'}
             multiline
             id="standard-basic"
-            label="Tags"
+            label="Теги"
             variant="outlined"
             value={tags}
             onChange={(e) => setTags(e.target.value)}

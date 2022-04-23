@@ -70,7 +70,7 @@ export default function SignInForm() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Адрес электронной почты"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -80,7 +80,7 @@ export default function SignInForm() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Пароль"
                 type="password"
                 id="password"
                 autoComplete="current-password"

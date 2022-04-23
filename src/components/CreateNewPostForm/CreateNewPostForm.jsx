@@ -27,7 +27,7 @@ function CreateNewPostForm() {
   }
   return (
     <Stack
-      height="87vh"
+      minHeight="87vh"
       component="div"
       direction="column"
       alignItems="center"

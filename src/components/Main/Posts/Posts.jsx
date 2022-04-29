@@ -1,9 +1,6 @@
-import {
-  Button,
-  FormControl, Grid, InputLabel, MenuItem, Select,
-} from '@mui/material'
+import { Grid } from '@mui/material'
 import Box from '@mui/material/Box'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { setFilter } from '../../../redux/actionCreators/filterActionCreator'
@@ -13,6 +10,8 @@ import { getPostsFromServerQuery } from '../../../redux/actionCreators/postsActi
 import useDebounce from '../../CustomHooks/useDebounce'
 import withLoader from '../../hocs/withLoader'
 import Post from './Post/Post'
+import Limit from './Limit/Limit'
+import PageNumbers from './PageNambers/PageNumbers'
 
 let isMount = false
 
@@ -78,46 +77,14 @@ function Posts() {
 
   const PostsWithLoader = withLoader(() => (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-        <FormControl sx={{ m: 1, minWidth: 160 }} variant="standard">
-          <InputLabel id="limit">Кол-во постов</InputLabel>
-          <Select
-            labelId="limit"
-            id="limit-select"
-            value={limit}
-            label="limit"
-            onChange={changeHandler}
-          >
-            <MenuItem value="Все">Все</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={30}>30</MenuItem>
-            <MenuItem value={60}>60</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+      <Limit limit={limit} changeHandler={changeHandler} />
       <Grid container spacing={2} justifyContent="center">
         {posts.map((post) => (
           // eslint-disable-next-line no-underscore-dangle
           <Post key={post._id} {...post} />
         ))}
       </Grid>
-      <Box
-        fullWidth
-        sx={{
-          mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
-        }}
-      >
-
-        {numbersPage ? numbersPage.map((number) => (
-          <React.Fragment key={number}>
-            <Button onClick={changePageHandler} sx={{ width: 10 }} color={number === page ? 'secondary' : 'info'}>
-              {number}
-            </Button>
-          </React.Fragment>
-        )) : null}
-
-      </Box>
+      <PageNumbers changePageHandler={changePageHandler} numbersPage={numbersPage} page={page} />
     </Box>
   ))
 
